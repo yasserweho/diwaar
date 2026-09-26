@@ -56,7 +56,6 @@ function PropertyBody() {
   const toggle = useAppStore((s) => s.toggleSaved);
   const agent = getAgent(property.agencyId);
   const [shot, setShot] = useState(0);
-  const [showPhone, setShowPhone] = useState(false);
   const similar = similarTo(property, extra);
   const noteRecent = useAppStore((s) => s.noteRecent);
   const compared = useAppStore((s) => s.compareIds.includes(property.id));
@@ -194,14 +193,12 @@ function PropertyBody() {
                   </div>
                 </div>
                 <div className="mt-4 grid gap-2">
-                  <Button
-                    onClick={() => {
-                      setShowPhone(true);
-                      toast.success("Number revealed");
-                    }}
+                  <a
+                    href={`tel:${agent.phone.replace(/\s/g, "")}`}
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary text-primary-fg text-sm font-semibold"
                   >
-                    <Phone /> {showPhone ? formatPhone(agent.phone) : "Show phone"}
-                  </Button>
+                    <Phone className="size-4" /> Call {formatPhone(agent.phone)}
+                  </a>
                   <a
                     href={waLink(
                       agent.phone,
@@ -225,8 +222,21 @@ function PropertyBody() {
               <Button
                 variant="outline"
                 onClick={() => {
-                  void navigator.clipboard.writeText(window.location.href);
-                  toast.success("Link copied");
+                  const url = window.location.href;
+                  const share = navigator.share?.({ title: property.title, url });
+                  if (share) {
+                    void share.catch(() => {
+                      void navigator.clipboard?.writeText(url).then(
+                        () => toast.success("Link copied"),
+                        () => toast.error("Couldn't share this listing"),
+                      );
+                    });
+                    return;
+                  }
+                  void navigator.clipboard?.writeText(url).then(
+                    () => toast.success("Link copied"),
+                    () => toast.error("Couldn't copy the link"),
+                  );
                 }}
               >
                 <Share2 /> Share

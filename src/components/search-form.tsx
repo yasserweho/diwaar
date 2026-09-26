@@ -60,7 +60,7 @@ export function SearchForm({
           : "rounded-xl bg-surface p-3 shadow-card",
       )}
     >
-      <div className="mb-3 flex gap-1 rounded-lg bg-ice p-1">
+      <div className="mb-3 grid grid-cols-2 gap-1 rounded-lg bg-ice p-1 sm:flex">
         {(["buy", "rent"] as const).map((p) => (
           <button
             key={p}

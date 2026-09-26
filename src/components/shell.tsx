@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { AccountSync } from "@/components/account-sync";
 import { DiwaarWordmark } from "@/components/logo";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { SignedOut, UserButton } from "@/lib/auth/gates";
+import { SignedIn, SignedOut, UserButton } from "@/lib/auth/gates";
 import { AREA_LABEL, type AreaUnit } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -74,13 +74,20 @@ export function Shell({ children }: { children: React.ReactNode }) {
             ))}
             <MoreMenu />
           </nav>
-          <div className="ml-auto flex items-center gap-1.5">
-            <PrefsMenu />
-            <UserButton />
+          <div className="ml-auto flex items-center gap-1">
+            <div className="hidden sm:contents">
+              <PrefsMenu />
+              <UserButton />
+              <SignedOut>
+                <Link to="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>
+                  Sign in
+                </Link>
+              </SignedOut>
+            </div>
             <SignedOut>
               <Link
                 to="/login"
-                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex")}
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "sm:hidden px-2")}
               >
                 Sign in
               </Link>
@@ -141,7 +148,21 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 <X className="size-5" />
               </button>
             </div>
-            <nav className="flex flex-col p-3 gap-1">
+            <nav className="flex flex-col p-3 gap-1 overflow-y-auto">
+              <SignedOut>
+                <Link
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className={cn(buttonVariants({ variant: "primary" }), "mb-2")}
+                >
+                  Sign in
+                </Link>
+              </SignedOut>
+              <SignedIn>
+                <div className="mb-2 rounded-xl bg-ice px-3 py-3">
+                  <UserButton />
+                </div>
+              </SignedIn>
               {NAV.map((item) => (
                 <Link
                   key={item.to}

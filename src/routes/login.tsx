@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DiwaarWordmark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -7,12 +7,25 @@ import { GROK_PROVIDERS, authClient, authEnabled, signIn } from "@/lib/auth/clie
 
 export const Route = createFileRoute("/login")({ component: LoginPage });
 
+function inAppBrowser() {
+  if (typeof navigator === "undefined") return false;
+  return /FBAN|FBAV|Instagram|WhatsApp|Line\/|Snapchat|LinkedInApp/i.test(navigator.userAgent);
+}
+
 function LoginPage() {
   const [mode, setMode] = useState<"in" | "up">("in");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [embedded, setEmbedded] = useState(false);
+
+  useEffect(() => {
+    setEmbedded(inAppBrowser());
+    const error = new URLSearchParams(window.location.search).get("error");
+    if (!error) return;
+    toast.error("Sign-in didn't finish. Try again in Chrome or Safari, or use email.");
+  }, []);
 
   async function onEmail(e: React.FormEvent) {
     e.preventDefault();
@@ -41,7 +54,7 @@ function LoginPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-10">
+    <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-10 pb-28">
       <DiwaarWordmark />
       <h1 className="mt-6 text-3xl font-extrabold text-primary-dark">
         {mode === "in" ? "Sign in" : "Create your account"}
@@ -49,6 +62,11 @@ function LoginPage() {
       <p className="mt-2 text-sm text-muted">
         Saved homes, ads, alerts, payments and loan files stay on your account, not just this browser.
       </p>
+      {embedded && (
+        <p className="mt-4 rounded-xl bg-ice px-3 py-3 text-sm text-primary-dark">
+          Google and X are blocked inside WhatsApp, Facebook and Instagram. Open diwaar.com in Chrome or Safari, or sign in with email below.
+        </p>
+      )}
       {authEnabled ? (
         <>
           <div className="mt-6 grid gap-2">
@@ -57,6 +75,10 @@ function LoginPage() {
                 key={p.providerId}
                 variant="outline"
                 onClick={() => {
+                  if (inAppBrowser()) {
+                    toast.error("Open diwaar.com in Chrome or Safari. Google and X are blocked in this app.");
+                    return;
+                  }
                   void signIn(p.providerId, { callbackURL: "/" }).catch((err) => {
                     toast.error(err instanceof Error ? err.message : "Could not sign in");
                   });
