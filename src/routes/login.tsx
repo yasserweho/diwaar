@@ -53,7 +53,15 @@ function LoginPage() {
         <>
           <div className="mt-6 grid gap-2">
             {GROK_PROVIDERS.map((p) => (
-              <Button key={p.providerId} variant="outline" onClick={() => void signIn(p.providerId, { callbackURL: "/" })}>
+              <Button
+                key={p.providerId}
+                variant="outline"
+                onClick={() => {
+                  void signIn(p.providerId, { callbackURL: "/" }).catch((err) => {
+                    toast.error(err instanceof Error ? err.message : "Could not sign in");
+                  });
+                }}
+              >
                 Continue with {p.label}
               </Button>
             ))}

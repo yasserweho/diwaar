@@ -95,6 +95,9 @@ const explicitBaseURL = env("BETTER_AUTH_URL");
 // Explicit `string[]` (not a readonly tuple) — Better Auth's DynamicBaseURLConfig
 // requires a mutable `allowedHosts: string[]`.
 const previewAllowedHosts: string[] = [...PREVIEW_ALLOWED_HOSTS];
+// The public site. Apex redirects to www, and either host must be able to
+// start Google/X — otherwise Better Auth rejects the host before the broker.
+const APP_HOSTS = ["diwaar.com", "www.diwaar.com"];
 // Local `npm run dev` (port 8080 contract). Browsers may send Origin as any of
 // these for the same server — trusting only `localhost` rejects `127.0.0.1` and
 // breaks email/password with "Invalid origin".
@@ -103,27 +106,39 @@ const LOCAL_DEV_ORIGINS: string[] = [
   "http://127.0.0.1:8080",
   "http://[::1]:8080",
 ];
-const baseURL = explicitBaseURL ?? {
-  // Include loopback hosts so dynamic baseURL resolves for local email/password
-  // (not only the preview wildcard).
-  allowedHosts: [...previewAllowedHosts, "localhost", "127.0.0.1", "[::1]"],
-  // `auto` → trust both http:// and https:// expansions of allowedHosts
-  // (preview is https; local dev is http).
+let configuredHost: string | undefined;
+if (explicitBaseURL) {
+  try {
+    configuredHost = new URL(explicitBaseURL).host;
+  } catch {
+    configuredHost = undefined;
+  }
+}
+// Always derive the origin from the request host. A fixed BETTER_AUTH_URL
+// (the platform URL) made Google's redirect_uri leave diwaar.com, and the
+// custom domain was not in the allowlist, so sign-in returned a bare 500.
+const baseURL = {
+  allowedHosts: [
+    ...previewAllowedHosts,
+    ...APP_HOSTS,
+    "localhost",
+    "127.0.0.1",
+    "[::1]",
+    ...(configuredHost ? [configuredHost] : []),
+  ],
   protocol: "auto" as const,
-  fallback: "http://localhost:8080",
+  fallback: explicitBaseURL ?? "http://localhost:8080",
 };
 
 // Origins Better Auth accepts on credentialed POSTs (sign-up/sign-in, etc.).
 // Missing entries here surface as FORBIDDEN "Invalid origin".
-const trustedOrigins: string[] = explicitBaseURL
-  ? [explicitBaseURL, ...LOCAL_DEV_ORIGINS]
-  : [
-      // Host wildcards (matched against Origin's host)
-      ...previewAllowedHosts,
-      // Full-origin wildcards (matched against Origin)
-      ...previewAllowedHosts.flatMap((host) => [`https://${host}`, `http://${host}`]),
-      ...LOCAL_DEV_ORIGINS,
-    ];
+const trustedOrigins: string[] = [
+  ...APP_HOSTS.flatMap((host) => [`https://${host}`, `http://${host}`]),
+  ...previewAllowedHosts,
+  ...previewAllowedHosts.flatMap((host) => [`https://${host}`, `http://${host}`]),
+  ...LOCAL_DEV_ORIGINS,
+  ...(explicitBaseURL ? [explicitBaseURL] : []),
+];
 
 const databaseUrl = env("DATABASE_URL");
 
