@@ -37,7 +37,14 @@ function HomePage() {
             Houses, flats, plots and commercial across Lahore, Karachi, Islamabad
             and 20+ cities.
           </p>
-          <div className="relative mt-8 max-w-4xl">
+          <figure className="relative mx-auto mt-8 max-w-3xl">
+            <img
+              src="/images/islamabad-family.jpg"
+              alt="A family standing outside their home in Islamabad, with the Margalla Hills behind them"
+              className="aspect-video w-full rounded-2xl object-cover object-center shadow-card ring-4 ring-white/15"
+            />
+          </figure>
+          <div className="relative mx-auto mt-8 max-w-4xl">
             <SearchForm />
           </div>
           <div className="relative mt-6 flex flex-wrap gap-4 text-sm text-ice-2">
