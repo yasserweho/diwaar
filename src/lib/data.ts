@@ -10,6 +10,7 @@ import {
   PROJ,
   SHOP,
 } from "./photos";
+import { AREA_BOOK, listingById, neighborsOf } from "./catalog";
 import type { Agent, AreaGuide, BlogPost, Project, Property, SearchParams } from "./types";
 
 const A = {
@@ -1300,11 +1301,11 @@ export function getAgent(id: string) {
 }
 
 export function getProperty(id: string, extra: Property[] = []) {
-  return extra.find((p) => p.id === id) ?? PROPERTIES.find((p) => p.id === id);
+  return extra.find((p) => p.id === id) ?? PROPERTIES.find((p) => p.id === id) ?? listingById(id);
 }
 
 export function locationsInCity(city: string, extra: Property[] = []): string[] {
-  const set = new Set<string>();
+  const set = new Set<string>(AREA_BOOK[city] ?? []);
   for (const p of [...extra, ...PROPERTIES]) {
     if (p.city === city) set.add(p.location);
   }
@@ -1345,7 +1346,7 @@ export function filterProperties(list: Property[], params: SearchParams): Proper
 }
 
 export function similarTo(p: Property, extra: Property[] = []): Property[] {
-  return [...extra, ...PROPERTIES]
+  const curated = [...extra, ...PROPERTIES]
     .filter(
       (x) =>
         x.id !== p.id &&
@@ -1353,6 +1354,8 @@ export function similarTo(p: Property, extra: Property[] = []): Property[] {
         (x.city === p.city || x.category === p.category),
     )
     .slice(0, 4);
+  if (curated.length >= 4) return curated;
+  return [...curated, ...neighborsOf(p)].slice(0, 4);
 }
 
 export function countByLocation(city: string, purpose: "buy" | "rent", category?: Property["category"]) {

@@ -4,6 +4,7 @@ import { PropertyCard } from "@/components/property-card";
 import { SearchForm } from "@/components/search-form";
 import { SectionHead, ToolTiles } from "@/components/shell";
 import { PROPERTIES, PROJECTS, GUIDES, POSTS, countByLocation } from "@/lib/data";
+import { openListingCount } from "@/lib/catalog";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -41,7 +42,7 @@ function HomePage() {
           </div>
           <div className="relative mt-6 flex flex-wrap gap-4 text-sm text-ice-2">
             <span>
-              <strong className="text-primary-fg tabular-nums">2.1M+</strong> listings
+              <strong className="text-primary-fg tabular-nums">{(openListingCount() + PROPERTIES.length).toLocaleString()}</strong> listings
             </span>
             <span>
               <strong className="text-primary-fg tabular-nums">12</strong> cities

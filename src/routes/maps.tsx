@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { SOCIETIES } from "@/lib/portal";
 
 export const Route = createFileRoute("/maps")({ component: MapsPage });
 
@@ -17,17 +18,17 @@ const BLOCKS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const SIZES: Plot["size"][] = ["5m", "10m", "1k"];
 const SIZE_LABEL = { "5m": "5 Marla", "10m": "10 Marla", "1k": "1 Kanal" };
 
-function makePlots(): Plot[] {
+function makePlots(seed: number): Plot[] {
   const out: Plot[] = [];
   BLOCKS.forEach((block, bi) => {
     for (let n = 1; n <= 16; n++) {
-      const seed = (bi * 17 + n * 13) % 10;
+      const s = (bi * 17 + n * 13 + seed * 5) % 10;
       out.push({
         id: `${block}-${n}`,
         block,
         n,
-        status: seed < 5 ? "open" : seed < 8 ? "held" : "sold",
-        size: SIZES[(bi + n) % 3],
+        status: s < 5 ? "open" : s < 8 ? "held" : "sold",
+        size: SIZES[(bi + n + seed) % 3],
       });
     }
   });
@@ -35,7 +36,9 @@ function makePlots(): Plot[] {
 }
 
 function MapsPage() {
-  const plots = useMemo(makePlots, []);
+  const [societyId, setSocietyId] = useState(SOCIETIES[0].id);
+  const society = SOCIETIES.find((s) => s.id === societyId) ?? SOCIETIES[0];
+  const plots = useMemo(() => makePlots(SOCIETIES.findIndex((s) => s.id === society.id)), [society.id]);
   const [block, setBlock] = useState("C");
   const [picked, setPicked] = useState<Plot | null>(null);
   const navigate = useNavigate();
@@ -44,11 +47,28 @@ function MapsPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Plot finder</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">DHA Lahore Phase 5 schematic</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">{society.name}</h1>
       <p className="mt-2 max-w-2xl text-muted">
-        A demo society map — tap a plot to jump into matching Diwaar listings. Open plots are
-        available in this model; sold plots are taken.
+        Pick a society, then a plot. Open plots can be matched to live Diwaar listings in that area.
       </p>
+      <div className="mt-5 flex gap-2 overflow-x-auto no-scrollbar">
+        {SOCIETIES.map((s) => (
+          <button
+            key={s.id}
+            type="button"
+            onClick={() => {
+              setSocietyId(s.id);
+              setPicked(null);
+            }}
+            className={cn(
+              "h-10 shrink-0 rounded-lg px-3 text-sm font-semibold",
+              society.id === s.id ? "bg-primary-dark text-primary-fg" : "bg-surface text-fg shadow-card",
+            )}
+          >
+            {s.name}
+          </button>
+        ))}
+      </div>
 
       <div className="mt-6 flex gap-2 overflow-x-auto no-scrollbar">
         {BLOCKS.map((b) => (
@@ -111,7 +131,9 @@ function MapsPage() {
               <h2 className="mt-1 text-xl font-extrabold">
                 Block {picked.block} · Plot {picked.n}
               </h2>
-              <p className="mt-2 text-sm text-muted">{SIZE_LABEL[picked.size]} · DHA Phase 5</p>
+              <p className="mt-2 text-sm text-muted">
+                {SIZE_LABEL[picked.size]} · {society.name}
+              </p>
               <p className="mt-1 text-sm font-semibold capitalize">{picked.status === "open" ? "Available" : picked.status === "held" ? "On token" : "Sold"}</p>
               <Button
                 className="mt-4 w-full"
@@ -120,14 +142,14 @@ function MapsPage() {
                     to: "/search",
                     search: {
                       purpose: "buy",
-                      city: "Lahore",
-                      location: "DHA Defence",
-                      type: picked.size === "1k" || picked.size === "10m" || picked.size === "5m" ? "house" : "plot",
+                      city: society.city,
+                      location: society.location,
+                      type: "plot",
                     },
                   })
                 }
               >
-                See DHA listings
+                See {society.location} plots
               </Button>
             </>
           ) : (

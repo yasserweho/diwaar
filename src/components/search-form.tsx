@@ -83,6 +83,13 @@ export function SearchForm({
         >
           Projects
         </button>
+        <button
+          type="button"
+          onClick={() => void navigate({ to: "/invest" })}
+          className="h-10 flex-1 rounded-md text-sm font-semibold text-muted hover:text-fg"
+        >
+          Invest
+        </button>
       </div>
 
       <div className="grid gap-2 sm:grid-cols-[1fr_1fr_1fr_auto]">

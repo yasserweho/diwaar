@@ -97,6 +97,7 @@ export interface SearchParams {
   maxArea?: number;
   sort?: "newest" | "price-asc" | "price-desc" | "area-desc";
   q?: string;
+  page?: number;
 }
 
 export const CATEGORY_LABEL: Record<Category, string> = {

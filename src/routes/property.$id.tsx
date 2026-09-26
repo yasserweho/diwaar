@@ -10,12 +10,14 @@ import {
   Phone,
   Share2,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { toast } from "sonner";
 import { PropertyCard } from "@/components/property-card";
 import { ListingBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getAgent, getProperty, similarTo } from "@/lib/data";
+import { pricePath } from "@/lib/portal";
 import { formatArea, formatPhone, formatPrice, relativeDate, waLink } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL } from "@/lib/types";
@@ -56,7 +58,17 @@ function PropertyBody() {
   const [shot, setShot] = useState(0);
   const [showPhone, setShowPhone] = useState(false);
   const similar = similarTo(property, extra);
+  const noteRecent = useAppStore((s) => s.noteRecent);
+  const compared = useAppStore((s) => s.compareIds.includes(property.id));
+  const toggleCompare = useAppStore((s) => s.toggleCompare);
+  const reported = useAppStore((s) => s.reported.includes(property.id));
+  const reportListing = useAppStore((s) => s.reportListing);
   const img = property.images[shot] ?? property.images[0];
+  const history = pricePath(property.price, property.id);
+
+  useEffect(() => {
+    noteRecent(property.id);
+  }, [noteRecent, property.id]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-5">
@@ -124,6 +136,21 @@ function PropertyBody() {
               {property.furnished && <Row k="Furnishing" v={property.furnished} />}
               {property.plotType && <Row k="Plot type" v={property.plotType} />}
             </dl>
+          </div>
+
+          <div className="mt-4 rounded-2xl bg-surface p-5 shadow-card">
+            <h2 className="font-bold text-primary-dark">Asking price since 2021</h2>
+            <p className="mt-1 text-sm text-muted">Crore PKR. The last point is today's asking price.</p>
+            <div className="mt-3 h-48">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={history}>
+                  <XAxis dataKey="year" tick={{ fontSize: 12 }} />
+                  <YAxis tick={{ fontSize: 12 }} />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="crore" name="Crore" stroke="var(--color-primary)" strokeWidth={2} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
 
           <div className="mt-4 rounded-2xl bg-surface p-5 shadow-card">
@@ -203,6 +230,25 @@ function PropertyBody() {
                 }}
               >
                 <Share2 /> Share
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  const ok = toggleCompare(property.id);
+                  if (!ok) toast.error("Compare holds 3 listings. Remove one first.");
+                  else toast.success(compared ? "Removed from compare" : "Added to compare");
+                }}
+              >
+                {compared ? "In compare" : "Compare"}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  reportListing(property.id);
+                  toast.success(reported ? "Already reported" : "Report sent to the Diwaar desk");
+                }}
+              >
+                {reported ? "Reported" : "Report"}
               </Button>
             </div>
           </div>

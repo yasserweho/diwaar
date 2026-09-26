@@ -1,13 +1,16 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
 import { formatPkr, MARLA_SQFT, KANAL_SQFT, SQYD_SQFT, ACRE_SQFT, trimNum } from "@/lib/format";
+import { BANKS } from "@/lib/portal";
 import { cn } from "@/lib/utils";
 
-type Tab = "loan" | "build" | "area";
+type Tab = "loan" | "build" | "area" | "banks";
 
-function parse(s: Record<string, unknown>): { tab: Tab } {
-  const tab = s.tab === "build" || s.tab === "area" || s.tab === "loan" ? s.tab : "loan";
-  return { tab };
+function parse(s: Record<string, unknown>): { tab: Tab; rate?: number } {
+  const tab =
+    s.tab === "build" || s.tab === "area" || s.tab === "loan" || s.tab === "banks" ? s.tab : "loan";
+  const n = Number(s.rate);
+  return { tab, rate: Number.isFinite(n) && n > 0 ? n : undefined };
 }
 
 export const Route = createFileRoute("/tools")({
@@ -20,6 +23,7 @@ function ToolsPage() {
   const navigate = useNavigate({ from: "/tools" });
   const tabs: { id: Tab; label: string }[] = [
     { id: "loan", label: "Home loan" },
+    { id: "banks", label: "Banks" },
     { id: "build", label: "Construction cost" },
     { id: "area", label: "Area converter" },
   ];
@@ -28,7 +32,7 @@ function ToolsPage() {
     <div className="mx-auto max-w-xl px-4 py-8">
       <h1 className="text-3xl font-extrabold text-primary-dark">Property tools</h1>
       <p className="mt-2 text-sm text-muted">Mark-up, build cost and Marla conversions — the three questions every token meeting starts with.</p>
-      <div className="mt-6 flex gap-1 rounded-lg bg-ice p-1">
+      <div className="mt-6 flex gap-1 overflow-x-auto no-scrollbar rounded-lg bg-ice p-1">
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -45,6 +49,7 @@ function ToolsPage() {
       </div>
       <div className="mt-6">
         {tab === "loan" && <LoanCalc />}
+        {tab === "banks" && <BankList />}
         {tab === "build" && <BuildCalc />}
         {tab === "area" && <AreaCalc />}
       </div>
@@ -55,11 +60,41 @@ function ToolsPage() {
 const field =
   "h-12 w-full rounded-lg border border-border bg-surface px-3 text-sm outline-none focus:border-primary";
 
+function BankList() {
+  return (
+    <ul className="space-y-3">
+      {BANKS.map((b) => (
+        <li key={b.name} className="rounded-2xl bg-surface p-4 shadow-card">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="font-bold">{b.name}</p>
+              <p className="text-sm text-muted">{b.product}</p>
+            </div>
+            <p className="font-extrabold tabular-nums text-primary-dark">{b.rate}%</p>
+          </div>
+          <p className="mt-2 text-sm">{b.note}</p>
+          <p className="mt-1 text-xs text-muted">
+            {b.down}% down · up to {b.years} years
+          </p>
+          <Link to="/loans" search={{ bank: b.name }} className="mt-3 inline-flex text-sm font-semibold text-primary">
+            Apply with {b.name}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function LoanCalc() {
+  const preset = Route.useSearch().rate;
   const [price, setPrice] = useState("18500000");
   const [down, setDown] = useState("30");
   const [years, setYears] = useState("15");
-  const [rate, setRate] = useState("16");
+  const [rate, setRate] = useState(String(preset ?? 16));
+
+  useEffect(() => {
+    if (preset) setRate(String(preset));
+  }, [preset]);
 
   const result = useMemo(() => {
     const p = Number(price) || 0;

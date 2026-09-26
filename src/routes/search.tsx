@@ -1,11 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { PropertyCard } from "@/components/property-card";
 import { SearchForm } from "@/components/search-form";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/badge";
+import { generatedMatches } from "@/lib/catalog";
 import { PROPERTIES, filterProperties, locationsInCity } from "@/lib/data";
+import { alertLabel } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL, CITIES, type Category, type Purpose, type SearchParams } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -33,6 +36,7 @@ function parseSearch(s: Record<string, unknown>): SearchParams {
     maxArea: num(s.maxArea),
     sort,
     q: typeof s.q === "string" ? s.q : undefined,
+    page: num(s.page),
   };
 }
 
@@ -43,12 +47,34 @@ export const Route = createFileRoute("/search")({
 
 function SearchPage() {
   const params = Route.useSearch();
+  const navigate = useNavigate({ from: "/search" });
   const extra = useAppStore((s) => s.userListings);
-  const results = useMemo(
-    () => filterProperties([...extra, ...PROPERTIES], params),
-    [extra, params],
-  );
+  const page = params.page ?? 1;
+  const results = useMemo(() => {
+    const curated = filterProperties([...extra, ...PROPERTIES], params);
+    const seen = new Set(curated.map((p) => p.id));
+    const gen = generatedMatches(params).filter((p) => !seen.has(p.id));
+    let all = [...curated, ...gen];
+    switch (params.sort) {
+      case "price-asc":
+        all = [...all].sort((a, b) => a.price - b.price);
+        break;
+      case "price-desc":
+        all = [...all].sort((a, b) => b.price - a.price);
+        break;
+      case "area-desc":
+        all = [...all].sort((a, b) => b.areaSqft - a.areaSqft);
+        break;
+      default:
+        all = [...all].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    }
+    return all;
+  }, [extra, params]);
+  const pageSize = 20;
+  const visible = results.slice((page - 1) * pageSize, page * pageSize);
+  const pages = Math.max(1, Math.ceil(results.length / pageSize));
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const addAlert = useAppStore((s) => s.addAlert);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
@@ -61,14 +87,30 @@ function SearchPage() {
           location: params.location,
         }}
       />
-      <div className="mt-5 flex items-center justify-between gap-3">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-lg font-extrabold text-primary-dark sm:text-xl">
           {results.length} {params.purpose === "rent" ? "rentals" : "properties"}
           {params.city ? ` in ${params.city}` : ""}
+          {results.length > pageSize ? ` · page ${page} of ${pages}` : ""}
         </h1>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="lg:hidden" onClick={() => setFiltersOpen(true)}>
             <SlidersHorizontal /> Filters
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              addAlert({
+                id: `a-${Date.now()}`,
+                label: alertLabel(params),
+                params,
+                createdAt: new Date().toISOString().slice(0, 10),
+              });
+              toast.success("Search saved in Alerts");
+            }}
+          >
+            Save alert
           </Button>
           <SortSelect value={params.sort ?? "newest"} />
         </div>
@@ -85,7 +127,31 @@ function SearchPage() {
               <p className="mt-1 text-sm text-muted">Widen the city, type or price range.</p>
             </div>
           ) : (
-            results.map((p) => <PropertyCard key={p.id} property={p} />)
+            visible.map((p) => <PropertyCard key={p.id} property={p} />)
+          )}
+          {pages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page <= 1}
+                onClick={() =>
+                  void navigate({ search: (prev) => ({ ...prev, page: Math.max(1, page - 1) }) })
+                }
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page >= pages}
+                onClick={() =>
+                  void navigate({ search: (prev) => ({ ...prev, page: page + 1 }) })
+                }
+              >
+                Next
+              </Button>
+            </div>
           )}
         </div>
       </div>
@@ -185,6 +251,36 @@ function FiltersPanel() {
           </select>
         </fieldset>
       )}
+
+      <fieldset>
+        <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">Keyword</legend>
+        <input
+          className="h-11 w-full rounded-lg border border-border px-3 text-sm"
+          placeholder="DHA, corner, furnished"
+          value={params.q ?? ""}
+          onChange={(e) => patch({ q: e.target.value || undefined })}
+        />
+      </fieldset>
+
+      <fieldset>
+        <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">Price (PKR)</legend>
+        <div className="grid grid-cols-2 gap-2">
+          <input
+            inputMode="numeric"
+            className="h-11 w-full rounded-lg border border-border px-3 text-sm"
+            placeholder="Min"
+            value={params.minPrice ?? ""}
+            onChange={(e) => patch({ minPrice: Number(e.target.value) || undefined })}
+          />
+          <input
+            inputMode="numeric"
+            className="h-11 w-full rounded-lg border border-border px-3 text-sm"
+            placeholder="Max"
+            value={params.maxPrice ?? ""}
+            onChange={(e) => patch({ maxPrice: Number(e.target.value) || undefined })}
+          />
+        </div>
+      </fieldset>
 
       <fieldset>
         <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">Type</legend>

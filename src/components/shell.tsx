@@ -10,13 +10,32 @@ import {
   Search,
   Users,
   X,
+  Building2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { AccountSync } from "@/components/account-sync";
 import { DiwaarWordmark } from "@/components/logo";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { SignedOut, UserButton } from "@/lib/auth/gates";
 import { AREA_LABEL, type AreaUnit } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+
+const MORE = [
+  { href: "/property-index", label: "Property index" },
+  { href: "/trends", label: "Trends" },
+  { href: "/invest", label: "Invest" },
+  { href: "/agencies", label: "Agencies" },
+  { href: "/community", label: "Community" },
+  { href: "/wanted", label: "Wanted" },
+  { href: "/compare", label: "Compare" },
+  { href: "/alerts", label: "Alerts" },
+  { href: "/my-ads", label: "My ads" },
+  { href: "/cities", label: "All cities" },
+  { href: "/orders", label: "Payments" },
+  { href: "/loans", label: "Loan files" },
+  { href: "/tools?tab=loan", label: "Tools" },
+];
 
 const NAV = [
   { to: "/search", label: "Properties", search: { purpose: "buy" as const } },
@@ -36,6 +55,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-dvh flex flex-col bg-bg text-fg">
+      <AccountSync />
       <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
           <Link to="/" className="shrink-0" aria-label="Diwaar home">
@@ -52,9 +72,19 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 {item.label}
               </Link>
             ))}
+            <MoreMenu />
           </nav>
           <div className="ml-auto flex items-center gap-1.5">
             <PrefsMenu />
+            <UserButton />
+            <SignedOut>
+              <Link
+                to="/login"
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex")}
+              >
+                Sign in
+              </Link>
+            </SignedOut>
             <Link
               to="/saved"
               className={cn(
@@ -123,21 +153,16 @@ export function Shell({ children }: { children: React.ReactNode }) {
                   {item.label}
                 </Link>
               ))}
-              <Link
-                to="/agents"
-                onClick={() => setOpen(false)}
-                className="h-12 rounded-lg px-3 text-sm font-semibold flex items-center hover:bg-ice"
-              >
-                Agents
-              </Link>
-              <Link
-                to="/tools"
-                search={{ tab: "loan" }}
-                onClick={() => setOpen(false)}
-                className="h-12 rounded-lg px-3 text-sm font-semibold flex items-center hover:bg-ice"
-              >
-                Calculators
-              </Link>
+              {MORE.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="h-12 rounded-lg px-3 text-sm font-semibold flex items-center hover:bg-ice"
+                >
+                  {item.label}
+                </a>
+              ))}
               <Link
                 to="/add"
                 onClick={() => setOpen(false)}
@@ -154,6 +179,38 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
       <Footer />
       <BottomNav />
+    </div>
+  );
+}
+
+function MoreMenu() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="h-10 rounded-lg px-3 text-sm font-semibold text-muted hover:bg-ice hover:text-fg"
+      >
+        More
+      </button>
+      {open && (
+        <>
+          <button type="button" className="fixed inset-0 z-40" aria-label="Close menu" onClick={() => setOpen(false)} />
+          <div className="absolute left-0 top-full z-50 mt-1 w-52 rounded-xl bg-surface p-2 shadow-card">
+            {MORE.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="flex h-10 items-center rounded-lg px-3 text-sm font-semibold hover:bg-ice"
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -202,7 +259,7 @@ function PrefsMenu() {
               Currency
             </p>
             <div className="grid grid-cols-2 gap-1">
-              {(["PKR", "USD"] as const).map((c) => (
+              {(["PKR", "USD", "AED", "GBP"] as const).map((c) => (
                 <button
                   key={c}
                   type="button"
@@ -242,6 +299,9 @@ function Footer() {
             ["New projects", "/projects"],
             ["Area guides", "/guides"],
             ["Society maps", "/maps"],
+            ["Property index", "/property-index"],
+            ["Trends", "/trends"],
+            ["Invest", "/invest"],
           ]}
         />
         <FooterCol
@@ -252,6 +312,10 @@ function Footer() {
             ["Area converter", "/tools?tab=area"],
             ["Add a listing", "/add"],
             ["Find an agent", "/agents"],
+            ["Agencies", "/agencies"],
+            ["Community", "/community"],
+            ["Wanted ads", "/wanted"],
+            ["My ads", "/my-ads"],
           ]}
         />
         <FooterCol
@@ -381,15 +445,21 @@ export function SectionHead({
 
 export function ToolTiles() {
   const tiles = [
-    { to: "/tools?tab=loan", icon: Calculator, label: "Home loan", sub: "Monthly instalment" },
+    { to: "/tools?tab=loan", icon: Calculator, label: "Home loan", sub: "Bank packages" },
     { to: "/tools?tab=build", icon: Calculator, label: "Build cost", sub: "Grey + finishing" },
     { to: "/tools?tab=area", icon: Calculator, label: "Area converter", sub: "Marla · Kanal · Yd" },
-    { to: "/maps", icon: MapIcon, label: "Plot finder", sub: "Society maps" },
+    { to: "/maps", icon: MapIcon, label: "Plot finder", sub: "12 societies" },
+    { to: "/property-index", icon: BookOpen, label: "Price index", sub: "Since 2020" },
+    { to: "/trends", icon: BookOpen, label: "Trends", sub: "Hot areas" },
     { to: "/guides", icon: BookOpen, label: "Area guides", sub: "Prices & streets" },
-    { to: "/agents", icon: Users, label: "Agents", sub: "Verified agencies" },
+    { to: "/invest", icon: Building2, label: "Invest", sub: "Property blocks" },
+    { to: "/agencies", icon: Users, label: "Agencies", sub: "Titanium desks" },
+    { to: "/community", icon: Users, label: "Community", sub: "Ask the market" },
+    { to: "/wanted", icon: Search, label: "Wanted", sub: "Buyer requests" },
+    { to: "/cities", icon: MapIcon, label: "All cities", sub: "Pakistan" },
   ];
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
       {tiles.map((t) => {
         const Icon = t.icon;
         return (
