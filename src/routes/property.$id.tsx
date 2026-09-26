@@ -70,7 +70,7 @@ function PropertyBody() {
   }, [noteRecent, property.id]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-5">
+    <div className="mx-auto max-w-6xl px-4 py-5 pb-24 lg:pb-5">
       <Link
         to="/search"
         search={{ purpose: property.purpose, city: property.city }}
@@ -274,6 +274,31 @@ function PropertyBody() {
             ))}
           </div>
         </section>
+      )}
+
+      {agent && (
+        <div
+          className="lg:hidden fixed inset-x-0 z-30 flex gap-2 border-t border-border bg-surface px-3 py-2"
+          style={{ bottom: "calc(4rem + env(safe-area-inset-bottom))" }}
+        >
+          <a
+            href={`tel:${agent.phone.replace(/\s/g, "")}`}
+            className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-sm font-semibold text-primary-fg"
+          >
+            <Phone className="size-4" /> Call
+          </a>
+          <a
+            href={waLink(
+              agent.phone,
+              `Hi, I'm interested in ${property.title} on Diwaar (${property.id})`,
+            )}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-12 flex-1 items-center justify-center rounded-lg bg-verified text-sm font-semibold text-primary-fg"
+          >
+            WhatsApp
+          </a>
+        </div>
       )}
     </div>
   );

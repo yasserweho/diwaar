@@ -87,19 +87,21 @@ function SearchPage() {
           location: params.location,
         }}
       />
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+      <div className="mt-4 flex flex-col gap-3 sm:mt-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <h1 className="text-lg font-extrabold text-primary-dark sm:text-xl">
           {results.length} {params.purpose === "rent" ? "rentals" : "properties"}
           {params.city ? ` in ${params.city}` : ""}
           {results.length > pageSize ? ` · page ${page} of ${pages}` : ""}
         </h1>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="lg:hidden" onClick={() => setFiltersOpen(true)}>
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
+          <Button variant="outline" size="sm" className="lg:hidden h-11" onClick={() => setFiltersOpen(true)}>
             <SlidersHorizontal /> Filters
           </Button>
+          <SortSelect value={params.sort ?? "newest"} />
           <Button
             variant="outline"
             size="sm"
+            className="col-span-2 h-11 sm:col-span-1 sm:h-9"
             onClick={() => {
               addAlert({
                 id: `a-${Date.now()}`,
@@ -112,7 +114,6 @@ function SearchPage() {
           >
             Save alert
           </Button>
-          <SortSelect value={params.sort ?? "newest"} />
         </div>
       </div>
 
@@ -164,7 +165,7 @@ function SearchPage() {
             aria-label="Close filters"
             onClick={() => setFiltersOpen(false)}
           />
-          <div className="absolute bottom-0 inset-x-0 max-h-[85vh] overflow-y-auto rounded-t-2xl bg-surface p-4">
+          <div className="absolute bottom-0 inset-x-0 max-h-[85vh] overflow-y-auto rounded-t-2xl bg-surface p-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
             <div className="mb-3 flex items-center justify-between">
               <p className="font-bold">Filters</p>
               <Button variant="ghost" size="sm" onClick={() => setFiltersOpen(false)}>
@@ -183,7 +184,7 @@ function SortSelect({ value }: { value: NonNullable<SearchParams["sort"]> }) {
   const navigate = useNavigate({ from: "/search" });
   return (
     <select
-      className="h-9 rounded-md border border-border bg-surface px-2 text-sm font-medium"
+      className="h-11 w-full rounded-md border border-border bg-surface px-2 text-base font-medium sm:h-9 sm:w-auto sm:text-sm"
       value={value}
       onChange={(e) =>
         void navigate({

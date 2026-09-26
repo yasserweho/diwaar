@@ -96,7 +96,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               to="/saved"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
-                "relative",
+                "relative hidden sm:inline-flex",
               )}
               aria-label="Saved properties"
             >
@@ -196,7 +196,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      <main className="flex-1 pb-24 lg:pb-0">{children}</main>
+      <main className="flex-1 pb-[calc(5.25rem+env(safe-area-inset-bottom))] lg:pb-0">{children}</main>
 
       <Footer />
       <BottomNav />
@@ -407,7 +407,7 @@ function BottomNav() {
 
   return (
     <nav
-      className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface shadow-nav"
+      className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-border bg-surface"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <ul className="grid grid-cols-5 h-16">

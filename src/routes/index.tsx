@@ -25,28 +25,28 @@ function HomePage() {
   return (
     <>
       <section className="bg-primary-dark text-primary-fg">
-        <div className="relative mx-auto max-w-7xl px-4 pt-10 pb-16 sm:pt-14 sm:pb-20 overflow-hidden">
+        <div className="relative mx-auto max-w-7xl px-4 pt-6 pb-8 sm:pt-14 sm:pb-20 overflow-hidden">
           <Skyline />
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-ice-2">
             Pakistan's property portal
           </p>
-          <h1 className="mt-3 max-w-2xl text-3xl font-extrabold tracking-tight sm:text-5xl">
+          <h1 className="mt-2 max-w-2xl text-[1.65rem] leading-tight font-extrabold tracking-tight sm:mt-3 sm:text-5xl">
             Find property for sale and rent in Pakistan
           </h1>
-          <p className="mt-3 max-w-xl text-sm sm:text-base text-ice-2">
+          <p className="mt-2 max-w-xl text-sm sm:mt-3 sm:text-base text-ice-2">
             Houses, flats, plots and commercial across Lahore, Karachi, Islamabad
             and 20+ cities.
           </p>
-          <figure className="relative mx-auto mt-8 max-w-3xl">
+          <div className="relative mx-auto mt-5 max-w-4xl sm:mt-8">
+            <SearchForm />
+          </div>
+          <figure className="relative mx-auto mt-5 max-w-3xl sm:mt-8">
             <img
               src="/images/islamabad-family.jpg"
               alt="A family standing outside their home in Islamabad, with the Margalla Hills behind them"
-              className="aspect-video w-full rounded-2xl object-cover object-center shadow-card ring-4 ring-white/15"
+              className="h-44 w-full rounded-2xl object-cover object-center shadow-card ring-4 ring-white/15 sm:aspect-video sm:h-auto"
             />
           </figure>
-          <div className="relative mx-auto mt-8 max-w-4xl">
-            <SearchForm />
-          </div>
           <div className="relative mt-6 flex flex-wrap gap-4 text-sm text-ice-2">
             <span>
               <strong className="text-primary-fg tabular-nums">{(openListingCount() + PROPERTIES.length).toLocaleString()}</strong> listings
@@ -61,7 +61,7 @@ function HomePage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-10 space-y-14">
+      <div className="mx-auto max-w-7xl px-4 py-8 space-y-10 sm:py-10 sm:space-y-14">
         <ToolTiles />
 
         <section>
