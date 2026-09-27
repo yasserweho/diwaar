@@ -41,6 +41,8 @@ export function PropertyCard({
         <img
           src={property.images[0]}
           alt={property.title}
+          loading="lazy"
+          decoding="async"
           className="size-full object-cover transition-transform duration-fast group-hover:scale-[1.03]"
         />
         <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1">

@@ -16,7 +16,7 @@ function BlogPage() {
             params={{ slug: p.slug }}
             className="grid overflow-hidden rounded-2xl bg-surface shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast sm:grid-cols-[220px_1fr]"
           >
-            <img src={p.image} alt="" className="aspect-16/10 sm:aspect-auto sm:h-full object-cover" />
+            <img src={p.image} alt="" loading="lazy" decoding="async" className="aspect-16/10 sm:aspect-auto sm:h-full object-cover" />
             <div className="p-5">
               <p className="text-[11px] font-bold uppercase tracking-wide text-primary">
                 {p.tag} · {p.date}

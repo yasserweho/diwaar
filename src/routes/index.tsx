@@ -44,6 +44,8 @@ function HomePage() {
             <img
               src="/images/islamabad-family.jpg"
               alt="A family standing outside their home in Islamabad, with the Margalla Hills behind them"
+              decoding="async"
+              fetchPriority="high"
               className="h-44 w-full rounded-2xl object-cover object-center shadow-card ring-4 ring-white/15 sm:aspect-video sm:h-auto"
             />
           </figure>
@@ -83,7 +85,7 @@ function HomePage() {
                 params={{ id: p.id }}
                 className="snap-start min-w-[260px] max-w-[280px] shrink-0 overflow-hidden rounded-xl bg-surface shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast"
               >
-                <img src={p.images[0]} alt="" className="aspect-16/10 w-full object-cover" />
+                <img src={p.images[0]} alt="" loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
                 <div className="p-4">
                   <p className="text-[11px] font-bold uppercase tracking-wide text-primary">
                     {p.status}
@@ -142,7 +144,7 @@ function HomePage() {
                 params={{ slug: g.slug }}
                 className="overflow-hidden rounded-xl bg-surface shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast"
               >
-                <img src={g.image} alt="" className="aspect-16/8 w-full object-cover" />
+                <img src={g.image} alt="" loading="lazy" decoding="async" className="aspect-16/8 w-full object-cover" />
                 <div className="p-4">
                   <p className="text-xs font-semibold text-primary">{g.city}</p>
                   <p className="font-bold">{g.name}</p>
@@ -163,7 +165,7 @@ function HomePage() {
                 params={{ slug: p.slug }}
                 className="overflow-hidden rounded-xl bg-surface shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast"
               >
-                <img src={p.image} alt="" className="aspect-16/10 w-full object-cover" />
+                <img src={p.image} alt="" loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
                 <div className="p-4">
                   <p className="text-[11px] font-bold uppercase tracking-wide text-primary">{p.tag}</p>
                   <p className="font-bold mt-1 leading-snug">{p.title}</p>

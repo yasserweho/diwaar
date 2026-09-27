@@ -22,7 +22,7 @@ function GuidesPage() {
             params={{ slug: g.slug }}
             className="overflow-hidden rounded-2xl bg-surface shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast"
           >
-            <img src={g.image} alt="" className="aspect-16/8 w-full object-cover" />
+            <img src={g.image} alt="" loading="lazy" decoding="async" className="aspect-16/8 w-full object-cover" />
             <div className="p-5">
               <p className="text-xs font-semibold text-primary">{g.city}</p>
               <h2 className="text-lg font-bold">{g.name}</h2>
