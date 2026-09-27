@@ -70,7 +70,6 @@ const NAV = [
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-  const saved = useAppStore((s) => s.savedIds.length);
 
   useEffect(() => {
     void useAppStore.persist.rehydrate();
@@ -115,21 +114,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 Sign in
               </Link>
             </SignedOut>
-            <Link
-              to="/saved"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "relative hidden sm:inline-flex",
-              )}
-              aria-label="Saved properties"
-            >
-              <Heart className="size-5" />
-              {saved > 0 && (
-                <span className="absolute top-1.5 right-1.5 size-4 rounded-full bg-hot text-[10px] font-bold text-primary-fg grid place-items-center">
-                  {saved}
-                </span>
-              )}
-            </Link>
             <Link
               to="/add"
               className={cn(
