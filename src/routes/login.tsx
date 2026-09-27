@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DiwaarWordmark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { GROK_PROVIDERS, authClient, authEnabled, signIn } from "@/lib/auth/client";
+import { GROK_PROVIDERS, authClient, authEnabled } from "@/lib/auth/client";
 
 export const Route = createFileRoute("/login")({ component: LoginPage });
 
@@ -69,35 +69,32 @@ function LoginPage() {
       )}
       {authEnabled ? (
         <>
-          <div className="mt-6 grid gap-2">
+          <form onSubmit={(e) => void onEmail(e)} className="mt-6 space-y-3">
+            {mode === "up" && (
+              <input className={field} placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+            )}
+            <input className={field} type="email" required placeholder="Gmail or email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input className={field} type="password" required minLength={8} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Button type="submit" disabled={busy} className="w-full">
+              {busy ? "Please wait" : mode === "in" ? "Sign in with email" : "Create account"}
+            </Button>
+          </form>
+          <p className="mt-4 text-sm text-muted">
+            Use your Gmail address and a password. The Google button cannot return to www.diwaar.com, which is the “Invalid redirect URI” error.
+          </p>
+          <div className="mt-3 grid gap-2">
             {GROK_PROVIDERS.map((p) => (
               <Button
                 key={p.providerId}
                 variant="outline"
                 onClick={() => {
-                  if (inAppBrowser()) {
-                    toast.error("Open diwaar.com in Chrome or Safari. Google and X are blocked in this app.");
-                    return;
-                  }
-                  void signIn(p.providerId, { callbackURL: "/" }).catch((err) => {
-                    toast.error(err instanceof Error ? err.message : "Could not sign in");
-                  });
+                  toast.error("Google and X can’t return to www.diwaar.com yet. Sign in with your Gmail address and a password instead.");
                 }}
               >
                 Continue with {p.label}
               </Button>
             ))}
           </div>
-          <form onSubmit={(e) => void onEmail(e)} className="mt-6 space-y-3">
-            {mode === "up" && (
-              <input className={field} placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-            )}
-            <input className={field} type="email" required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input className={field} type="password" required minLength={8} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <Button type="submit" disabled={busy} className="w-full">
-              {busy ? "Please wait" : mode === "in" ? "Sign in with email" : "Create account"}
-            </Button>
-          </form>
           <button
             type="button"
             className="mt-4 text-sm font-semibold text-primary"
