@@ -278,7 +278,7 @@ function PropertyBody() {
 
       {agent && (
         <div
-          className="lg:hidden fixed inset-x-0 z-30 flex gap-2 border-t border-border bg-surface px-3 py-2"
+          className="fixed inset-x-0 z-30 flex gap-2 border-t border-border bg-surface px-3 py-2 md:hidden"
           style={{ bottom: "calc(4rem + env(safe-area-inset-bottom))" }}
         >
           <a

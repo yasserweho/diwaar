@@ -21,20 +21,43 @@ import { AREA_LABEL, type AreaUnit } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
-const MORE = [
-  { href: "/property-index", label: "Property index" },
-  { href: "/trends", label: "Trends" },
-  { href: "/invest", label: "Invest" },
-  { href: "/agencies", label: "Agencies" },
-  { href: "/community", label: "Community" },
-  { href: "/wanted", label: "Wanted" },
-  { href: "/compare", label: "Compare" },
-  { href: "/alerts", label: "Alerts" },
-  { href: "/my-ads", label: "My ads" },
-  { href: "/cities", label: "All cities" },
-  { href: "/orders", label: "Payments" },
-  { href: "/loans", label: "Loan files" },
-  { href: "/tools?tab=loan", label: "Tools" },
+const MENU_GROUPS = [
+  {
+    title: "Find a property",
+    links: [
+      { href: "/search?purpose=buy", label: "Buy" },
+      { href: "/search?purpose=rent", label: "Rent" },
+      { href: "/projects", label: "New projects" },
+      { href: "/maps", label: "Plot finder" },
+      { href: "/cities", label: "Cities" },
+      { href: "/agents", label: "Agents" },
+      { href: "/agencies", label: "Agencies" },
+    ],
+  },
+  {
+    title: "Prices and places",
+    links: [
+      { href: "/guides", label: "Area guides" },
+      { href: "/trends", label: "Trends" },
+      { href: "/property-index", label: "Price index" },
+      { href: "/invest", label: "Invest" },
+      { href: "/blog", label: "Journal" },
+    ],
+  },
+  {
+    title: "Your account",
+    links: [
+      { href: "/saved", label: "Saved homes" },
+      { href: "/alerts", label: "Alerts" },
+      { href: "/compare", label: "Compare" },
+      { href: "/wanted", label: "Wanted" },
+      { href: "/my-ads", label: "My ads" },
+      { href: "/orders", label: "Payments" },
+      { href: "/loans", label: "Loan files" },
+      { href: "/community", label: "Community" },
+      { href: "/tools?tab=loan", label: "Calculators" },
+    ],
+  },
 ];
 
 const NAV = [
@@ -118,7 +141,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             </Link>
             <button
               type="button"
-              className="lg:hidden size-11 grid place-items-center rounded-lg hover:bg-ice"
+              className="hidden md:grid lg:hidden size-11 place-items-center rounded-lg hover:bg-ice"
               aria-label="Open menu"
               onClick={() => setOpen(true)}
             >
@@ -136,7 +159,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             aria-label="Close menu"
             onClick={() => setOpen(false)}
           />
-          <aside className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col bg-surface shadow-card">
+          <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-surface shadow-card sm:w-[min(100%,24rem)]">
             <div className="flex h-16 items-center justify-between px-4 border-b border-border">
               <DiwaarWordmark compact />
               <button
@@ -148,58 +171,58 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 <X className="size-5" />
               </button>
             </div>
-            <nav className="flex flex-col p-3 gap-1 overflow-y-auto">
+            <nav className="flex flex-1 flex-col gap-5 overflow-y-auto p-4 pb-6">
               <SignedOut>
                 <Link
                   to="/login"
                   onClick={() => setOpen(false)}
-                  className={cn(buttonVariants({ variant: "primary" }), "mb-2")}
+                  className={cn(buttonVariants({ variant: "primary" }), "h-12")}
                 >
                   Sign in
                 </Link>
               </SignedOut>
               <SignedIn>
-                <div className="mb-2 rounded-xl bg-ice px-3 py-3">
+                <div className="rounded-xl bg-ice px-3 py-3">
                   <UserButton />
                 </div>
               </SignedIn>
-              {NAV.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  search={"search" in item ? item.search : undefined}
-                  onClick={() => setOpen(false)}
-                  className="h-12 rounded-lg px-3 text-sm font-semibold flex items-center hover:bg-ice"
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {MORE.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="h-12 rounded-lg px-3 text-sm font-semibold flex items-center hover:bg-ice"
-                >
-                  {item.label}
-                </a>
-              ))}
               <Link
                 to="/add"
                 onClick={() => setOpen(false)}
-                className={cn(buttonVariants({ variant: "primary" }), "mt-3")}
+                className={cn(buttonVariants({ variant: "primary" }), "h-12")}
               >
-                <Plus /> Add Property
+                <Plus /> Add a property
               </Link>
+              {MENU_GROUPS.map((group) => (
+                <div key={group.title}>
+                  <p className="px-1 text-[11px] font-bold uppercase tracking-wider text-muted">
+                    {group.title}
+                  </p>
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    {group.links.map((item) => (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        className="flex h-12 items-center rounded-xl bg-ice px-3 text-sm font-semibold text-primary-dark"
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </nav>
           </aside>
         </div>
       )}
 
-      <main className="flex-1 pb-[calc(5.25rem+env(safe-area-inset-bottom))] lg:pb-0">{children}</main>
+      <TabletShortcuts />
+
+      <main className="flex-1 pb-[calc(5.25rem+env(safe-area-inset-bottom))] md:pb-0">{children}</main>
 
       <Footer />
-      <BottomNav />
+      <BottomNav onMenu={() => setOpen(true)} />
     </div>
   );
 }
@@ -218,8 +241,8 @@ function MoreMenu() {
       {open && (
         <>
           <button type="button" className="fixed inset-0 z-40" aria-label="Close menu" onClick={() => setOpen(false)} />
-          <div className="absolute left-0 top-full z-50 mt-1 w-52 rounded-xl bg-surface p-2 shadow-card">
-            {MORE.map((item) => (
+          <div className="absolute left-0 top-full z-50 mt-1 max-h-[70vh] w-56 overflow-y-auto rounded-xl bg-surface p-2 shadow-card">
+            {MENU_GROUPS.flatMap((group) => group.links).map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -374,68 +397,96 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
   );
 }
 
-function BottomNav() {
+function TabletShortcuts() {
+  const links: { href: string; label: string }[] = [
+    { href: "/search?purpose=buy", label: "Buy" },
+    { href: "/search?purpose=rent", label: "Rent" },
+    { href: "/projects", label: "Projects" },
+    { href: "/maps", label: "Maps" },
+    { href: "/guides", label: "Guides" },
+    { href: "/agents", label: "Agents" },
+    { href: "/saved", label: "Saved" },
+    { href: "/add", label: "Add property" },
+  ];
+  return (
+    <div className="hidden border-b border-border bg-surface md:block lg:hidden">
+      <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto no-scrollbar px-4 py-2">
+        {links.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="inline-flex h-11 shrink-0 items-center rounded-full bg-ice px-4 text-sm font-semibold text-primary-dark"
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BottomNav({ onMenu }: { onMenu: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const purpose = useRouterState({
+    select: (s) => {
+      const search = s.location.search as { purpose?: string } | string;
+      return typeof search === "object" ? search.purpose : undefined;
+    },
+  });
   const items = [
-    { to: "/", icon: Home, label: "Home", match: (p: string) => p === "/" },
+    { to: "/", label: "Home", icon: Home, active: pathname === "/" },
     {
       to: "/search",
+      label: "Buy",
       icon: Search,
-      label: "Search",
-      match: (p: string) => p.startsWith("/search") || p.startsWith("/property"),
-    },
-    { to: "/add", icon: Plus, label: "Add", match: (p: string) => p === "/add", raised: true },
-    {
-      to: "/saved",
-      icon: Heart,
-      label: "Saved",
-      match: (p: string) => p === "/saved",
+      search: { purpose: "buy" as const },
+      active: (pathname.startsWith("/search") || pathname.startsWith("/property")) && purpose !== "rent",
     },
     {
-      to: "/agents",
-      icon: Users,
-      label: "Agents",
-      match: (p: string) =>
-        p.startsWith("/agents") ||
-        p.startsWith("/guides") ||
-        p.startsWith("/maps") ||
-        p.startsWith("/tools") ||
-        p.startsWith("/blog") ||
-        p.startsWith("/projects"),
+      to: "/search",
+      label: "Rent",
+      icon: Building2,
+      search: { purpose: "rent" as const },
+      active: pathname.startsWith("/search") && purpose === "rent",
     },
+    { to: "/saved", label: "Saved", icon: Heart, active: pathname === "/saved" },
   ];
 
   return (
     <nav
-      className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-border bg-surface"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      aria-label="Primary"
     >
-      <ul className="grid grid-cols-5 h-16">
+      <ul className="grid h-16 grid-cols-5">
         {items.map((item) => {
-          const active = item.match(pathname);
           const Icon = item.icon;
           return (
-            <li key={item.to} className="contents">
+            <li key={item.label}>
               <Link
                 to={item.to}
-                search={item.to === "/search" ? { purpose: "buy" } : undefined}
+                search={"search" in item ? item.search : undefined}
                 className={cn(
-                  "flex flex-col items-center justify-center gap-0.5 text-[11px] font-semibold",
-                  active ? "text-primary" : "text-muted",
+                  "flex h-full flex-col items-center justify-center gap-0.5 text-[11px] font-semibold",
+                  item.active ? "text-primary" : "text-muted",
                 )}
               >
-                {"raised" in item && item.raised ? (
-                  <span className="-mt-5 size-12 rounded-full bg-primary text-primary-fg grid place-items-center shadow-card">
-                    <Icon className="size-5" />
-                  </span>
-                ) : (
-                  <Icon className="size-5" />
-                )}
+                <Icon className="size-5" />
                 {item.label}
               </Link>
             </li>
           );
         })}
+        <li>
+          <button
+            type="button"
+            onClick={onMenu}
+            className="flex h-full w-full flex-col items-center justify-center gap-0.5 text-[11px] font-semibold text-muted"
+          >
+            <Menu className="size-5" />
+            Menu
+          </button>
+        </li>
       </ul>
     </nav>
   );
