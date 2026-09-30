@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { SearchSelect } from "@/components/search-select";
 import { PropertyCard } from "@/components/property-card";
 import { SearchForm } from "@/components/search-form";
 import { Button } from "@/components/ui/button";
@@ -208,31 +209,27 @@ function FiltersPanel() {
 
       <fieldset>
         <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">City</legend>
-        <select
-          className="h-11 w-full rounded-lg border border-border px-3 text-sm"
+        <SearchSelect
+          className="h-11"
           value={params.city ?? ""}
-          onChange={(e) => patch({ city: e.target.value || undefined, location: undefined })}
-        >
-          <option value="">All cities</option>
-          {CITIES.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
+          placeholder="All cities"
+          searchPlaceholder="Type a city"
+          options={[{ value: "", label: "All cities" }, ...CITIES.map((name) => ({ value: name, label: name }))]}
+          onChange={(city) => patch({ city: city || undefined, location: undefined })}
+        />
       </fieldset>
 
       {areas.length > 0 && (
         <fieldset>
           <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">Location</legend>
-          <select
-            className="h-11 w-full rounded-lg border border-border px-3 text-sm"
+          <SearchSelect
+            className="h-11"
             value={params.location ?? ""}
-            onChange={(e) => patch({ location: e.target.value || undefined })}
-          >
-            <option value="">All areas</option>
-            {areas.map((a) => (
-              <option key={a}>{a}</option>
-            ))}
-          </select>
+            placeholder="All areas"
+            searchPlaceholder="Type an area"
+            options={[{ value: "", label: "All areas" }, ...areas.map((name) => ({ value: name, label: name }))]}
+            onChange={(location) => patch({ location: location || undefined })}
+          />
         </fieldset>
       )}
 

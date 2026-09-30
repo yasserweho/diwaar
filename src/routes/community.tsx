@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { SEED_THREADS, type ForumPost } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
+import { SearchSelect } from "@/components/search-select";
 import { CITIES } from "@/lib/types";
 
 export const Route = createFileRoute("/community")({ component: CommunityPage });
@@ -49,11 +50,12 @@ function CommunityPage() {
       >
         <h2 className="font-bold">Start a thread</h2>
         <input className={field} placeholder="Your name" value={author} onChange={(e) => setAuthor(e.target.value)} />
-        <select className={field} value={city} onChange={(e) => setCity(e.target.value)}>
-          {CITIES.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
+        <SearchSelect
+          value={city}
+          searchPlaceholder="Type a city"
+          options={CITIES.map((name) => ({ value: name, label: name }))}
+          onChange={setCity}
+        />
         <input className={field} placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
         <textarea className={`${field} h-24 py-2`} placeholder="What do you want to know?" value={body} onChange={(e) => setBody(e.target.value)} />
         <Button type="submit">Post</Button>

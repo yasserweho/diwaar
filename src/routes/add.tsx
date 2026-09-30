@@ -6,6 +6,7 @@ import { HOUSE_SM } from "@/lib/photos";
 import { toSqft, type AreaUnit } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { locationsInCity } from "@/lib/data";
+import { SearchSelect } from "@/components/search-select";
 import { CATEGORY_LABEL, CITIES, type Category, type Purpose } from "@/lib/types";
 
 export const Route = createFileRoute("/add")({ component: AddPage });
@@ -97,20 +98,27 @@ function AddPage() {
         </label>
         <label className="block text-sm font-semibold">
           City
-          <select className={`${field} mt-1`} value={city} onChange={(e) => { setCity(e.target.value); setLocation(""); }}>
-            {CITIES.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
+          <SearchSelect
+            className="mt-1"
+            value={city}
+            searchPlaceholder="Type a city"
+            options={CITIES.map((name) => ({ value: name, label: name }))}
+            onChange={(next) => {
+              setCity(next);
+              setLocation("");
+            }}
+          />
         </label>
         <label className="block text-sm font-semibold">
           Society / location
-          <input className={`${field} mt-1`} list="city-areas" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Search an area" />
-          <datalist id="city-areas">
-            {locationsInCity(city).map((area) => (
-              <option key={area} value={area} />
-            ))}
-          </datalist>
+          <SearchSelect
+            className="mt-1"
+            value={location}
+            placeholder="Search an area"
+            searchPlaceholder="Type an area"
+            options={locationsInCity(city).map((name) => ({ value: name, label: name }))}
+            onChange={setLocation}
+          />
         </label>
         <label className="block text-sm font-semibold">
           Block / phase

@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { SearchSelect } from "@/components/search-select";
 import { locationsInCity } from "@/lib/data";
 import { CITIES, type Category, type Purpose } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -97,37 +98,27 @@ export function SearchForm({
           <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-muted">
             City
           </span>
-          <select
-            className={selectClass}
+          <SearchSelect
             value={city}
-            onChange={(e) => {
-              setCity(e.target.value);
+            searchPlaceholder="Type a city"
+            options={CITIES.map((name) => ({ value: name, label: name }))}
+            onChange={(next) => {
+              setCity(next);
               setLocation("");
             }}
-          >
-            {CITIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
+          />
         </label>
         <label className="block">
           <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-muted">
             Location
           </span>
-          <select
-            className={selectClass}
+          <SearchSelect
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          >
-            <option value="">All areas</option>
-            {areas.map((a) => (
-              <option key={a} value={a}>
-                {a}
-              </option>
-            ))}
-          </select>
+            placeholder="All areas"
+            searchPlaceholder="Type an area"
+            options={[{ value: "", label: "All areas" }, ...areas.map((name) => ({ value: name, label: name }))]}
+            onChange={setLocation}
+          />
         </label>
         <label className="block">
           <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-muted">

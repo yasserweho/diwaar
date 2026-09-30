@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { SEED_WANTED, type WantedAd } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
+import { SearchSelect } from "@/components/search-select";
 import { CITIES } from "@/lib/types";
 
 export const Route = createFileRoute("/wanted")({ component: WantedPage });
@@ -48,11 +49,12 @@ function WantedPage() {
       >
         <input className={field} placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
         <div className="grid gap-3 sm:grid-cols-2">
-          <select className={field} value={city} onChange={(e) => setCity(e.target.value)}>
-            {CITIES.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
+          <SearchSelect
+            value={city}
+            searchPlaceholder="Type a city"
+            options={CITIES.map((name) => ({ value: name, label: name }))}
+            onChange={setCity}
+          />
           <select className={field} value={type} onChange={(e) => setType(e.target.value)}>
             {["5 Marla plot", "10 Marla house", "1 Kanal house", "3-bed flat", "Shop", "Portion"].map((t) => (
               <option key={t}>{t}</option>
