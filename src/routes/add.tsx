@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { HOUSE_SM } from "@/lib/photos";
 import { toSqft, type AreaUnit } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
+import { locationsInCity } from "@/lib/data";
 import { CATEGORY_LABEL, CITIES, type Category, type Purpose } from "@/lib/types";
 
 export const Route = createFileRoute("/add")({ component: AddPage });
@@ -96,7 +97,7 @@ function AddPage() {
         </label>
         <label className="block text-sm font-semibold">
           City
-          <select className={`${field} mt-1`} value={city} onChange={(e) => setCity(e.target.value)}>
+          <select className={`${field} mt-1`} value={city} onChange={(e) => { setCity(e.target.value); setLocation(""); }}>
             {CITIES.map((c) => (
               <option key={c}>{c}</option>
             ))}
@@ -104,7 +105,12 @@ function AddPage() {
         </label>
         <label className="block text-sm font-semibold">
           Society / location
-          <input className={`${field} mt-1`} value={location} onChange={(e) => setLocation(e.target.value)} placeholder="DHA Defence" />
+          <input className={`${field} mt-1`} list="city-areas" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Search an area" />
+          <datalist id="city-areas">
+            {locationsInCity(city).map((area) => (
+              <option key={area} value={area} />
+            ))}
+          </datalist>
         </label>
         <label className="block text-sm font-semibold">
           Block / phase

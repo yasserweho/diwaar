@@ -7,14 +7,10 @@ import { PROPERTIES, PROJECTS, GUIDES, POSTS } from "@/lib/data";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 
-export const Route = createFileRoute("/")({ component: HomePage });
+import { CITIES } from "@/lib/types";
+import { AREA_BOOK } from "@/lib/locations";
 
-const CITIES_BUY = [
-  { city: "Lahore", n: "Houses, plots & flats" },
-  { city: "Karachi", n: "DHA, Clifton, Gulshan" },
-  { city: "Islamabad", n: "F-sectors, DHA, B-17" },
-  { city: "Rawalpindi", n: "Bahria & DHA" },
-];
+export const Route = createFileRoute("/")({ component: HomePage });
 
 function HomePage() {
   const posted = useAppStore((s) => s.userListings);
@@ -118,15 +114,15 @@ function HomePage() {
         <section>
           <SectionHead title="Browse by city" href="/search" />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {CITIES_BUY.map((c) => (
+            {CITIES.map((city) => (
               <Link
-                key={c.city}
+                key={city}
                 to="/search"
-                search={{ purpose: "buy", city: c.city }}
+                search={{ purpose: "buy", city }}
                 className="rounded-xl bg-surface p-5 shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast group"
               >
-                <p className="font-extrabold text-lg text-primary-dark">{c.city}</p>
-                <p className="text-sm text-muted mt-1">{c.n}</p>
+                <p className="font-extrabold text-lg text-primary-dark">{city}</p>
+                <p className="text-sm text-muted mt-1">{AREA_BOOK[city]?.length ?? 0} areas</p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
                   View listings <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
                 </span>

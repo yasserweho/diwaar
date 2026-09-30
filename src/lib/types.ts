@@ -109,13 +109,4 @@ export const CATEGORY_LABEL: Record<Category, string> = {
   farmhouse: "Farm House",
 };
 
-export const CITIES = [
-  "Lahore",
-  "Karachi",
-  "Islamabad",
-  "Rawalpindi",
-  "Multan",
-  "Faisalabad",
-  "Peshawar",
-  "Gujranwala",
-] as const;
+export { CITIES } from "./locations";
