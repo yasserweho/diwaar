@@ -1,13 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Building2, Home, LandPlot } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { PropertyCard } from "@/components/property-card";
 import { SearchForm } from "@/components/search-form";
 import { SectionHead, ToolTiles } from "@/components/shell";
-import { PROPERTIES, PROJECTS, GUIDES, POSTS, countByLocation } from "@/lib/data";
-import { openListingCount } from "@/lib/catalog";
+import { PROPERTIES, PROJECTS, GUIDES, POSTS } from "@/lib/data";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({ component: HomePage });
 
@@ -19,8 +17,10 @@ const CITIES_BUY = [
 ];
 
 function HomePage() {
-  const featured = PROPERTIES.filter((p) => p.featured);
-  const hot = PROPERTIES.filter((p) => p.badges.includes("hot") || p.badges.includes("superhot")).slice(0, 4);
+  const posted = useAppStore((s) => s.userListings);
+  const live = [...posted, ...PROPERTIES];
+  const featured = live.filter((p) => p.featured);
+  const hot = live.filter((p) => p.badges.includes("hot") || p.badges.includes("superhot")).slice(0, 4);
 
   return (
     <>
@@ -51,14 +51,11 @@ function HomePage() {
           </figure>
           <div className="relative mt-6 flex flex-wrap gap-4 text-sm text-ice-2">
             <span>
-              <strong className="text-primary-fg tabular-nums">{(openListingCount() + PROPERTIES.length).toLocaleString()}</strong> listings
+              <strong className="text-primary-fg tabular-nums">{live.length.toLocaleString()}</strong> real listings
             </span>
-            <span>
-              <strong className="text-primary-fg tabular-nums">12</strong> cities
-            </span>
-            <span>
-              <strong className="text-primary-fg tabular-nums">8,400+</strong> agents
-            </span>
+            <Link to="/add" className="font-semibold text-primary-fg underline-offset-2 hover:underline">
+              Post an ad
+            </Link>
           </div>
         </div>
       </section>
@@ -66,6 +63,7 @@ function HomePage() {
       <div className="mx-auto max-w-7xl px-4 py-8 space-y-10 sm:py-10 sm:space-y-14">
         <ToolTiles />
 
+        {featured.length > 0 && (
         <section>
           <SectionHead title="Featured properties" href="/search?purpose=buy" />
           <div className="grid gap-4 md:grid-cols-2">
@@ -74,7 +72,9 @@ function HomePage() {
             ))}
           </div>
         </section>
+        )}
 
+        {PROJECTS.length > 0 && (
         <section>
           <SectionHead title="New projects" href="/projects" />
           <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 snap-x">
@@ -102,7 +102,9 @@ function HomePage() {
             ))}
           </div>
         </section>
+        )}
 
+        {hot.length > 0 && (
         <section>
           <SectionHead title="Hot listings this week" href="/search?purpose=buy" />
           <div className="grid gap-4 sm:grid-cols-2">
@@ -111,8 +113,7 @@ function HomePage() {
             ))}
           </div>
         </section>
-
-        <PopularBlock />
+        )}
 
         <section>
           <SectionHead title="Browse by city" href="/search" />
@@ -176,51 +177,6 @@ function HomePage() {
         </section>
       </div>
     </>
-  );
-}
-
-function PopularBlock() {
-  const currency = useAppStore((s) => s.currency);
-  const blocks = [
-    { city: "Lahore", purpose: "buy" as const, category: "house" as const, icon: Home },
-    { city: "Karachi", purpose: "buy" as const, category: "flat" as const, icon: Building2 },
-    { city: "Islamabad", purpose: "buy" as const, category: "plot" as const, icon: LandPlot },
-  ];
-  return (
-    <section>
-      <SectionHead title="Popular locations" />
-      <div className="grid gap-4 lg:grid-cols-3">
-        {blocks.map((b) => {
-          const rows = countByLocation(b.city, b.purpose, b.category);
-          const Icon = b.icon;
-          return (
-            <div key={b.city + b.category} className="rounded-xl bg-surface p-5 shadow-card">
-              <p className="flex items-center gap-2 font-bold text-primary-dark">
-                <Icon className="size-4 text-primary" />
-                {b.category === "house" ? "Houses" : b.category === "flat" ? "Flats" : "Plots"} in {b.city}
-              </p>
-              <ul className="mt-3 divide-y divide-border">
-                {rows.slice(0, 6).map(([loc, n]) => (
-                  <li key={loc}>
-                    <Link
-                      to="/search"
-                      search={{ purpose: b.purpose, city: b.city, location: loc, type: b.category }}
-                      className="flex items-center justify-between py-2.5 text-sm hover:text-primary"
-                    >
-                      <span>{loc}</span>
-                      <span className="tabular-nums text-muted">{n}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
-      </div>
-      <p className={cn("mt-3 text-xs text-muted")}>
-        Sample of live Diwaar inventory · prices from {formatPkr(2400000, currency)}
-      </p>
-    </section>
   );
 }
 

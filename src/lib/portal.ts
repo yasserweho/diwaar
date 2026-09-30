@@ -203,12 +203,7 @@ export interface WantedAd {
   createdAt: string;
 }
 
-export const SEED_WANTED: WantedAd[] = [
-  { id: "w1", name: "Zara M.", city: "Lahore", type: "10 Marla house", budget: "PKR 4.5 Crore", note: "DHA Phase 5 or 6, park facing, ready to move.", createdAt: "2026-09-20" },
-  { id: "w2", name: "Imran T.", city: "Karachi", type: "3-bed flat", budget: "PKR 2.8 Crore", note: "DHA or Clifton, covered parking required.", createdAt: "2026-09-15" },
-  { id: "w3", name: "Saima R.", city: "Islamabad", type: "5 Marla plot", budget: "PKR 1.2 Crore", note: "B-17 or DHA, possession preferred.", createdAt: "2026-09-09" },
-  { id: "w4", name: "Danish", city: "Rawalpindi", type: "Portion", budget: "PKR 55,000 / mo", note: "Bahria, upper portion, family, 6-month contract ok.", createdAt: "2026-09-02" },
-];
+export const SEED_WANTED: WantedAd[] = [];
 
 export interface Reply {
   author: string;

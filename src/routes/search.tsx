@@ -6,7 +6,6 @@ import { PropertyCard } from "@/components/property-card";
 import { SearchForm } from "@/components/search-form";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/badge";
-import { generatedMatches } from "@/lib/catalog";
 import { PROPERTIES, filterProperties, locationsInCity } from "@/lib/data";
 import { alertLabel } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
@@ -50,26 +49,10 @@ function SearchPage() {
   const navigate = useNavigate({ from: "/search" });
   const extra = useAppStore((s) => s.userListings);
   const page = params.page ?? 1;
-  const results = useMemo(() => {
-    const curated = filterProperties([...extra, ...PROPERTIES], params);
-    const seen = new Set(curated.map((p) => p.id));
-    const gen = generatedMatches(params).filter((p) => !seen.has(p.id));
-    let all = [...curated, ...gen];
-    switch (params.sort) {
-      case "price-asc":
-        all = [...all].sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        all = [...all].sort((a, b) => b.price - a.price);
-        break;
-      case "area-desc":
-        all = [...all].sort((a, b) => b.areaSqft - a.areaSqft);
-        break;
-      default:
-        all = [...all].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    }
-    return all;
-  }, [extra, params]);
+  const results = useMemo(
+    () => filterProperties([...extra, ...PROPERTIES], params),
+    [extra, params],
+  );
   const pageSize = 20;
   const visible = results.slice((page - 1) * pageSize, page * pageSize);
   const pages = Math.max(1, Math.ceil(results.length / pageSize));
