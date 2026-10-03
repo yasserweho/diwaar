@@ -79,7 +79,7 @@ export function SearchSelect({
       ? createPortal(
           <div
             data-search-select-panel
-            className="fixed z-[80] overflow-hidden rounded-lg border border-border bg-white text-[#0a2540] shadow-card"
+            className="fixed z-[80] overflow-hidden rounded-lg border border-border bg-white text-black shadow-card"
             style={{ top: box.top, left: box.left, width: box.width }}
           >
             <input
@@ -92,7 +92,7 @@ export function SearchSelect({
                 if (matches[0]) choose(matches[0].value);
               }}
               placeholder={searchPlaceholder}
-              className="h-11 w-full border-b border-border bg-white px-3 text-base text-[#0a2540] outline-none placeholder:text-[#5c6e82]"
+              className="h-11 w-full border-b border-border bg-white px-3 text-base text-black outline-none placeholder:text-[#5c6e82]"
               aria-label={searchPlaceholder}
             />
             <ul role="listbox" className="overflow-y-auto py-1" style={{ maxHeight: box.maxHeight }}>
@@ -106,7 +106,7 @@ export function SearchSelect({
                       role="option"
                       aria-selected={option.value === value}
                       className={cn(
-                        "block w-full truncate px-3 py-2.5 text-left text-sm text-[#0a2540] hover:bg-[#e7f0fc]",
+                        "block w-full truncate px-3 py-2.5 text-left text-sm text-black hover:bg-[#e7f0fc]",
                         option.value === value && "bg-[#e7f0fc] font-semibold",
                       )}
                       onClick={() => choose(option.value)}
@@ -134,7 +134,7 @@ export function SearchSelect({
         aria-expanded={open}
         aria-haspopup="listbox"
         className={cn(
-          "flex h-12 w-full items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 text-left text-sm font-medium text-[#0a2540] outline-none focus:border-primary",
+          "flex h-12 w-full items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 text-left text-sm font-medium text-black outline-none focus:border-primary",
           className,
         )}
         onClick={() => {

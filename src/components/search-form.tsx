@@ -125,12 +125,13 @@ export function SearchForm({
             Property type
           </span>
           <select
-            className={selectClass}
+            className={`${selectClass} bg-white text-black`}
+            style={{ color: "#000", backgroundColor: "#fff" }}
             value={type}
             onChange={(e) => setType(e.target.value as Category | "")}
           >
             {TYPES.map((t) => (
-              <option key={t.id} value={t.id}>
+              <option key={t.id} value={t.id} style={{ color: "#000" }}>
                 {t.label}
               </option>
             ))}
