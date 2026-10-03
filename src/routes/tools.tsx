@@ -30,7 +30,7 @@ function ToolsPage() {
 
   return (
     <div className="mx-auto max-w-xl px-4 py-8">
-      <h1 className="text-3xl font-extrabold text-primary-dark">Property tools</h1>
+      <h1 className="text-3xl font-extrabold text-black">Property tools</h1>
       <p className="mt-2 text-sm text-muted">Mark-up, build cost and Marla conversions — the three questions every token meeting starts with.</p>
       <div className="mt-6 flex gap-1 overflow-x-auto no-scrollbar rounded-lg bg-ice p-1">
         {tabs.map((t) => (

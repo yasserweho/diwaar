@@ -10,7 +10,7 @@ function GuidesPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Area guides</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Know the street before you buy</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Know the street before you buy</h1>
       <p className="mt-2 max-w-2xl text-muted">
         Average house, plot and rent figures for Pakistan's most searched societies.
       </p>

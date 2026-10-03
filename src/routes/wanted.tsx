@@ -22,7 +22,7 @@ function WantedPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Wanted</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Buyers looking now</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Buyers looking now</h1>
       <p className="mt-2 text-sm text-muted">Post what you need. Agents on Diwaar can match it from search.</p>
       <form
         className="mt-6 space-y-3 rounded-2xl bg-surface p-5 shadow-card"

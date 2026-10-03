@@ -10,7 +10,7 @@ function OrdersPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Payments</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Receipts</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Receipts</h1>
       <p className="mt-2 text-sm text-muted">Paid listing boosts and investment shares show up here after checkout.</p>
       {orders.length === 0 ? (
         <div className="mt-8 rounded-2xl bg-surface p-8 text-center shadow-card">

@@ -47,7 +47,7 @@ function MapsPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Plot finder</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">{society.name}</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">{society.name}</h1>
       <p className="mt-2 max-w-2xl text-muted">
         Pick a society, then a plot. Open plots can be matched to live Diwaar listings in that area.
       </p>

@@ -38,7 +38,7 @@ function LoansPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Home finance</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Loan file</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Loan file</h1>
       <p className="mt-2 text-sm text-muted">
         Submit a file, then move it through valuation, approval and disbursement. The file stays on your account.
       </p>

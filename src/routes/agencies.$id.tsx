@@ -27,7 +27,7 @@ function AgencyPage() {
       <Link to="/agencies" className="text-sm font-semibold text-muted hover:text-primary">
         Agencies
       </Link>
-      <h1 className="mt-3 text-3xl font-extrabold text-primary-dark">{name}</h1>
+      <h1 className="mt-3 text-3xl font-extrabold text-black">{name}</h1>
       <p className="mt-1 text-sm text-muted">{people[0].city}</p>
       <ul className="mt-6 grid gap-3 sm:grid-cols-2">
         {people.map((a) => (

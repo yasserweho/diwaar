@@ -26,7 +26,7 @@ function HomePage() {
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-ice-2">
             Pakistan's property portal
           </p>
-          <h1 className="mt-2 max-w-2xl text-[1.65rem] leading-tight font-extrabold tracking-tight sm:mt-3 sm:text-5xl">
+          <h1 className="mt-2 max-w-2xl text-[1.65rem] leading-snug font-extrabold text-white sm:mt-3 sm:text-5xl">
             Find property for sale and rent in Pakistan
           </h1>
           <p className="mt-2 max-w-xl text-sm sm:mt-3 sm:text-base text-ice-2">

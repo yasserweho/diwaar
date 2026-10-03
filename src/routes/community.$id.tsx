@@ -37,7 +37,7 @@ function ThreadPage() {
       <p className="mt-4 text-xs font-bold uppercase tracking-wide text-primary">
         {post.topic} · {post.city}
       </p>
-      <h1 className="mt-1 text-2xl font-extrabold text-primary-dark">{post.title}</h1>
+      <h1 className="mt-1 text-2xl font-extrabold text-black">{post.title}</h1>
       <p className="mt-3 leading-relaxed">{post.body}</p>
       <p className="mt-2 text-xs text-muted">
         {post.author} · {post.createdAt}

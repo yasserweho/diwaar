@@ -12,7 +12,7 @@ function MyAdsPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">My ads</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Properties you posted</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Properties you posted</h1>
       <p className="mt-2 text-sm text-muted">These stay in this browser, the same way a draft desk works before an account exists.</p>
       {listings.length === 0 ? (
         <div className="mt-8 rounded-2xl bg-surface p-8 text-center shadow-card">

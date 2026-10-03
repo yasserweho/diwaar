@@ -67,7 +67,7 @@ function AddPage() {
 
   return (
     <div className="mx-auto max-w-xl px-4 py-8">
-      <h1 className="text-3xl font-extrabold text-primary-dark">Add a property</h1>
+      <h1 className="text-3xl font-extrabold text-black">Add a property</h1>
       <p className="mt-2 text-sm text-muted">
         Free listing — saved in this browser so you can preview the full seller flow.
       </p>

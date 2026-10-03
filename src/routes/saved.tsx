@@ -13,7 +13,7 @@ function SavedPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <h1 className="text-3xl font-extrabold text-primary-dark">Saved properties</h1>
+      <h1 className="text-3xl font-extrabold text-black">Saved properties</h1>
       <p className="mt-2 text-sm text-muted">Kept on this device. Hearts on any listing add it here.</p>
       {list.length === 0 ? (
         <div className="mt-10 rounded-2xl bg-surface p-10 text-center shadow-card">

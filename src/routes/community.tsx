@@ -21,7 +21,7 @@ function CommunityPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Community</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Ask the market</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Ask the market</h1>
       <p className="mt-2 text-sm text-muted">Transfers, possession, rent and loans. Posts stay on this device.</p>
 
       <form

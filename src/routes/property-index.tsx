@@ -19,7 +19,7 @@ function IndexPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Property index</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Track asking prices</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Track asking prices</h1>
       <p className="mt-2 max-w-2xl text-sm text-muted">
         Index base is 100 in 2020. It follows typical asking prices for houses, plots and flats in each city. It is a guide, not a valuation.
       </p>

@@ -8,7 +8,7 @@ function ProjectsPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">New projects</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Investment-ready societies</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Investment-ready societies</h1>
       <p className="mt-2 max-w-2xl text-muted">
         Payment-plan plots and houses from developers across Punjab, Sindh and the capital.
       </p>

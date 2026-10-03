@@ -72,7 +72,7 @@ function SearchPage() {
         }}
       />
       <div className="mt-4 flex flex-col gap-3 sm:mt-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-        <h1 className="text-lg font-extrabold text-primary-dark sm:text-xl">
+        <h1 className="text-lg font-extrabold text-black sm:text-xl">
           {results.length} {params.purpose === "rent" ? "rentals" : "properties"}
           {params.city ? ` in ${params.city}` : ""}
           {results.length > pageSize ? ` · page ${page} of ${pages}` : ""}

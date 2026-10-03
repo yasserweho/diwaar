@@ -21,7 +21,7 @@ function PostPage() {
       <p className="text-[11px] font-bold uppercase tracking-wide text-primary">
         {p.tag} · {p.date}
       </p>
-      <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-primary-dark">{p.title}</h1>
+      <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-black">{p.title}</h1>
       <img src={p.image} alt="" className="mt-6 aspect-16/9 w-full rounded-2xl object-cover" />
       <div className="mt-6 space-y-4 text-[15px] leading-relaxed">
         {p.body.map((para) => (

@@ -60,7 +60,11 @@
   h3,
   h4 {
     text-wrap: balance;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    color: #000;
   }
 
   p {

@@ -11,7 +11,7 @@ function AlertsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Alerts</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Saved searches</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Saved searches</h1>
       <p className="mt-2 text-sm text-muted">
         Save a search from the results page. Diwaar keeps it on this device and opens the same filters again.
       </p>

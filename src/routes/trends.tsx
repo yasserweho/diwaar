@@ -12,7 +12,7 @@ function TrendsPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Property trends</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Where asking prices moved</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Where asking prices moved</h1>
       <p className="mt-2 max-w-2xl text-sm text-muted">
         Year-on-year change for the areas buyers actually search. Open a row to see live Diwaar listings there.
       </p>

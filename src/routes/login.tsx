@@ -74,7 +74,7 @@ function LoginPage() {
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-10 pb-28">
       <DiwaarWordmark />
-      <h1 className="mt-6 text-3xl font-extrabold text-primary-dark">
+      <h1 className="mt-6 text-3xl font-extrabold text-black">
         {mode === "in" ? "Sign in" : "Create your account"}
       </h1>
       <p className="mt-2 text-sm text-muted">

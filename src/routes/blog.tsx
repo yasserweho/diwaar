@@ -7,7 +7,7 @@ function BlogPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Journal</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">Market notes</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">Market notes</h1>
       <div className="mt-8 grid gap-5">
         {POSTS.map((p) => (
           <Link

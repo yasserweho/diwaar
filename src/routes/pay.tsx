@@ -45,7 +45,7 @@ function PayPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-8">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Checkout</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-primary-dark">{title}</h1>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">{title}</h1>
       <p className="mt-2 text-2xl font-extrabold tabular-nums">{formatPkr(amount, currency)}</p>
       <p className="mt-2 text-sm text-muted">
         Payment is recorded on your Diwaar account and a receipt is issued. This preview does not charge a card network.

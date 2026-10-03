@@ -26,7 +26,7 @@ function AgentDetail() {
           {a.initials}
         </span>
         <div className="flex-1">
-          <h1 className="text-2xl font-extrabold text-primary-dark">{a.name}</h1>
+          <h1 className="text-2xl font-extrabold text-black">{a.name}</h1>
           <p className="text-primary font-semibold">{a.agency}</p>
           <p className="text-sm text-muted mt-1">
             {a.city} · {a.specialty} · {a.experience} years
