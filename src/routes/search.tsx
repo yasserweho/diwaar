@@ -12,6 +12,7 @@ import { alertLabel } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL, CITIES, type Category, type Purpose, type SearchParams } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { seo } from "@/lib/seo";
 
 function parseSearch(s: Record<string, unknown>): SearchParams {
   const purpose: Purpose = s.purpose === "rent" ? "rent" : "buy";
@@ -41,6 +42,16 @@ function parseSearch(s: Record<string, unknown>): SearchParams {
 }
 
 export const Route = createFileRoute("/search")({
+  head: ({ search }) => {
+    const purpose = search.purpose === "rent" ? "for Rent" : "for Sale";
+    const type = search.type && search.type in CATEGORY_LABEL ? `${CATEGORY_LABEL[search.type]}s` : "Property";
+    const where = search.location || search.city || "Pakistan";
+    return seo(
+      `${type} ${purpose} in ${where}`,
+      `Browse ${type.toLowerCase()} ${purpose.toLowerCase()} in ${where}. Prices in PKR, sizes in Marla and Kanal.`,
+      { path: "/search" },
+    );
+  },
   validateSearch: parseSearch,
   component: SearchPage,
 });

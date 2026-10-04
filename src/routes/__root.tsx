@@ -19,6 +19,10 @@ export const Route = createRootRoute({
         content:
           "Buy, sell and rent houses, flats, plots and commercial property across Pakistan on Diwaar.com.",
       },
+      { property: "og:site_name", content: "Diwaar.com" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://www.diwaar.com" },
+      { name: "twitter:card", content: "summary" },
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },

@@ -4,8 +4,15 @@ import { GUIDES } from "@/lib/data";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/guides/$slug")({ component: GuideDetail });
+export const Route = createFileRoute("/guides/$slug")({
+  head: ({ params }) => {
+    const guide = GUIDES.find((g) => g.slug === params.slug);
+    if (!guide) return seo("Area guide not found", "This Diwaar area guide is not available.", { noindex: true });
+    return seo(`${guide.name} Property Guide, ${guide.city}`, guide.overview, { path: `/guides/${params.slug}` });
+  },
+  component: GuideDetail });
 
 function GuideDetail() {
   const { slug } = Route.useParams();

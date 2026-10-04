@@ -2,8 +2,18 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PropertyCard } from "@/components/property-card";
 import { AGENTS, PROPERTIES } from "@/lib/data";
 import { agencySlug } from "@/lib/portal";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/agencies/$id")({ component: AgencyPage });
+export const Route = createFileRoute("/agencies/$id")({
+  head: ({ params }) => {
+    const people = AGENTS.filter((a) => agencySlug(a.agency) === params.id);
+    const name = people[0]?.agency;
+    if (!name) return seo("Agency not found", "This agency is not on Diwaar.", { noindex: true });
+    return seo(`${name} Property Listings`, `${name} agents and listings in ${people[0].city} on Diwaar.`, {
+      path: `/agencies/${params.id}`,
+    });
+  },
+  component: AgencyPage });
 
 function AgencyPage() {
   const { id } = Route.useParams();

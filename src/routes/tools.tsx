@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { formatPkr, MARLA_SQFT, KANAL_SQFT, SQYD_SQFT, ACRE_SQFT, trimNum } from "@/lib/format";
 import { BANKS } from "@/lib/portal";
 import { cn } from "@/lib/utils";
+import { seo } from "@/lib/seo";
 
 type Tab = "loan" | "build" | "area" | "banks";
 
@@ -14,6 +15,19 @@ function parse(s: Record<string, unknown>): { tab: Tab; rate?: number } {
 }
 
 export const Route = createFileRoute("/tools")({
+  head: ({ search }) => {
+    const titles = {
+      loan: "Home Loan Calculator for Pakistan",
+      banks: "Pakistan Home Loan Bank Packages",
+      build: "House Construction Cost Calculator",
+      area: "Marla, Kanal and Square Yard Converter",
+    } as const;
+    return seo(
+      titles[search.tab] ?? "Pakistan Property Tools",
+      "Convert Marla to square yards, estimate a home loan and price grey structure plus finishing.",
+      { path: "/tools" },
+    );
+  },
   validateSearch: parse,
   component: ToolsPage,
 });

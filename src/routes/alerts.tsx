@@ -1,8 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useAppStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/alerts")({ component: AlertsPage });
+export const Route = createFileRoute("/alerts")({
+  head: () =>
+    seo(
+      "Saved Property Searches",
+      "Your saved Diwaar searches and listing alerts.",
+      { noindex: true, path: "/alerts" },
+    ),
+  component: AlertsPage,
+});
 
 function AlertsPage() {
   const alerts = useAppStore((s) => s.alerts);

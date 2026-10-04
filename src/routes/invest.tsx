@@ -4,8 +4,17 @@ import { Button } from "@/components/ui/button";
 import { formatPkr } from "@/lib/format";
 import { INVEST } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/invest")({ component: InvestPage });
+export const Route = createFileRoute("/invest")({
+  head: () =>
+    seo(
+      "Property Investment in Pakistan",
+      "Plots, files and housing blocks for investors across Pakistan societies.",
+      { path: "/invest" },
+    ),
+  component: InvestPage,
+});
 
 function InvestPage() {
   const currency = useAppStore((s) => s.currency);

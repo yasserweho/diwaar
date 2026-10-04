@@ -21,8 +21,25 @@ import { pricePath } from "@/lib/portal";
 import { formatArea, formatPhone, formatPrice, relativeDate, waLink } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL } from "@/lib/types";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/property/$id")({
+  head: ({ params }) => {
+    const property = getProperty(params.id);
+    if (!property) {
+      return seo("Listing not found", "This Diwaar listing is no longer available.", {
+        noindex: true,
+        path: `/property/${params.id}`,
+      });
+    }
+    const place = [property.location, property.city].filter(Boolean).join(", ");
+    const deal = property.purpose === "rent" ? "for rent" : "for sale";
+    return seo(
+      `${property.title} ${deal} in ${place}`,
+      `${property.title} ${deal} in ${place}. Price, size, beds and photos on Diwaar.`,
+      { path: `/property/${params.id}` },
+    );
+  },
   component: PropertyPage,
 });
 

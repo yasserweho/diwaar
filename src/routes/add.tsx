@@ -8,8 +8,17 @@ import { useAppStore } from "@/lib/store";
 import { locationsInCity } from "@/lib/data";
 import { SearchSelect } from "@/components/search-select";
 import { CATEGORY_LABEL, CITIES, type Category, type Purpose } from "@/lib/types";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/add")({ component: AddPage });
+export const Route = createFileRoute("/add")({
+  head: () =>
+    seo(
+      "List Your Property for Sale or Rent",
+      "Post a house, plot, flat or commercial listing on Diwaar and reach buyers and tenants across Pakistan.",
+      { path: "/add" },
+    ),
+  component: AddPage,
+});
 
 function AddPage() {
   const add = useAppStore((s) => s.addListing);

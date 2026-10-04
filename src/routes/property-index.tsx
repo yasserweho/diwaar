@@ -3,8 +3,16 @@ import { useState } from "react";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { PRICE_INDEX } from "@/lib/portal";
 import { cn } from "@/lib/utils";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/property-index")({ component: IndexPage });
+export const Route = createFileRoute("/property-index")({
+  head: () =>
+    seo(
+      "Pakistan Property Price Index",
+      "Track asking prices for houses and plots by city and society on Diwaar.",
+      { path: "/property-index" },
+    ),
+  component: IndexPage });
 
 const CITIES = Object.keys(PRICE_INDEX);
 

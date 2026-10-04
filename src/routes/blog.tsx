@@ -1,7 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { POSTS } from "@/lib/data";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/blog")({ component: BlogPage });
+export const Route = createFileRoute("/blog")({
+  head: () =>
+    seo(
+      "Pakistan Property Market Notes",
+      "Prices, transfers, home loans and buying checklists for houses and plots in Pakistan.",
+      { path: "/blog" },
+    ),
+  component: BlogPage,
+});
 
 function BlogPage() {
   return (

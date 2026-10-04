@@ -6,12 +6,19 @@ import { BANKS } from "@/lib/portal";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { seo } from "@/lib/seo";
 
 function parse(s: Record<string, unknown>) {
   return { bank: typeof s.bank === "string" ? s.bank : "" };
 }
 
 export const Route = createFileRoute("/loans")({
+  head: () =>
+    seo(
+      "Home Loans in Pakistan",
+      "Estimate a Pakistan home-loan instalment and see what a 5 Marla or 10 Marla file looks like at current rates.",
+      { path: "/loans" },
+    ),
   validateSearch: parse,
   component: LoansPage,
 });

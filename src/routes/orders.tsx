@@ -1,8 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/orders")({ component: OrdersPage });
+export const Route = createFileRoute("/orders")({
+  head: () =>
+    seo("Your Diwaar Receipts", "Payment receipts for Diwaar listing boosts.", { noindex: true, path: "/orders" }),
+  component: OrdersPage });
 
 function OrdersPage() {
   const orders = useAppStore((s) => s.orders);

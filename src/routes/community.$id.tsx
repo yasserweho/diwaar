@@ -4,8 +4,15 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { SEED_THREADS } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/community/$id")({ component: ThreadPage });
+export const Route = createFileRoute("/community/$id")({
+  head: ({ params }) => {
+    const thread = SEED_THREADS.find((t) => t.id === params.id);
+    if (!thread) return seo("Thread not found", "This Diwaar market thread is not available.", { noindex: true });
+    return seo(thread.title, thread.body.slice(0, 155), { path: `/community/${params.id}` });
+  },
+  component: ThreadPage });
 
 function ThreadPage() {
   const { id } = Route.useParams();

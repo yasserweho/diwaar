@@ -2,8 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { PROJECTS } from "@/lib/data";
 import { formatPkr } from "@/lib/format";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/projects/$id")({ component: ProjectDetail });
+export const Route = createFileRoute("/projects/$id")({
+  head: ({ params }) => {
+    const project = PROJECTS.find((p) => p.id === params.id);
+    if (!project) return seo("Project not found", "This project is not listed on Diwaar.", { noindex: true });
+    return seo(`${project.name} in ${project.city}`, `${project.name} by ${project.developer} in ${project.location}, ${project.city}. ${project.status}.`, {
+      path: `/projects/${params.id}`,
+    });
+  },
+  component: ProjectDetail });
 
 function ProjectDetail() {
   const { id } = Route.useParams();

@@ -4,8 +4,16 @@ import { CATEGORY_LABEL } from "@/lib/types";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/trends")({ component: TrendsPage });
+export const Route = createFileRoute("/trends")({
+  head: () =>
+    seo(
+      "Pakistan Property Price Trends",
+      "Where house and plot asking prices moved in Lahore, Karachi, Islamabad and other cities.",
+      { path: "/trends" },
+    ),
+  component: TrendsPage });
 
 function TrendsPage() {
   const currency = useAppStore((s) => s.currency);

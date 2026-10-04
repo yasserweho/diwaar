@@ -4,8 +4,15 @@ import { toast } from "sonner";
 import { DiwaarWordmark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { GROK_PROVIDERS, authClient, authEnabled, signIn } from "@/lib/auth/client";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/login")({ component: LoginPage });
+export const Route = createFileRoute("/login")({
+  head: () =>
+    seo("Sign in to Diwaar", "Sign in to save listings, post ads and manage your Diwaar account.", {
+      noindex: true,
+      path: "/login",
+    }),
+  component: LoginPage });
 
 function inAppBrowser() {
   if (typeof navigator === "undefined") return false;

@@ -4,8 +4,17 @@ import { formatArea, formatPrice } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/compare")({ component: ComparePage });
+export const Route = createFileRoute("/compare")({
+  head: () =>
+    seo(
+      "Compare Properties in Pakistan",
+      "Compare price, size, beds and location of up to three Diwaar listings side by side.",
+      { path: "/compare" },
+    ),
+  component: ComparePage,
+});
 
 function ComparePage() {
   const ids = useAppStore((s) => s.compareIds);

@@ -2,8 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { GUIDES } from "@/lib/data";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/guides")({ component: GuidesPage });
+export const Route = createFileRoute("/guides")({
+  head: () =>
+    seo(
+      "Pakistan Area Guides for Buyers",
+      "Street-level guides for DHA, Bahria, Gulberg, F-sectors and other societies, with asking prices.",
+      { path: "/guides" },
+    ),
+  component: GuidesPage,
+});
 
 function GuidesPage() {
   const currency = useAppStore((s) => s.currency);

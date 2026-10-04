@@ -1,8 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CITY_DIRECTORY } from "@/lib/portal";
 import { PROPERTIES } from "@/lib/data";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/cities")({ component: CitiesPage });
+export const Route = createFileRoute("/cities")({
+  head: () =>
+    seo(
+      "Property by City in Pakistan",
+      "Search houses, flats, plots and commercial property in Lahore, Karachi, Islamabad and 20+ cities.",
+      { path: "/cities" },
+    ),
+  component: CitiesPage,
+});
 
 function CitiesPage() {
   return (

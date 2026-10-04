@@ -1,8 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AGENTS } from "@/lib/data";
 import { agencySlug } from "@/lib/portal";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/agencies")({ component: AgenciesPage });
+export const Route = createFileRoute("/agencies")({
+  head: () =>
+    seo(
+      "Real Estate Agencies in Pakistan",
+      "Browse property agencies in Lahore, Karachi, Islamabad and other cities, and see their live listings on Diwaar.",
+      { path: "/agencies" },
+    ),
+  component: AgenciesPage,
+});
 
 function AgenciesPage() {
   const names = [...new Set(AGENTS.map((a) => a.agency))];

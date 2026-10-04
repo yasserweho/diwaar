@@ -6,8 +6,17 @@ import { SEED_THREADS, type ForumPost } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
 import { SearchSelect } from "@/components/search-select";
 import { CITIES } from "@/lib/types";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/community")({ component: CommunityPage });
+export const Route = createFileRoute("/community")({
+  head: () =>
+    seo(
+      "Ask the Pakistan Property Market",
+      "Buyer and agent questions on transfers, files, societies and rents across Pakistan.",
+      { path: "/community" },
+    ),
+  component: CommunityPage,
+});
 
 function CommunityPage() {
   const extra = useAppStore((s) => s.threads);

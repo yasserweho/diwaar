@@ -3,8 +3,12 @@ import { PropertyCard } from "@/components/property-card";
 import { Button } from "@/components/ui/button";
 import { PROPERTIES } from "@/lib/data";
 import { useAppStore } from "@/lib/store";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/saved")({ component: SavedPage });
+export const Route = createFileRoute("/saved")({
+  head: () =>
+    seo("Saved Properties", "Houses, plots and flats you saved on Diwaar.", { noindex: true, path: "/saved" }),
+  component: SavedPage });
 
 function SavedPage() {
   const ids = useAppStore((s) => s.savedIds);

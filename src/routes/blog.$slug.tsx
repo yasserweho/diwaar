@@ -1,7 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { POSTS } from "@/lib/data";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/blog/$slug")({ component: PostPage });
+export const Route = createFileRoute("/blog/$slug")({
+  head: ({ params }) => {
+    const post = POSTS.find((p) => p.slug === params.slug);
+    if (!post) return seo("Article not found", "This Diwaar article is not available.", { noindex: true });
+    return seo(post.title, post.excerpt, { path: `/blog/${params.slug}` });
+  },
+  component: PostPage });
 
 function PostPage() {
   const { slug } = Route.useParams();

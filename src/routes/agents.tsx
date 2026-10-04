@@ -1,7 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AGENTS, PROPERTIES } from "@/lib/data";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/agents")({ component: AgentsPage });
+export const Route = createFileRoute("/agents")({
+  head: () =>
+    seo(
+      "Property Agents in Pakistan",
+      "Find verified property agents for DHA, Bahria, Gulberg, Clifton and other addresses across Pakistan.",
+      { path: "/agents" },
+    ),
+  component: AgentsPage,
+});
 
 function AgentsPage() {
   return (

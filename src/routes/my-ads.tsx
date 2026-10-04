@@ -2,8 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PropertyCard } from "@/components/property-card";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/lib/store";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/my-ads")({ component: MyAdsPage });
+export const Route = createFileRoute("/my-ads")({
+  head: () => seo("My Property Ads", "Listings you posted on Diwaar.", { noindex: true, path: "/my-ads" }),
+  component: MyAdsPage });
 
 function MyAdsPage() {
   const listings = useAppStore((s) => s.userListings);

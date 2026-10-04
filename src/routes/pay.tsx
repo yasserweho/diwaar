@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
+import { seo } from "@/lib/seo";
 
 function parse(s: Record<string, unknown>) {
   const amount = Number(s.amount);
@@ -16,6 +17,8 @@ function parse(s: Record<string, unknown>) {
 }
 
 export const Route = createFileRoute("/pay")({
+  head: ({ search }) =>
+    seo(search.title || "Checkout", "Pay for a Diwaar listing boost.", { noindex: true, path: "/pay" }),
   validateSearch: parse,
   component: PayPage,
 });

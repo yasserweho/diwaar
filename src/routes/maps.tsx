@@ -3,8 +3,16 @@ import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SOCIETIES } from "@/lib/portal";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/maps")({ component: MapsPage });
+export const Route = createFileRoute("/maps")({
+  head: () =>
+    seo(
+      "Society Plot Maps in Pakistan",
+      "Browse block and plot maps for housing societies and see which files are open.",
+      { path: "/maps" },
+    ),
+  component: MapsPage });
 
 type Plot = {
   id: string;

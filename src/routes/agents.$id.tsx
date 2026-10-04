@@ -2,8 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PropertyCard } from "@/components/property-card";
 import { AGENTS, PROPERTIES } from "@/lib/data";
 import { formatPhone, waLink } from "@/lib/format";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/agents/$id")({ component: AgentDetail });
+export const Route = createFileRoute("/agents/$id")({
+  head: ({ params }) => {
+    const agent = AGENTS.find((a) => a.id === params.id);
+    if (!agent) return seo("Agent not found", "This agent is not on Diwaar.", { noindex: true });
+    return seo(`${agent.name}, ${agent.city} Property Agent`, `${agent.name} at ${agent.agency}. ${agent.specialty}.`, {
+      path: `/agents/${params.id}`,
+    });
+  },
+  component: AgentDetail });
 
 function AgentDetail() {
   const { id } = Route.useParams();

@@ -9,8 +9,17 @@ import { useAppStore } from "@/lib/store";
 
 import { CITIES } from "@/lib/types";
 import { AREA_BOOK } from "@/lib/locations";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/")({ component: HomePage });
+export const Route = createFileRoute("/")({
+  head: () =>
+    seo(
+      "Find Property for Sale and Rent in Pakistan",
+      "Houses, flats, plots and commercial property for sale and rent in Lahore, Karachi, Islamabad and 20+ cities.",
+      { path: "/" },
+    ),
+  component: HomePage,
+});
 
 function HomePage() {
   const posted = useAppStore((s) => s.userListings);

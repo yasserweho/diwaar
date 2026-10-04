@@ -1,8 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PROJECTS } from "@/lib/data";
 import { formatPkr } from "@/lib/format";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/projects")({ component: ProjectsPage });
+export const Route = createFileRoute("/projects")({
+  head: () =>
+    seo(
+      "New Housing Projects in Pakistan",
+      "Launching and under-construction societies and projects, with starting prices and payment plans.",
+      { path: "/projects" },
+    ),
+  component: ProjectsPage });
 
 function ProjectsPage() {
   return (

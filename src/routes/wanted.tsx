@@ -6,8 +6,16 @@ import { SEED_WANTED, type WantedAd } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
 import { SearchSelect } from "@/components/search-select";
 import { CITIES } from "@/lib/types";
+import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/wanted")({ component: WantedPage });
+export const Route = createFileRoute("/wanted")({
+  head: () =>
+    seo(
+      "Buyers Looking for Property in Pakistan",
+      "Open buyer requests for houses, plots and flats. Agents can reply from Diwaar.",
+      { path: "/wanted" },
+    ),
+  component: WantedPage });
 
 function WantedPage() {
   const extra = useAppStore((s) => s.wanted);
