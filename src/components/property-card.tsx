@@ -24,7 +24,7 @@ export function PropertyCard({
   return (
     <article
       className={cn(
-        "group relative overflow-hidden bg-surface shadow-card transition-[box-shadow] duration-fast hover:shadow-card-hover",
+        "group relative overflow-hidden border border-border bg-white transition-colors duration-fast hover:border-primary/40",
         layout === "list"
           ? "rounded-xl md:grid md:grid-cols-[280px_1fr]"
           : "rounded-xl flex flex-col",

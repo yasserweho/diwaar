@@ -57,21 +57,21 @@ export function SearchForm({
       onSubmit={submit}
       className={cn(
         variant === "hero"
-          ? "rounded-xl border border-border bg-white p-3 sm:p-4"
+          ? "rounded-xl bg-white p-4 shadow-[0_18px_50px_rgb(0_0_0/0.28)] sm:p-5"
           : "rounded-xl border border-border bg-white p-3",
       )}
     >
-      <div className="mb-3 grid grid-cols-2 gap-1 rounded-lg bg-ice p-1 sm:flex">
+      <div className="mb-4 flex gap-1 border-b border-border">
         {(["buy", "rent"] as const).map((p) => (
           <button
             key={p}
             type="button"
             onClick={() => setPurpose(p)}
             className={cn(
-              "h-10 flex-1 rounded-md text-sm font-semibold capitalize transition-colors duration-fast",
+              "-mb-px h-10 border-b-2 px-3 text-sm font-semibold capitalize",
               purpose === p
-                ? "bg-primary text-primary-fg"
-                : "text-muted hover:text-fg",
+                ? "border-primary text-black"
+                : "border-transparent text-muted hover:text-fg",
             )}
           >
             {p}
@@ -80,14 +80,14 @@ export function SearchForm({
         <button
           type="button"
           onClick={() => void navigate({ to: "/projects" })}
-          className="h-10 flex-1 rounded-md text-sm font-semibold text-muted hover:text-fg"
+          className="-mb-px h-10 border-b-2 border-transparent px-3 text-sm font-semibold text-muted hover:text-fg"
         >
           Projects
         </button>
         <button
           type="button"
           onClick={() => void navigate({ to: "/invest" })}
-          className="h-10 flex-1 rounded-md text-sm font-semibold text-muted hover:text-fg"
+          className="-mb-px h-10 border-b-2 border-transparent px-3 text-sm font-semibold text-muted hover:text-fg"
         >
           Invest
         </button>
@@ -95,9 +95,7 @@ export function SearchForm({
 
       <div className="grid gap-2 sm:grid-cols-[1fr_1fr_1fr_auto]">
         <label className="block">
-          <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-muted">
-            City
-          </span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">City</span>
           <SearchSelect
             value={city}
             searchPlaceholder="Type a city"
@@ -109,9 +107,7 @@ export function SearchForm({
           />
         </label>
         <label className="block">
-          <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-muted">
-            Location
-          </span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">Location</span>
           <SearchSelect
             value={location}
             placeholder="All areas"
@@ -121,9 +117,7 @@ export function SearchForm({
           />
         </label>
         <label className="block">
-          <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-muted">
-            Property type
-          </span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">Property type</span>
           <select
             className={`${selectClass} bg-white text-black`}
             style={{ color: "#000", backgroundColor: "#fff" }}

@@ -32,73 +32,46 @@ function HomePage() {
 
   return (
     <>
-      <section className="bg-primary-dark text-white">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:py-14 lg:grid-cols-2 lg:gap-14 lg:py-16">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ice-2">
-              Pakistan property
-            </p>
-            <h1 className="mt-3 max-w-xl text-4xl font-semibold leading-[1.1] tracking-tight text-white sm:text-5xl">
-              Find property for sale and rent in Pakistan
-            </h1>
-            <p className="mt-4 max-w-lg text-base leading-relaxed text-ice-2">
-              Houses, flats, plots, and commercial space in Lahore, Karachi, Islamabad, and 30 more cities.
-            </p>
-            <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-              <Link
-                to="/add"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-white px-5 text-sm font-semibold text-black"
-              >
-                List your property
-                <ArrowRight className="size-4" />
-              </Link>
-              <Link
-                to="/search"
-                search={{ purpose: "buy" }}
-                className="inline-flex h-11 items-center justify-center rounded-md border border-white/30 px-5 text-sm font-semibold text-white"
-              >
-                Browse homes
-              </Link>
-            </div>
-            <p className="mt-6 text-sm text-ice-2">
-              <span className="font-semibold text-white">{CITIES.length}</span> cities
-              <span className="mx-2 text-white/30">/</span>
-              <span className="font-semibold text-white">{areaCount.toLocaleString()}</span> areas
-            </p>
+      <section className="relative isolate overflow-hidden bg-[#071525] text-white">
+        <img
+          src="/images/islamabad-family.jpg"
+          alt=""
+          decoding="async"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
+        />
+        <div className="absolute inset-0 bg-[#071525]/78" />
+        <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-14 sm:pb-14 sm:pt-20">
+          <h1 className="mx-auto max-w-3xl text-center text-[2rem] font-semibold leading-[1.12] tracking-tight text-white sm:text-5xl">
+            Find property for sale and rent in Pakistan
+          </h1>
+          <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-white/75 sm:text-base">
+            Houses, flats, plots, and commercial space across {CITIES.length} cities.
+          </p>
+          <div className="mt-8">
+            <SearchForm />
           </div>
-          <figure>
-            <img
-              src="/images/islamabad-family.jpg"
-              alt="A family standing outside their home in Islamabad, with the Margalla Hills behind them"
-              decoding="async"
-              fetchPriority="high"
-              className="aspect-[4/3] w-full rounded-xl object-cover object-center"
-            />
-          </figure>
-        </div>
-        <div className="mx-auto max-w-7xl px-4 pb-8 sm:pb-10">
-          <SearchForm />
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl space-y-12 px-4 py-10 sm:space-y-16 sm:py-14">
-        <ToolTiles />
-
-        <section className="flex flex-col items-start justify-between gap-5 rounded-xl bg-primary px-6 py-7 text-white sm:flex-row sm:items-center sm:px-8">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-white">List a property in minutes.</h2>
-            <p className="mt-1 max-w-lg text-sm text-ice-2">
-              Free for owners and agents. Buyers across Pakistan can find the ad.
-            </p>
-          </div>
+      <div className="border-b border-border bg-white">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-muted">
+            <span className="font-semibold text-black">{CITIES.length}</span> cities
+            <span className="mx-2 text-border">·</span>
+            <span className="font-semibold text-black">{areaCount.toLocaleString()}</span> areas
+          </p>
           <Link
             to="/add"
-            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-md bg-white px-5 text-sm font-semibold text-black"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-white"
           >
-            Post your ad
+            List your property
             <ArrowRight className="size-4" />
           </Link>
-        </section>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl space-y-14 px-4 py-10 sm:py-14">
 
         {featured.length > 0 && (
         <section>
@@ -182,6 +155,11 @@ function HomePage() {
               ))}
             </p>
           )}
+        </section>
+
+        <section>
+          <SectionHead title="Tools" href="/tools" />
+          <ToolTiles />
         </section>
 
         <section>
