@@ -42,6 +42,22 @@ function HomePage() {
             Houses, flats, plots and commercial across Lahore, Karachi, Islamabad
             and 20+ cities.
           </p>
+          <div className="relative mt-5 flex flex-col gap-2 sm:mt-6 sm:flex-row">
+            <Link
+              to="/add"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-white px-6 text-base font-extrabold text-black shadow-card"
+            >
+              List your property free
+              <ArrowRight className="size-4" />
+            </Link>
+            <Link
+              to="/search"
+              search={{ purpose: "buy" }}
+              className="inline-flex h-12 items-center justify-center rounded-lg border border-white/40 px-6 text-base font-extrabold text-white"
+            >
+              Browse homes for sale
+            </Link>
+          </div>
           <div className="relative mx-auto mt-5 max-w-4xl sm:mt-8">
             <SearchForm />
           </div>
@@ -54,19 +70,31 @@ function HomePage() {
               className="h-44 w-full rounded-2xl object-cover object-center shadow-card ring-4 ring-white/15 sm:aspect-video sm:h-auto"
             />
           </figure>
-          <div className="relative mt-6 flex flex-wrap gap-4 text-sm text-ice-2">
-            <span>
-              <strong className="text-primary-fg tabular-nums">{live.length.toLocaleString()}</strong> real listings
-            </span>
-            <Link to="/add" className="font-semibold text-primary-fg underline-offset-2 hover:underline">
-              Post an ad
-            </Link>
+          <div className="relative mt-6 text-sm text-ice-2">
+            <strong className="text-white tabular-nums">{live.length.toLocaleString()}</strong> real listings
           </div>
         </div>
       </section>
 
       <div className="mx-auto max-w-7xl px-4 py-8 space-y-10 sm:py-10 sm:space-y-14">
         <ToolTiles />
+
+        <section className="rounded-2xl bg-primary px-5 py-8 text-white sm:px-10 sm:py-12">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-ice-2">For owners and agents</p>
+          <h2 className="mt-2 max-w-2xl text-2xl font-extrabold leading-snug text-white sm:text-4xl">
+            Sell or rent faster. Post your property today.
+          </h2>
+          <p className="mt-3 max-w-xl text-sm text-ice-2 sm:text-base">
+            Houses, plots, flats and shops. Buyers in Lahore, Karachi, Islamabad and 30 more cities can find your ad.
+          </p>
+          <Link
+            to="/add"
+            className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-white px-6 text-base font-extrabold text-black sm:w-auto"
+          >
+            Post your ad now
+            <ArrowRight className="size-4" />
+          </Link>
+        </section>
 
         {featured.length > 0 && (
         <section>
