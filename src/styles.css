@@ -91,8 +91,25 @@
   }
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.diwaar-menu,
+.diwaar-menu button,
+.diwaar-menu input,
+.diwaar-menu li {
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+}
+
+.diwaar-menu {
+  background: #fff !important;
+}
+
+.diwaar-menu button {
+  background: #fff !important;
+}
+
+.diwaar-menu button:hover,
+.diwaar-menu button[aria-selected="true"] {
+  background: #e7f0fc !important;
 }
 .no-scrollbar {
   scrollbar-width: none;

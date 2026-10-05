@@ -119,8 +119,8 @@ export function SearchForm({
         <label className="block">
           <span className="mb-1.5 block text-xs font-medium text-muted">Property type</span>
           <select
-            className={`${selectClass} bg-white text-black`}
-            style={{ color: "#000", backgroundColor: "#fff" }}
+            className={`${selectClass} bg-white`}
+            style={{ color: "#000", backgroundColor: "#fff", WebkitTextFillColor: "#000" }}
             value={type}
             onChange={(e) => setType(e.target.value as Category | "")}
           >

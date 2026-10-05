@@ -17,8 +17,7 @@ function parse(s: Record<string, unknown>) {
 }
 
 export const Route = createFileRoute("/pay")({
-  head: ({ search }) =>
-    seo(search.title || "Checkout", "Pay for a Diwaar listing boost.", { noindex: true, path: "/pay" }),
+  head: () => seo("Checkout", "Pay for a Diwaar listing boost.", { noindex: true, path: "/pay" }),
   validateSearch: parse,
   component: PayPage,
 });

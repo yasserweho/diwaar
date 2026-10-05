@@ -42,16 +42,12 @@ function parseSearch(s: Record<string, unknown>): SearchParams {
 }
 
 export const Route = createFileRoute("/search")({
-  head: ({ search }) => {
-    const purpose = search.purpose === "rent" ? "for Rent" : "for Sale";
-    const type = search.type && search.type in CATEGORY_LABEL ? `${CATEGORY_LABEL[search.type]}s` : "Property";
-    const where = search.location || search.city || "Pakistan";
-    return seo(
-      `${type} ${purpose} in ${where}`,
-      `Browse ${type.toLowerCase()} ${purpose.toLowerCase()} in ${where}. Prices in PKR, sizes in Marla and Kanal.`,
+  head: () =>
+    seo(
+      "Property for Sale and Rent in Pakistan",
+      "Browse houses, flats, plots and commercial property for sale and rent across Pakistan.",
       { path: "/search" },
-    );
-  },
+    ),
   validateSearch: parseSearch,
   component: SearchPage,
 });
