@@ -96,11 +96,16 @@ const database = databaseUrl
   ? new Pool({ connectionString: databaseUrl })
   : { dialect: pgliteDialect(() => getPglite()), type: "postgres" as const };
 
-export const SESSION_TOKEN_COOKIE = "__Host-grok-auth.session_token";
+export const SESSION_TOKEN_COOKIE = "diwaar.session_token";
+
+// Signed-in users should stay signed in across visits. The session cookie itself
+// carries the user for this long, so a serverless database reset does not log
+// them out after a few minutes. Shared on diwaar.com and www.diwaar.com.
+const SESSION_SECONDS = 60 * 60 * 24 * 90;
+const isVercelProduction = env("VERCEL_ENV") === "production";
+const shareAcrossDiwaar = isVercelProduction;
 
 // The shared preview broker client only allows *.grok-sandbox.com callbacks.
-// Using it on diwaar.com starts Google, then dies on return (invalid redirect).
-const isVercelProduction = env("VERCEL_ENV") === "production";
 const useBroker =
   authConfigured &&
   !(isVercelProduction && grokClientId === PREVIEW_CLIENT_ID);
@@ -148,16 +153,23 @@ export const auth = betterAuth({
       requireLocalEmailVerified: false,
     },
   },
-  session: { cookieCache: { enabled: true, maxAge: 300 } },
+  session: {
+    expiresIn: SESSION_SECONDS,
+    updateAge: 60 * 60 * 24,
+    cookieCache: { enabled: true, maxAge: SESSION_SECONDS },
+  },
   ...(emailAndPasswordEnabled ? { emailAndPassword: { enabled: true } } : {}),
   advanced: {
     useSecureCookies: false,
-    defaultCookieAttributes: { secure: true, sameSite: "lax", path: "/" },
+    crossSubDomainCookies: shareAcrossDiwaar
+      ? { enabled: true, domain: "diwaar.com" }
+      : undefined,
+    defaultCookieAttributes: { secure: true, sameSite: "lax" as const, path: "/" },
     cookies: {
       session_token: { name: SESSION_TOKEN_COOKIE },
-      session_data: { name: "__Host-grok-auth.session_data" },
-      account_data: { name: "__Host-grok-auth.account_data" },
-      dont_remember: { name: "__Host-grok-auth.dont_remember" },
+      session_data: { name: "diwaar.session_data" },
+      account_data: { name: "diwaar.account_data" },
+      dont_remember: { name: "diwaar.dont_remember" },
     },
   },
   plugins: [
