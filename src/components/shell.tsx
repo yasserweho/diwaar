@@ -78,18 +78,18 @@ export function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh flex flex-col bg-bg text-fg">
       <AccountSync />
-      <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur-sm">
-        <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
+      <header className="sticky top-0 z-40 border-b border-border bg-white">
+        <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4">
           <Link to="/" className="shrink-0" aria-label="Diwaar home">
             <DiwaarWordmark compact />
           </Link>
-          <nav className="hidden lg:flex items-center gap-1 ml-4">
+          <nav className="ml-2 hidden items-center gap-0.5 lg:flex">
             {NAV.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
                 search={"search" in item ? item.search : undefined}
-                className="h-10 rounded-lg px-3 text-sm font-semibold text-muted hover:bg-ice hover:text-fg"
+                className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-fg/80 hover:bg-ice hover:text-fg"
               >
                 {item.label}
               </Link>
@@ -218,7 +218,7 @@ function MoreMenu() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="h-10 rounded-lg px-3 text-sm font-semibold text-muted hover:bg-ice hover:text-fg"
+        className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-fg/80 hover:bg-ice hover:text-fg"
       >
         More
       </button>
@@ -315,8 +315,7 @@ function Footer() {
         <div>
           <DiwaarWordmark inverted compact />
           <p className="mt-4 text-sm text-ice-2 leading-relaxed">
-            Pakistan's property portal for houses, flats, plots and
-            commercial — buy, rent or list in minutes.
+          Pakistan's property portal. Buy, rent, and list houses, flats, plots, and commercial property.
           </p>
         </div>
         <FooterCol
@@ -358,7 +357,7 @@ function Footer() {
         />
       </div>
       <div className="border-t border-primary-fg/10 py-4 text-center text-xs text-ice-2">
-        © 2026 Diwaar Media. Listings are for demonstration.
+        © {new Date().getFullYear()} Diwaar.com
       </div>
     </footer>
   );
@@ -486,8 +485,8 @@ export function SectionHead({
   action?: string;
 }) {
   return (
-    <div className="mb-4 flex items-end justify-between gap-3">
-      <h2 className="text-xl font-extrabold tracking-tight text-primary-dark sm:text-2xl">
+    <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-border pb-3">
+      <h2 className="text-lg font-semibold tracking-normal text-black sm:text-xl">
         {title}
       </h2>
       {href && (
@@ -515,20 +514,20 @@ export function ToolTiles() {
     { to: "/cities", icon: MapIcon, label: "All cities", sub: "Pakistan" },
   ];
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3 lg:grid-cols-4">
       {tiles.map((t) => {
         const Icon = t.icon;
         return (
           <a
             key={t.to}
             href={t.to}
-            className="rounded-xl bg-surface p-4 shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast"
+            className="bg-white p-4 transition-colors hover:bg-ice"
           >
-            <span className="size-10 rounded-lg bg-ice text-primary grid place-items-center mb-3">
-              <Icon className="size-5" />
+            <span className="mb-3 grid size-8 place-items-center rounded-md bg-ice text-primary">
+              <Icon className="size-4" />
             </span>
-            <p className="font-semibold text-sm">{t.label}</p>
-            <p className="text-xs text-muted mt-0.5">{t.sub}</p>
+            <p className="text-sm font-semibold text-black">{t.label}</p>
+            <p className="mt-0.5 text-xs text-muted">{t.sub}</p>
           </a>
         );
       })}

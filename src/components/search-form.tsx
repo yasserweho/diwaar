@@ -57,8 +57,8 @@ export function SearchForm({
       onSubmit={submit}
       className={cn(
         variant === "hero"
-          ? "rounded-2xl bg-surface p-3 shadow-card sm:p-4"
-          : "rounded-xl bg-surface p-3 shadow-card",
+          ? "rounded-xl border border-border bg-white p-3 sm:p-4"
+          : "rounded-xl border border-border bg-white p-3",
       )}
     >
       <div className="mb-3 grid grid-cols-2 gap-1 rounded-lg bg-ice p-1 sm:flex">
