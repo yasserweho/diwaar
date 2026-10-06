@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { tx, useLang } from "@/lib/i18n";
 import { seo } from "@/lib/seo";
 
@@ -65,6 +66,7 @@ function AboutPage() {
           {tx(lang, "List a property", "جائیداد لگائیں")}
         </Link>
       </div>
+      <RelatedLinks links={[PAGE.locations, PAGE.services, PAGE.guides, PAGE.index, PAGE.agents, PAGE.faq, PAGE.contact]} />
     </article>
   );
 }

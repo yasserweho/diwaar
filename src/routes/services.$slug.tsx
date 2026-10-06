@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { tx, useLang } from "@/lib/i18n";
 import { seo } from "@/lib/seo";
 import { serviceBySlug } from "@/lib/services";
@@ -60,6 +61,7 @@ function ServicePage() {
       <Link to="/services" className="mt-8 inline-block text-sm font-semibold text-primary">
         {tx(lang, "All services", "تمام خدمات")}
       </Link>
+      <RelatedLinks links={[PAGE.locations, PAGE.guides, PAGE.faq, PAGE.contact, PAGE.about]} />
     </article>
   );
 }

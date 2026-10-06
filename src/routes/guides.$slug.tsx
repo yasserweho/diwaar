@@ -4,7 +4,9 @@ import { GUIDES } from "@/lib/data";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { seo } from "@/lib/seo";
+import { citySlug } from "@/lib/location-pages";
 
 export const Route = createFileRoute("/guides/$slug")({
   head: ({ params }) => {
@@ -65,6 +67,15 @@ function GuideDetail() {
       >
         <Button>See listings in {g.name}</Button>
       </Link>
+      <RelatedLinks
+        links={[
+          { href: `/locations/${citySlug(g.city)}`, en: `Areas in ${g.city}`, ur: `${g.city} کے علاقے` },
+          PAGE.index,
+          PAGE.agents,
+          PAGE.maps,
+          PAGE.sale,
+        ]}
+      />
     </div>
   );
 }

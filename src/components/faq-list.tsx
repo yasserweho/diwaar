@@ -12,6 +12,9 @@ export function FaqList({ limit }: { limit?: number }) {
             {tx(lang, item.q, item.qUr)}
           </summary>
           <p className="mt-2 text-sm leading-relaxed text-muted">{tx(lang, item.a, item.aUr)}</p>
+          <a href={item.link.href} className="mt-2 inline-block text-sm font-semibold text-primary">
+            {tx(lang, item.link.en, item.link.ur)}
+          </a>
         </details>
       ))}
     </div>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ReviewSection, Stars } from "@/components/reviews";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { tx, useLang } from "@/lib/i18n";
 import { sendReview } from "@/lib/review.functions";
 import { seo } from "@/lib/seo";
@@ -110,6 +111,7 @@ function ReviewsPage() {
           {busy ? tx(lang, "Saving…", "محفوظ ہو رہا ہے…") : tx(lang, "Publish review", "تبصرہ شائع کریں")}
         </button>
       </form>
+      <RelatedLinks links={[PAGE.sale, PAGE.add, PAGE.about, PAGE.contact, PAGE.faq]} />
     </article>
   );
 }

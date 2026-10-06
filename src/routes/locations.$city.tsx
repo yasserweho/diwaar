@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { areasOf, cityFromSlug, provinceOf } from "@/lib/location-pages";
 import { seo } from "@/lib/seo";
@@ -103,6 +104,7 @@ function CityLocationPage() {
       {shown.length === 0 && (
         <p className="mt-6 text-sm text-muted">{tx(lang, "No area matches that name.", "اس نام کا علاقہ نہیں ملا۔")}</p>
       )}
+      <RelatedLinks links={[PAGE.guides, PAGE.agents, PAGE.maps, PAGE.index, PAGE.add, PAGE.services]} />
     </div>
   );
 }

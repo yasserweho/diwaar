@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { sendContact, type ContactTopic } from "@/lib/contact.functions";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { tx, useLang } from "@/lib/i18n";
 import { seo } from "@/lib/seo";
 
@@ -153,6 +154,7 @@ function ContactPage() {
           </button>
         </form>
       )}
+      <RelatedLinks links={[PAGE.faq, PAGE.about, PAGE.sale, PAGE.add, PAGE.locations]} />
     </article>
   );
 }

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { POSTS } from "@/lib/data";
 import { seo } from "@/lib/seo";
 
@@ -35,7 +36,8 @@ function PostPage() {
           <p key={para.slice(0, 24)}>{para}</p>
         ))}
       </div>
-      <Link to="/blog" className="mt-10 inline-block text-sm font-semibold text-primary">
+      <RelatedLinks links={[PAGE.sale, PAGE.locations, PAGE.guides, PAGE.services, PAGE.index]} />
+      <Link to="/blog" className="mt-6 inline-block text-sm font-semibold text-primary">
         ← All articles
       </Link>
     </article>

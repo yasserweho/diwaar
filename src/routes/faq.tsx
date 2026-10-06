@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FaqList } from "@/components/faq-list";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { tx, useLang } from "@/lib/i18n";
 import { seo } from "@/lib/seo";
 
@@ -29,6 +30,7 @@ function FaqPage() {
         )}
       </p>
       <FaqList />
+      <RelatedLinks links={[PAGE.sale, PAGE.add, PAGE.locations, PAGE.services, PAGE.contact, PAGE.about]} />
       <p className="mt-8 text-sm">
         <Link to="/contact" className="font-semibold text-primary">
           {tx(lang, "Still need help? Contact us.", "ابھی مدد چاہیے؟ رابطہ کریں۔")}

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { areaFromSlug, areasOf, cityFromSlug } from "@/lib/location-pages";
 import { seo } from "@/lib/seo";
@@ -85,6 +86,16 @@ function AreaLocationPage() {
           </ul>
         </div>
       )}
+      <RelatedLinks
+        links={[
+          { href: `/locations/${citySlug}`, en: `More areas in ${city}`, ur: `${cityLabel(city, lang)} کے مزید علاقے` },
+          PAGE.guides,
+          PAGE.agents,
+          PAGE.maps,
+          PAGE.add,
+          PAGE.transfer,
+        ]}
+      />
     </div>
   );
 }

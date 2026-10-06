@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PAGE, RelatedLinks } from "@/components/related-links";
 import { tx, useLang } from "@/lib/i18n";
 import { seo } from "@/lib/seo";
 import { SERVICES } from "@/lib/services";
@@ -43,6 +44,7 @@ function ServicesPage() {
           </Link>
         ))}
       </div>
+      <RelatedLinks links={[PAGE.sale, PAGE.rent, PAGE.locations, PAGE.guides, PAGE.add, PAGE.faq]} />
     </div>
   );
 }
