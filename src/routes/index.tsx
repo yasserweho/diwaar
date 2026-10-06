@@ -13,6 +13,7 @@ import { seo } from "@/lib/seo";
 import { citySlug } from "@/lib/location-pages";
 import { FaqList } from "@/components/faq-list";
 import { ReviewSection } from "@/components/reviews";
+import { TrustStrip } from "@/components/trust";
 import { SERVICES } from "@/lib/services";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 
@@ -33,7 +34,6 @@ function HomePage() {
   const hot = live.filter((p) => p.badges.includes("hot") || p.badges.includes("superhot")).slice(0, 4);
   const leadCities = CITIES.slice(0, 8);
   const moreCities = CITIES.slice(8);
-  const areaCount = CITIES.reduce((n, city) => n + (AREA_BOOK[city]?.length ?? 0), 0);
   const { lang } = useLang();
 
   return (
@@ -64,13 +64,10 @@ function HomePage() {
         </div>
       </section>
 
+      <TrustStrip />
+
       <div className="border-b border-border bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted">
-            <span className="font-semibold text-black">{CITIES.length}</span> {tx(lang, "cities", "شہر")}
-            <span className="mx-2 text-border">·</span>
-            <span className="font-semibold text-black">{areaCount.toLocaleString()}</span> {tx(lang, "areas", "علاقے")}
-          </p>
+        <div className="mx-auto flex max-w-7xl justify-start px-4 py-3 sm:justify-end">
           <Link
             to="/add"
             className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-white"

@@ -17,6 +17,7 @@ import { PropertyCard } from "@/components/property-card";
 import { ListingBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getAgent, getProperty, similarTo } from "@/lib/data";
+import { tx, useLang } from "@/lib/i18n";
 import { pricePath } from "@/lib/portal";
 import { formatArea, formatPhone, formatPrice, relativeDate, waLink } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
@@ -78,6 +79,7 @@ function PropertyBody() {
   const compared = useAppStore((s) => s.compareIds.includes(property.id));
   const toggleCompare = useAppStore((s) => s.toggleCompare);
   const reported = useAppStore((s) => s.reported.includes(property.id));
+  const { lang } = useLang();
   const reportListing = useAppStore((s) => s.reportListing);
   const img = property.images[shot] ?? property.images[0];
   const history = pricePath(property.price, property.id);
@@ -278,6 +280,13 @@ function PropertyBody() {
                 {reported ? "Reported" : "Report"}
               </Button>
             </div>
+            <p className="mt-4 text-xs leading-relaxed text-muted">
+              {tx(
+                lang,
+                "diwaar.com takes no commission on this ad. Confirm the title and the society file before you pay a token.",
+                "diwaar.com اس اشتہار پر کمیشن نہیں لیتی۔ ٹوکن سے پہلے نام اور سوسائٹی کی فائل کی تصدیق کریں۔",
+              )}
+            </p>
           </div>
         </aside>
       </div>

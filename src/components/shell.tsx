@@ -340,8 +340,8 @@ function Footer() {
           <p className="mt-4 text-sm text-ice-2 leading-relaxed">
             {tx(
               lang,
-              "Pakistan's property portal. Buy, rent, and list houses, flats, plots, and commercial property.",
-              "پاکستان کی پراپرٹی ویب سائٹ۔ مکان، فلیٹ، پلاٹ اور کمرشل جائیداد خریدیں، کرایے پر لیں یا لگائیں۔",
+              "Pakistan's property portal. No commission on a listing. Loan and price tools are estimates, not offers.",
+              "پاکستان کی پراپرٹی ویب سائٹ۔ اشتہار پر کمیشن نہیں۔ لون اور قیمت کے اوزار اندازے ہیں، پیشکش نہیں۔",
             )}
           </p>
         </div>
