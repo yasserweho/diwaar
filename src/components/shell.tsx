@@ -32,6 +32,7 @@ const MENU_GROUPS = [
       { href: "/projects", label: "New projects", ur: "نئے منصوبے" },
       { href: "/maps", label: "Plot finder", ur: "پلاٹ فائنڈر" },
       { href: "/cities", label: "Cities", ur: "شہر" },
+      { href: "/services", label: "Services", ur: "خدمات" },
       { href: "/agents", label: "Agents", ur: "ایجنٹس" },
       { href: "/agencies", label: "Agencies", ur: "ایجنسیاں" },
     ],
@@ -69,6 +70,7 @@ const NAV = [
   { to: "/projects", label: "Projects", ur: "منصوبے" },
   { to: "/guides", label: "Area Guides", ur: "علاقائی گائیڈ" },
   { to: "/maps", label: "Maps", ur: "نقشے" },
+  { to: "/services", label: "Services", ur: "خدمات" },
   { to: "/blog", label: "Blog", ur: "بلاگ" },
 ];
 
@@ -340,6 +342,7 @@ function Footer() {
         <FooterCol
           title={tx(lang, "Explore", "دریافت کریں")}
           links={[
+            [tx(lang, "Services", "خدمات"), "/services"],
             [tx(lang, "Properties for sale", "فروخت کے لیے جائیداد"), "/search?purpose=buy"],
             [tx(lang, "Properties to rent", "کرایے کی جائیداد"), "/search?purpose=rent"],
             [tx(lang, "New projects", "نئے منصوبے"), "/projects"],

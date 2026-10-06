@@ -10,6 +10,7 @@ import { useAppStore } from "@/lib/store";
 import { CITIES } from "@/lib/types";
 import { AREA_BOOK } from "@/lib/locations";
 import { seo } from "@/lib/seo";
+import { SERVICES } from "@/lib/services";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
@@ -161,6 +162,23 @@ function HomePage() {
               ))}
             </p>
           )}
+        </section>
+
+        <section>
+          <SectionHead title={tx(lang, "Services", "خدمات")} href="/services" />
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {SERVICES.slice(0, 4).map((s) => (
+              <Link
+                key={s.slug}
+                to="/services/$slug"
+                params={{ slug: s.slug }}
+                className="rounded-xl border border-border bg-white p-4 hover:border-primary"
+              >
+                <p className="font-semibold text-black">{tx(lang, s.title, s.titleUr)}</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{tx(lang, s.summary, s.summaryUr)}</p>
+              </Link>
+            ))}
+          </div>
         </section>
 
         <section>

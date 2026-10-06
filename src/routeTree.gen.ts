@@ -30,6 +30,7 @@ import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PropertyIndexRouteImport } from './routes/property-index'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WantedRouteImport } from './routes/wanted'
@@ -40,6 +41,7 @@ import { Route as CommunityIdRouteImport } from './routes/community.$id'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as PropertyIdRouteImport } from './routes/property.$id'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -147,6 +149,11 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolsRoute = ToolsRouteImport.update({
   id: '/tools',
   path: '/tools',
@@ -197,6 +204,11 @@ const PropertyIdRoute = PropertyIdRouteImport.update({
   path: '/property/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ServicesRoute,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -225,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/property-index': typeof PropertyIndexRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/services': typeof ServicesRouteWithChildren
   '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
@@ -235,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/guides/$slug': typeof GuidesSlugRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
@@ -259,6 +273,7 @@ export interface FileRoutesByTo {
   '/property-index': typeof PropertyIndexRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/services': typeof ServicesRouteWithChildren
   '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
@@ -269,6 +284,7 @@ export interface FileRoutesByTo {
   '/guides/$slug': typeof GuidesSlugRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
@@ -294,6 +310,7 @@ export interface FileRoutesById {
   '/property-index': typeof PropertyIndexRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/services': typeof ServicesRouteWithChildren
   '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
@@ -304,6 +321,7 @@ export interface FileRoutesById {
   '/guides/$slug': typeof GuidesSlugRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
@@ -330,6 +348,7 @@ export interface FileRouteTypes {
     | '/property-index'
     | '/saved'
     | '/search'
+    | '/services'
     | '/tools'
     | '/trends'
     | '/wanted'
@@ -340,6 +359,7 @@ export interface FileRouteTypes {
     | '/guides/$slug'
     | '/projects/$id'
     | '/property/$id'
+    | '/services/$slug'
     | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -364,6 +384,7 @@ export interface FileRouteTypes {
     | '/property-index'
     | '/saved'
     | '/search'
+    | '/services'
     | '/tools'
     | '/trends'
     | '/wanted'
@@ -374,6 +395,7 @@ export interface FileRouteTypes {
     | '/guides/$slug'
     | '/projects/$id'
     | '/property/$id'
+    | '/services/$slug'
     | '/api/auth/$'
   id:
     | '__root__'
@@ -398,6 +420,7 @@ export interface FileRouteTypes {
     | '/property-index'
     | '/saved'
     | '/search'
+    | '/services'
     | '/tools'
     | '/trends'
     | '/wanted'
@@ -408,6 +431,7 @@ export interface FileRouteTypes {
     | '/guides/$slug'
     | '/projects/$id'
     | '/property/$id'
+    | '/services/$slug'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
@@ -433,6 +457,7 @@ export interface RootRouteChildren {
   PropertyIndexRoute: typeof PropertyIndexRoute
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
+  ServicesRoute: typeof ServicesRouteWithChildren
   ToolsRoute: typeof ToolsRoute
   TrendsRoute: typeof TrendsRoute
   WantedRoute: typeof WantedRoute
@@ -589,6 +614,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools': {
       id: '/tools'
       path: '/tools'
@@ -658,6 +690,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/property/$id'
       preLoaderRoute: typeof PropertyIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof ServicesRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -737,6 +776,18 @@ const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
   ProjectsRouteChildren,
 )
 
+interface ServicesRouteChildren {
+  ServicesSlugRoute: typeof ServicesSlugRoute
+}
+
+const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesSlugRoute: ServicesSlugRoute,
+}
+
+const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
+  ServicesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AddRoute: AddRoute,
@@ -759,6 +810,7 @@ const rootRouteChildren: RootRouteChildren = {
   PropertyIndexRoute: PropertyIndexRoute,
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
+  ServicesRoute: ServicesRouteWithChildren,
   ToolsRoute: ToolsRoute,
   TrendsRoute: TrendsRoute,
   WantedRoute: WantedRoute,
