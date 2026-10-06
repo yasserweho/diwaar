@@ -154,7 +154,7 @@ function ContactPage() {
           </button>
         </form>
       )}
-      <RelatedLinks links={[PAGE.faq, PAGE.about, PAGE.sale, PAGE.add, PAGE.locations]} />
+      <RelatedLinks links={[PAGE.faq, PAGE.about, PAGE.privacy, PAGE.sale, PAGE.add, PAGE.locations]} />
     </article>
   );
 }

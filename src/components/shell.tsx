@@ -66,6 +66,7 @@ const MENU_GROUPS = [
       { href: "/faq", label: "Questions", ur: "سوالات" },
       { href: "/about", label: "About", ur: "ہمارے بارے میں" },
       { href: "/contact", label: "Contact", ur: "رابطہ" },
+      { href: "/privacy", label: "Privacy", ur: "رازداری" },
       { href: "/tools?tab=loan", label: "Calculators", ur: "کیلکولیٹر" },
     ],
   },
@@ -400,6 +401,10 @@ function Footer() {
         <span className="mx-2">·</span>
         <a href="/contact" className="hover:text-primary-fg">
           {tx(lang, "Contact", "رابطہ")}
+        </a>
+        <span className="mx-2">·</span>
+        <a href="/privacy" className="hover:text-primary-fg">
+          {tx(lang, "Privacy", "رازداری")}
         </a>
         <span className="mx-2">·</span>
         © {new Date().getFullYear()} diwaar.com

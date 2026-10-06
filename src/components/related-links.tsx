@@ -11,6 +11,7 @@ export const PAGE = {
   add: { href: "/add", en: "List a property", ur: "جائیداد لگائیں" },
   faq: { href: "/faq", en: "Questions", ur: "سوالات" },
   contact: { href: "/contact", en: "Contact", ur: "رابطہ" },
+  privacy: { href: "/privacy", en: "Privacy", ur: "رازداری" },
   about: { href: "/about", en: "About", ur: "ہمارے بارے میں" },
   agents: { href: "/agents", en: "Agents", ur: "ایجنٹس" },
   maps: { href: "/maps", en: "Plot maps", ur: "پلاٹ کے نقشے" },

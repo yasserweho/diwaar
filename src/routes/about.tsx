@@ -66,7 +66,7 @@ function AboutPage() {
           {tx(lang, "List a property", "جائیداد لگائیں")}
         </Link>
       </div>
-      <RelatedLinks links={[PAGE.locations, PAGE.services, PAGE.guides, PAGE.index, PAGE.agents, PAGE.faq, PAGE.contact]} />
+      <RelatedLinks links={[PAGE.locations, PAGE.services, PAGE.guides, PAGE.index, PAGE.agents, PAGE.faq, PAGE.contact, PAGE.privacy]} />
     </article>
   );
 }

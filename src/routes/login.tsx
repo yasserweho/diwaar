@@ -183,6 +183,11 @@ function LoginPage() {
       ) : (
         <p className="mt-6 text-sm text-muted">Sign-in is turned off.</p>
       )}
+      <p className="mt-6 text-sm text-muted">
+        <a href="/privacy" className="font-semibold text-primary">
+          Privacy policy
+        </a>
+      </p>
     </div>
   );
 }

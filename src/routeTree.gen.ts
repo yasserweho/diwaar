@@ -30,6 +30,7 @@ import { Route as MapsRouteImport } from './routes/maps'
 import { Route as MyAdsRouteImport } from './routes/my-ads'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as PayRouteImport } from './routes/pay'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PropertyIndexRouteImport } from './routes/property-index'
 import { Route as ReviewsRouteImport } from './routes/reviews'
@@ -156,6 +157,11 @@ const PayRoute = PayRouteImport.update({
   path: '/pay',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
@@ -279,6 +285,7 @@ export interface FileRoutesByFullPath {
   '/my-ads': typeof MyAdsRoute
   '/orders': typeof OrdersRoute
   '/pay': typeof PayRoute
+  '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/property-index': typeof PropertyIndexRoute
   '/reviews': typeof ReviewsRoute
@@ -322,6 +329,7 @@ export interface FileRoutesByTo {
   '/my-ads': typeof MyAdsRoute
   '/orders': typeof OrdersRoute
   '/pay': typeof PayRoute
+  '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/property-index': typeof PropertyIndexRoute
   '/reviews': typeof ReviewsRoute
@@ -366,6 +374,7 @@ export interface FileRoutesById {
   '/my-ads': typeof MyAdsRoute
   '/orders': typeof OrdersRoute
   '/pay': typeof PayRoute
+  '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/property-index': typeof PropertyIndexRoute
   '/reviews': typeof ReviewsRoute
@@ -411,6 +420,7 @@ export interface FileRouteTypes {
     | '/my-ads'
     | '/orders'
     | '/pay'
+    | '/privacy'
     | '/projects'
     | '/property-index'
     | '/reviews'
@@ -454,6 +464,7 @@ export interface FileRouteTypes {
     | '/my-ads'
     | '/orders'
     | '/pay'
+    | '/privacy'
     | '/projects'
     | '/property-index'
     | '/reviews'
@@ -497,6 +508,7 @@ export interface FileRouteTypes {
     | '/my-ads'
     | '/orders'
     | '/pay'
+    | '/privacy'
     | '/projects'
     | '/property-index'
     | '/reviews'
@@ -541,6 +553,7 @@ export interface RootRouteChildren {
   MyAdsRoute: typeof MyAdsRoute
   OrdersRoute: typeof OrdersRoute
   PayRoute: typeof PayRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   PropertyIndexRoute: typeof PropertyIndexRoute
   ReviewsRoute: typeof ReviewsRoute
@@ -701,6 +714,13 @@ declare module '@tanstack/react-router' {
       path: '/pay'
       fullPath: '/pay'
       preLoaderRoute: typeof PayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -972,6 +992,7 @@ const rootRouteChildren: RootRouteChildren = {
   MyAdsRoute: MyAdsRoute,
   OrdersRoute: OrdersRoute,
   PayRoute: PayRoute,
+  PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   PropertyIndexRoute: PropertyIndexRoute,
   ReviewsRoute: ReviewsRoute,
