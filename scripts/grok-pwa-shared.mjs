@@ -47,6 +47,16 @@ function unescapeHtml(value) {
     .replaceAll("&amp;", "&");
 }
 
+function descriptionFromDocument(html) {
+  const tags = String(html).match(/<meta\b[^>]*>/gi) ?? [];
+  for (const tag of tags) {
+    if (!/\bname\s*=\s*["']description["']/i.test(tag)) continue;
+    const content = tag.match(/\bcontent\s*=\s*["']([^"']*)["']/i);
+    if (content) return unescapeHtml(content[1]).trim();
+  }
+  return "";
+}
+
 /** 6-digit hex for the og.grok.me placeholder, or "" if site.color is missing/invalid. */
 function placeholderCardColor(site = {}) {
   const raw = String(site.color ?? "").trim();
@@ -349,6 +359,7 @@ export function grokOgHeadTags({
   const description = String(site.description ?? "").trim();
   if (description) {
     tags.push(`<meta property="og:description" content="${escapeHtml(description)}">`);
+    tags.push(`<meta name="twitter:description" content="${escapeHtml(description)}">`);
   }
   if (String(site.type ?? "").toLowerCase() === "x:game") {
     tags.push(`<meta property="og:type" content="x:game">`);
@@ -442,9 +453,14 @@ export function injectGrokPwaHead(html, ctx = {}) {
     })
     .map(([, tag]) => tag);
 
+  const pageDescription = descriptionFromDocument(next);
+  const siteForOg = {
+    ...site,
+    description: pageDescription || String(site.description ?? "").trim(),
+  };
   next = insertAfterHeadOpen(
     next,
-    grokOgHeadTags({ host, appName, site, documentTitle, cwd }).join(""),
+    grokOgHeadTags({ host, appName, site: siteForOg, documentTitle, cwd }).join(""),
   );
 
   if (!next.includes("/grok-app-builder/extensions.js")) {

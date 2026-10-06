@@ -16,7 +16,7 @@ export const Route = createFileRoute("/")({
   head: () =>
     seo(
       "Find Property for Sale and Rent in Pakistan",
-      "Houses, flats, plots and commercial property for sale and rent in Lahore, Karachi, Islamabad and 20+ cities.",
+      "Find houses, flats, plots and commercial property for sale and rent in Lahore, Karachi, Islamabad and 30 more cities on diwaar.com.",
       { path: "/" },
     ),
   component: HomePage,
