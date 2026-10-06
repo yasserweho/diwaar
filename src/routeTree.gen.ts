@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AddRouteImport } from './routes/add'
 import { Route as AgenciesRouteImport } from './routes/agencies'
 import { Route as AgentsRouteImport } from './routes/agents'
@@ -50,6 +51,11 @@ import { Route as LocationsCityAreaRouteImport } from './routes/locations.$city.
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AddRoute = AddRouteImport.update({
@@ -235,6 +241,7 @@ const LocationsCityAreaRoute = LocationsCityAreaRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/add': typeof AddRoute
   '/agencies': typeof AgenciesRouteWithChildren
   '/agents': typeof AgentsRouteWithChildren
@@ -274,6 +281,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/add': typeof AddRoute
   '/agencies': typeof AgenciesRouteWithChildren
   '/agents': typeof AgentsRouteWithChildren
@@ -314,6 +322,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/add': typeof AddRoute
   '/agencies': typeof AgenciesRouteWithChildren
   '/agents': typeof AgentsRouteWithChildren
@@ -355,6 +364,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/add'
     | '/agencies'
     | '/agents'
@@ -394,6 +404,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/add'
     | '/agencies'
     | '/agents'
@@ -433,6 +444,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/add'
     | '/agencies'
     | '/agents'
@@ -473,6 +485,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AddRoute: typeof AddRoute
   AgenciesRoute: typeof AgenciesRouteWithChildren
   AgentsRoute: typeof AgentsRouteWithChildren
@@ -509,6 +522,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/add': {
@@ -872,6 +892,7 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AddRoute: AddRoute,
   AgenciesRoute: AgenciesRouteWithChildren,
   AgentsRoute: AgentsRouteWithChildren,
@@ -903,7 +924,6 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
 import type { getRouter } from './router.tsx'
 import type { createStart } from '@tanstack/react-start'
 declare module '@tanstack/react-start' {

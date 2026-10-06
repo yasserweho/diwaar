@@ -62,6 +62,7 @@ const MENU_GROUPS = [
       { href: "/orders", label: "Payments", ur: "ادائیگیاں" },
       { href: "/loans", label: "Loan files", ur: "لون فائلیں" },
       { href: "/community", label: "Community", ur: "کمیونٹی" },
+      { href: "/about", label: "About", ur: "ہمارے بارے میں" },
       { href: "/tools?tab=loan", label: "Calculators", ur: "کیلکولیٹر" },
     ],
   },
@@ -382,7 +383,11 @@ function Footer() {
         />
       </div>
       <div className="border-t border-primary-fg/10 py-4 text-center text-xs text-ice-2">
-        © {new Date().getFullYear()} Diwaar.com
+        <a href="/about" className="hover:text-primary-fg">
+          {tx(lang, "About", "ہمارے بارے میں")}
+        </a>
+        <span className="mx-2">·</span>
+        © {new Date().getFullYear()} diwaar.com
       </div>
     </footer>
   );
