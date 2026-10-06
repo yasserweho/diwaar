@@ -5,6 +5,8 @@ import type { AreaUnit, Currency } from "./format";
 import type { ForumPost, Reply, SavedAlert, WantedAd } from "./portal";
 import type { Property } from "./types";
 
+export type Lang = "en" | "ur";
+
 interface AppState {
   savedIds: string[];
   toggleSaved: (id: string) => void;
@@ -16,6 +18,8 @@ interface AppState {
   currency: Currency;
   setAreaUnit: (u: AreaUnit) => void;
   setCurrency: (c: Currency) => void;
+  lang: Lang;
+  setLang: (lang: Lang) => void;
   recentIds: string[];
   noteRecent: (id: string) => void;
   compareIds: string[];
@@ -72,6 +76,8 @@ export const useAppStore = create<AppState>()(
       currency: "PKR",
       setAreaUnit: (areaUnit) => set({ areaUnit }),
       setCurrency: (currency) => set({ currency }),
+      lang: "en",
+      setLang: (lang) => set({ lang }),
       recentIds: [],
       noteRecent: (id) =>
         set((s) => ({

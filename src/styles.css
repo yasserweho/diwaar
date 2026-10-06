@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Noto Naskh Arabic", ui-sans-serif, system-ui, sans-serif;
 
   --color-bg: #f4f5f7;
   --color-surface: #ffffff;
@@ -80,6 +80,10 @@
   img {
     max-width: 100%;
   }
+}
+
+html[lang="ur"] body {
+  font-family: "Noto Naskh Arabic", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 @media (prefers-reduced-motion: reduce) {

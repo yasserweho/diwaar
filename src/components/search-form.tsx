@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SearchSelect } from "@/components/search-select";
 import { locationsInCity } from "@/lib/data";
 import { CITIES, type Category, type Purpose } from "@/lib/types";
+import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const TYPES: { id: Category | ""; label: string }[] = [
@@ -35,6 +36,7 @@ export function SearchForm({
   const [type, setType] = useState<Category | "">(initial?.type ?? "");
   const [location, setLocation] = useState(initial?.location ?? "");
   const areas = locationsInCity(city);
+  const { lang } = useLang();
 
   function submit(e?: React.FormEvent) {
     e?.preventDefault();
@@ -74,7 +76,7 @@ export function SearchForm({
                 : "border-transparent text-muted hover:text-fg",
             )}
           >
-            {p}
+            {tx(lang, p, p === "buy" ? "خریدیں" : "کرایہ")}
           </button>
         ))}
         <button
@@ -82,24 +84,24 @@ export function SearchForm({
           onClick={() => void navigate({ to: "/projects" })}
           className="-mb-px h-10 border-b-2 border-transparent px-3 text-sm font-semibold text-muted hover:text-fg"
         >
-          Projects
+          {tx(lang, "Projects", "منصوبے")}
         </button>
         <button
           type="button"
           onClick={() => void navigate({ to: "/invest" })}
           className="-mb-px h-10 border-b-2 border-transparent px-3 text-sm font-semibold text-muted hover:text-fg"
         >
-          Invest
+          {tx(lang, "Invest", "سرمایہ کاری")}
         </button>
       </div>
 
       <div className="grid gap-2 sm:grid-cols-[1fr_1fr_1fr_auto]">
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted">City</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">{tx(lang, "City", "شہر")}</span>
           <SearchSelect
             value={city}
-            searchPlaceholder="Type a city"
-            options={CITIES.map((name) => ({ value: name, label: name }))}
+            searchPlaceholder={tx(lang, "Type a city", "شہر لکھیں")}
+            options={CITIES.map((name) => ({ value: name, label: cityLabel(name, lang) }))}
             onChange={(next) => {
               setCity(next);
               setLocation("");
@@ -107,17 +109,17 @@ export function SearchForm({
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted">Location</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">{tx(lang, "Location", "علاقہ")}</span>
           <SearchSelect
             value={location}
-            placeholder="All areas"
-            searchPlaceholder="Type an area"
-            options={[{ value: "", label: "All areas" }, ...areas.map((name) => ({ value: name, label: name }))]}
+            placeholder={tx(lang, "All areas", "تمام علاقے")}
+            searchPlaceholder={tx(lang, "Type an area", "علاقہ لکھیں")}
+            options={[{ value: "", label: tx(lang, "All areas", "تمام علاقے") }, ...areas.map((name) => ({ value: name, label: name }))]}
             onChange={setLocation}
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted">Property type</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">{tx(lang, "Property type", "جائیداد کی قسم")}</span>
           <select
             className={`${selectClass} bg-white`}
             style={{ color: "#000", backgroundColor: "#fff", WebkitTextFillColor: "#000" }}
@@ -126,14 +128,30 @@ export function SearchForm({
           >
             {TYPES.map((t) => (
               <option key={t.id} value={t.id} style={{ color: "#000" }}>
-                {t.label}
+                {tx(
+                  lang,
+                  t.label,
+                  t.id === ""
+                    ? "تمام اقسام"
+                    : t.id === "house"
+                      ? "مکان"
+                      : t.id === "flat"
+                        ? "فلیٹ"
+                        : t.id === "plot"
+                          ? "پلاٹ"
+                          : t.id === "commercial"
+                            ? "کمرشل"
+                            : t.id === "portion"
+                              ? "پورشن"
+                              : "فارم ہاؤس",
+                )}
               </option>
             ))}
           </select>
         </label>
         <div className="flex items-end">
           <Button type="submit" size="lg" className="w-full sm:w-auto sm:px-8">
-            <Search /> Find
+            <Search /> {tx(lang, "Find", "تلاش")}
           </Button>
         </div>
       </div>

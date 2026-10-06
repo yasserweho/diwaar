@@ -18,58 +18,63 @@ import { DiwaarWordmark } from "@/components/logo";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SignedIn, SignedOut, UserButton } from "@/lib/auth/gates";
 import { AREA_LABEL, type AreaUnit } from "@/lib/format";
+import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 const MENU_GROUPS = [
   {
     title: "Find a property",
+    ur: "جائیداد تلاش کریں",
     links: [
-      { href: "/search?purpose=buy", label: "Buy" },
-      { href: "/search?purpose=rent", label: "Rent" },
-      { href: "/projects", label: "New projects" },
-      { href: "/maps", label: "Plot finder" },
-      { href: "/cities", label: "Cities" },
-      { href: "/agents", label: "Agents" },
-      { href: "/agencies", label: "Agencies" },
+      { href: "/search?purpose=buy", label: "Buy", ur: "خریدیں" },
+      { href: "/search?purpose=rent", label: "Rent", ur: "کرایہ" },
+      { href: "/projects", label: "New projects", ur: "نئے منصوبے" },
+      { href: "/maps", label: "Plot finder", ur: "پلاٹ فائنڈر" },
+      { href: "/cities", label: "Cities", ur: "شہر" },
+      { href: "/agents", label: "Agents", ur: "ایجنٹس" },
+      { href: "/agencies", label: "Agencies", ur: "ایجنسیاں" },
     ],
   },
   {
     title: "Prices and places",
+    ur: "قیمتیں اور جگہیں",
     links: [
-      { href: "/guides", label: "Area guides" },
-      { href: "/trends", label: "Trends" },
-      { href: "/property-index", label: "Price index" },
-      { href: "/invest", label: "Invest" },
-      { href: "/blog", label: "Journal" },
+      { href: "/guides", label: "Area guides", ur: "علاقائی گائیڈ" },
+      { href: "/trends", label: "Trends", ur: "رجحانات" },
+      { href: "/property-index", label: "Price index", ur: "قیمت انڈیکس" },
+      { href: "/invest", label: "Invest", ur: "سرمایہ کاری" },
+      { href: "/blog", label: "Journal", ur: "مضامین" },
     ],
   },
   {
     title: "Your account",
+    ur: "آپ کا اکاؤنٹ",
     links: [
-      { href: "/saved", label: "Saved homes" },
-      { href: "/alerts", label: "Alerts" },
-      { href: "/compare", label: "Compare" },
-      { href: "/wanted", label: "Wanted" },
-      { href: "/my-ads", label: "My ads" },
-      { href: "/orders", label: "Payments" },
-      { href: "/loans", label: "Loan files" },
-      { href: "/community", label: "Community" },
-      { href: "/tools?tab=loan", label: "Calculators" },
+      { href: "/saved", label: "Saved homes", ur: "محفوظ جائیدادیں" },
+      { href: "/alerts", label: "Alerts", ur: "الرٹس" },
+      { href: "/compare", label: "Compare", ur: "موازنہ" },
+      { href: "/wanted", label: "Wanted", ur: "مطلوب" },
+      { href: "/my-ads", label: "My ads", ur: "میرے اشتہارات" },
+      { href: "/orders", label: "Payments", ur: "ادائیگیاں" },
+      { href: "/loans", label: "Loan files", ur: "لون فائلیں" },
+      { href: "/community", label: "Community", ur: "کمیونٹی" },
+      { href: "/tools?tab=loan", label: "Calculators", ur: "کیلکولیٹر" },
     ],
   },
 ];
 
 const NAV = [
-  { to: "/search", label: "Properties", search: { purpose: "buy" as const } },
-  { to: "/projects", label: "Projects" },
-  { to: "/guides", label: "Area Guides" },
-  { to: "/maps", label: "Maps" },
-  { to: "/blog", label: "Blog" },
+  { to: "/search", label: "Properties", ur: "جائیدادیں", search: { purpose: "buy" as const } },
+  { to: "/projects", label: "Projects", ur: "منصوبے" },
+  { to: "/guides", label: "Area Guides", ur: "علاقائی گائیڈ" },
+  { to: "/maps", label: "Maps", ur: "نقشے" },
+  { to: "/blog", label: "Blog", ur: "بلاگ" },
 ];
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const { lang } = useLang();
 
   useEffect(() => {
     void useAppStore.persist.rehydrate();
@@ -91,7 +96,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 search={"search" in item ? item.search : undefined}
                 className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-fg/80 hover:bg-ice hover:text-fg"
               >
-                {item.label}
+                {tx(lang, item.label, item.ur)}
               </Link>
             ))}
             <MoreMenu />
@@ -100,20 +105,13 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <div className="hidden sm:contents">
               <PrefsMenu />
               <UserButton />
-              <SignedOut>
-                <Link to="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>
-                  Sign in
-                </Link>
-              </SignedOut>
             </div>
             <SignedOut>
-              <Link
-                to="/login"
-                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "sm:hidden px-2")}
-              >
-                Sign in
+              <Link to="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "px-2 sm:px-3")}>
+                {tx(lang, "Sign in", "سائن اِن")}
               </Link>
             </SignedOut>
+            <LanguageToggle />
             <Link
               to="/add"
               className={cn(
@@ -121,7 +119,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 "hidden sm:inline-flex",
               )}
             >
-              <Plus /> Add Property
+              <Plus /> {tx(lang, "Add Property", "جائیداد شامل کریں")}
             </Link>
             <button
               type="button"
@@ -162,7 +160,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                   onClick={() => setOpen(false)}
                   className={cn(buttonVariants({ variant: "primary" }), "h-12")}
                 >
-                  Sign in
+                  {tx(lang, "Sign in", "سائن اِن")}
                 </Link>
               </SignedOut>
               <SignedIn>
@@ -175,12 +173,12 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 onClick={() => setOpen(false)}
                 className={cn(buttonVariants({ variant: "primary" }), "h-12")}
               >
-                <Plus /> Add a property
+                <Plus /> {tx(lang, "Add a property", "جائیداد شامل کریں")}
               </Link>
               {MENU_GROUPS.map((group) => (
                 <div key={group.title}>
                   <p className="px-1 text-[11px] font-bold uppercase tracking-wider text-muted">
-                    {group.title}
+                    {tx(lang, group.title, group.ur)}
                   </p>
                   <div className="mt-2 grid grid-cols-2 gap-2">
                     {group.links.map((item) => (
@@ -190,7 +188,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                         onClick={() => setOpen(false)}
                         className="flex h-12 items-center rounded-xl bg-ice px-3 text-sm font-semibold text-primary-dark"
                       >
-                        {item.label}
+                        {tx(lang, item.label, item.ur)}
                       </a>
                     ))}
                   </div>
@@ -211,8 +209,24 @@ export function Shell({ children }: { children: React.ReactNode }) {
   );
 }
 
+function LanguageToggle() {
+  const { ur, setLang } = useLang();
+  return (
+    <button
+      type="button"
+      onClick={() => setLang(ur ? "en" : "ur")}
+      className="inline-flex h-9 items-center rounded-md border border-border bg-white px-2.5 text-sm font-semibold text-black"
+      lang={ur ? "en" : "ur"}
+      aria-label={ur ? "Switch to English" : "اردو ویب سائٹ"}
+    >
+      {ur ? "English" : "اردو"}
+    </button>
+  );
+}
+
 function MoreMenu() {
   const [open, setOpen] = useState(false);
+  const { lang } = useLang();
   return (
     <div className="relative">
       <button
@@ -220,7 +234,7 @@ function MoreMenu() {
         onClick={() => setOpen((v) => !v)}
         className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-fg/80 hover:bg-ice hover:text-fg"
       >
-        More
+        {tx(lang, "More", "مزید")}
       </button>
       {open && (
         <>
@@ -233,7 +247,7 @@ function MoreMenu() {
                 className="flex h-10 items-center rounded-lg px-3 text-sm font-semibold hover:bg-ice"
                 onClick={() => setOpen(false)}
               >
-                {item.label}
+                {tx(lang, item.label, item.ur)}
               </a>
             ))}
           </div>
@@ -309,50 +323,55 @@ function PrefsMenu() {
 }
 
 function Footer() {
+  const { lang } = useLang();
   return (
     <footer className="hidden lg:block border-t border-border bg-primary-dark text-primary-fg">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <DiwaarWordmark inverted compact />
           <p className="mt-4 text-sm text-ice-2 leading-relaxed">
-          Pakistan's property portal. Buy, rent, and list houses, flats, plots, and commercial property.
+            {tx(
+              lang,
+              "Pakistan's property portal. Buy, rent, and list houses, flats, plots, and commercial property.",
+              "پاکستان کی پراپرٹی ویب سائٹ۔ مکان، فلیٹ، پلاٹ اور کمرشل جائیداد خریدیں، کرایے پر لیں یا لگائیں۔",
+            )}
           </p>
         </div>
         <FooterCol
-          title="Explore"
+          title={tx(lang, "Explore", "دریافت کریں")}
           links={[
-            ["Properties for sale", "/search?purpose=buy"],
-            ["Properties to rent", "/search?purpose=rent"],
-            ["New projects", "/projects"],
-            ["Area guides", "/guides"],
-            ["Society maps", "/maps"],
-            ["Property index", "/property-index"],
-            ["Trends", "/trends"],
-            ["Invest", "/invest"],
+            [tx(lang, "Properties for sale", "فروخت کے لیے جائیداد"), "/search?purpose=buy"],
+            [tx(lang, "Properties to rent", "کرایے کی جائیداد"), "/search?purpose=rent"],
+            [tx(lang, "New projects", "نئے منصوبے"), "/projects"],
+            [tx(lang, "Area guides", "علاقائی گائیڈ"), "/guides"],
+            [tx(lang, "Society maps", "سوسائٹی کے نقشے"), "/maps"],
+            [tx(lang, "Property index", "قیمت انڈیکس"), "/property-index"],
+            [tx(lang, "Trends", "رجحانات"), "/trends"],
+            [tx(lang, "Invest", "سرمایہ کاری"), "/invest"],
           ]}
         />
         <FooterCol
-          title="Tools"
+          title={tx(lang, "Tools", "اوزار")}
           links={[
-            ["Home loan calculator", "/tools?tab=loan"],
-            ["Construction cost", "/tools?tab=build"],
-            ["Area converter", "/tools?tab=area"],
-            ["Add a listing", "/add"],
-            ["Find an agent", "/agents"],
-            ["Agencies", "/agencies"],
-            ["Community", "/community"],
-            ["Wanted ads", "/wanted"],
-            ["My ads", "/my-ads"],
+            [tx(lang, "Home loan calculator", "ہوم لون کیلکولیٹر"), "/tools?tab=loan"],
+            [tx(lang, "Construction cost", "تعمیراتی لاگت"), "/tools?tab=build"],
+            [tx(lang, "Area converter", "رقبہ کنورٹر"), "/tools?tab=area"],
+            [tx(lang, "Add a listing", "اشتہار لگائیں"), "/add"],
+            [tx(lang, "Find an agent", "ایجنٹ تلاش کریں"), "/agents"],
+            [tx(lang, "Agencies", "ایجنسیاں"), "/agencies"],
+            [tx(lang, "Community", "کمیونٹی"), "/community"],
+            [tx(lang, "Wanted ads", "مطلوب اشتہارات"), "/wanted"],
+            [tx(lang, "My ads", "میرے اشتہارات"), "/my-ads"],
           ]}
         />
         <FooterCol
-          title="Cities"
+          title={tx(lang, "Cities", "شہر")}
           links={[
-            ["Lahore", "/search?city=Lahore&purpose=buy"],
-            ["Karachi", "/search?city=Karachi&purpose=buy"],
-            ["Islamabad", "/search?city=Islamabad&purpose=buy"],
-            ["Rawalpindi", "/search?city=Rawalpindi&purpose=buy"],
-            ["Multan", "/search?city=Multan&purpose=buy"],
+            [cityLabel("Lahore", lang), "/search?city=Lahore&purpose=buy"],
+            [cityLabel("Karachi", lang), "/search?city=Karachi&purpose=buy"],
+            [cityLabel("Islamabad", lang), "/search?city=Islamabad&purpose=buy"],
+            [cityLabel("Rawalpindi", lang), "/search?city=Rawalpindi&purpose=buy"],
+            [cityLabel("Multan", lang), "/search?city=Multan&purpose=buy"],
           ]}
         />
       </div>
@@ -381,15 +400,16 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
 }
 
 function TabletShortcuts() {
+  const { lang } = useLang();
   const links: { href: string; label: string }[] = [
-    { href: "/search?purpose=buy", label: "Buy" },
-    { href: "/search?purpose=rent", label: "Rent" },
-    { href: "/projects", label: "Projects" },
-    { href: "/maps", label: "Maps" },
-    { href: "/guides", label: "Guides" },
-    { href: "/agents", label: "Agents" },
-    { href: "/saved", label: "Saved" },
-    { href: "/add", label: "Add property" },
+    { href: "/search?purpose=buy", label: tx(lang, "Buy", "خریدیں") },
+    { href: "/search?purpose=rent", label: tx(lang, "Rent", "کرایہ") },
+    { href: "/projects", label: tx(lang, "Projects", "منصوبے") },
+    { href: "/maps", label: tx(lang, "Maps", "نقشے") },
+    { href: "/guides", label: tx(lang, "Guides", "گائیڈ") },
+    { href: "/agents", label: tx(lang, "Agents", "ایجنٹس") },
+    { href: "/saved", label: tx(lang, "Saved", "محفوظ") },
+    { href: "/add", label: tx(lang, "Add property", "جائیداد شامل کریں") },
   ];
   return (
     <div className="hidden border-b border-border bg-surface md:block lg:hidden">
@@ -409,6 +429,7 @@ function TabletShortcuts() {
 }
 
 function BottomNav({ onMenu }: { onMenu: () => void }) {
+  const { lang } = useLang();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const purpose = useRouterState({
     select: (s) => {
@@ -417,22 +438,22 @@ function BottomNav({ onMenu }: { onMenu: () => void }) {
     },
   });
   const items = [
-    { to: "/", label: "Home", icon: Home, active: pathname === "/" },
+    { to: "/", label: tx(lang, "Home", "ہوم"), icon: Home, active: pathname === "/" },
     {
       to: "/search",
-      label: "Buy",
+      label: tx(lang, "Buy", "خریدیں"),
       icon: Search,
       search: { purpose: "buy" as const },
       active: (pathname.startsWith("/search") || pathname.startsWith("/property")) && purpose !== "rent",
     },
     {
       to: "/search",
-      label: "Rent",
+      label: tx(lang, "Rent", "کرایہ"),
       icon: Building2,
       search: { purpose: "rent" as const },
       active: pathname.startsWith("/search") && purpose === "rent",
     },
-    { to: "/saved", label: "Saved", icon: Heart, active: pathname === "/saved" },
+    { to: "/saved", label: tx(lang, "Saved", "محفوظ"), icon: Heart, active: pathname === "/saved" },
   ];
 
   return (
@@ -467,7 +488,7 @@ function BottomNav({ onMenu }: { onMenu: () => void }) {
             className="flex h-full w-full flex-col items-center justify-center gap-0.5 text-[11px] font-semibold text-muted"
           >
             <Menu className="size-5" />
-            Menu
+            {tx(lang, "Menu", "مینو")}
           </button>
         </li>
       </ul>
@@ -478,12 +499,14 @@ function BottomNav({ onMenu }: { onMenu: () => void }) {
 export function SectionHead({
   title,
   href,
-  action = "View all",
+  action,
 }: {
   title: string;
   href?: string;
   action?: string;
 }) {
+  const { lang } = useLang();
+  const actionLabel = action ?? tx(lang, "View all", "سب دیکھیں");
   return (
     <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-border pb-3">
       <h2 className="text-lg font-semibold tracking-normal text-black sm:text-xl">
@@ -491,7 +514,7 @@ export function SectionHead({
       </h2>
       {href && (
         <a href={href} className="text-sm font-semibold text-primary hover:underline">
-          {action}
+          {actionLabel}
         </a>
       )}
     </div>
@@ -499,19 +522,20 @@ export function SectionHead({
 }
 
 export function ToolTiles() {
+  const { lang } = useLang();
   const tiles = [
-    { to: "/tools?tab=loan", icon: Calculator, label: "Home loan", sub: "Bank packages" },
-    { to: "/tools?tab=build", icon: Calculator, label: "Build cost", sub: "Grey + finishing" },
-    { to: "/tools?tab=area", icon: Calculator, label: "Area converter", sub: "Marla · Kanal · Yd" },
-    { to: "/maps", icon: MapIcon, label: "Plot finder", sub: "12 societies" },
-    { to: "/property-index", icon: BookOpen, label: "Price index", sub: "Since 2020" },
-    { to: "/trends", icon: BookOpen, label: "Trends", sub: "Hot areas" },
-    { to: "/guides", icon: BookOpen, label: "Area guides", sub: "Prices & streets" },
-    { to: "/invest", icon: Building2, label: "Invest", sub: "Property blocks" },
-    { to: "/agencies", icon: Users, label: "Agencies", sub: "Titanium desks" },
-    { to: "/community", icon: Users, label: "Community", sub: "Ask the market" },
-    { to: "/wanted", icon: Search, label: "Wanted", sub: "Buyer requests" },
-    { to: "/cities", icon: MapIcon, label: "All cities", sub: "Pakistan" },
+    { to: "/tools?tab=loan", icon: Calculator, label: tx(lang, "Home loan", "ہوم لون"), sub: tx(lang, "Bank packages", "بینک پیکجز") },
+    { to: "/tools?tab=build", icon: Calculator, label: tx(lang, "Build cost", "تعمیراتی لاگت"), sub: tx(lang, "Grey + finishing", "گرے + فنشنگ") },
+    { to: "/tools?tab=area", icon: Calculator, label: tx(lang, "Area converter", "رقبہ کنورٹر"), sub: tx(lang, "Marla · Kanal · Yd", "مرلہ · کنال · گز") },
+    { to: "/maps", icon: MapIcon, label: tx(lang, "Plot finder", "پلاٹ فائنڈر"), sub: tx(lang, "12 societies", "۱۲ سوسائٹیاں") },
+    { to: "/property-index", icon: BookOpen, label: tx(lang, "Price index", "قیمت انڈیکس"), sub: tx(lang, "Since 2020", "۲۰۲۰ سے") },
+    { to: "/trends", icon: BookOpen, label: tx(lang, "Trends", "رجحانات"), sub: tx(lang, "Hot areas", "نمایاں علاقے") },
+    { to: "/guides", icon: BookOpen, label: tx(lang, "Area guides", "علاقائی گائیڈ"), sub: tx(lang, "Prices & streets", "قیمتیں اور سڑکیں") },
+    { to: "/invest", icon: Building2, label: tx(lang, "Invest", "سرمایہ کاری"), sub: tx(lang, "Property blocks", "پراپرٹی بلاکس") },
+    { to: "/agencies", icon: Users, label: tx(lang, "Agencies", "ایجنسیاں"), sub: tx(lang, "Titanium desks", "بڑی ڈیسک") },
+    { to: "/community", icon: Users, label: tx(lang, "Community", "کمیونٹی"), sub: tx(lang, "Ask the market", "مارکیٹ سے پوچھیں") },
+    { to: "/wanted", icon: Search, label: tx(lang, "Wanted", "مطلوب"), sub: tx(lang, "Buyer requests", "خریدار کی درخواست") },
+    { to: "/cities", icon: MapIcon, label: tx(lang, "All cities", "تمام شہر"), sub: tx(lang, "Pakistan", "پاکستان") },
   ];
   return (
     <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3 lg:grid-cols-4">

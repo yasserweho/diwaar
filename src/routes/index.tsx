@@ -10,6 +10,7 @@ import { useAppStore } from "@/lib/store";
 import { CITIES } from "@/lib/types";
 import { AREA_BOOK } from "@/lib/locations";
 import { seo } from "@/lib/seo";
+import { cityLabel, tx, useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () =>
@@ -29,6 +30,7 @@ function HomePage() {
   const leadCities = CITIES.slice(0, 8);
   const moreCities = CITIES.slice(8);
   const areaCount = CITIES.reduce((n, city) => n + (AREA_BOOK[city]?.length ?? 0), 0);
+  const { lang } = useLang();
 
   return (
     <>
@@ -43,10 +45,14 @@ function HomePage() {
         <div className="absolute inset-0 bg-[#071525]/78" />
         <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-14 sm:pb-14 sm:pt-20">
           <h1 className="mx-auto max-w-3xl text-center text-[2rem] font-semibold leading-[1.12] tracking-tight text-white sm:text-5xl">
-            Find property for sale and rent in Pakistan
+            {tx(lang, "Find property for sale and rent in Pakistan", "پاکستان میں خرید، فروخت اور کرایے کی جائیداد تلاش کریں")}
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-white/75 sm:text-base">
-            Houses, flats, plots, and commercial space across {CITIES.length} cities.
+            {tx(
+              lang,
+              `Houses, flats, plots, and commercial space across ${CITIES.length} cities.`,
+              `مکان، فلیٹ، پلاٹ اور کمرشل جگہ ${CITIES.length} شہروں میں۔`,
+            )}
           </p>
           <div className="mt-8">
             <SearchForm />
@@ -57,15 +63,15 @@ function HomePage() {
       <div className="border-b border-border bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted">
-            <span className="font-semibold text-black">{CITIES.length}</span> cities
+            <span className="font-semibold text-black">{CITIES.length}</span> {tx(lang, "cities", "شہر")}
             <span className="mx-2 text-border">·</span>
-            <span className="font-semibold text-black">{areaCount.toLocaleString()}</span> areas
+            <span className="font-semibold text-black">{areaCount.toLocaleString()}</span> {tx(lang, "areas", "علاقے")}
           </p>
           <Link
             to="/add"
             className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-white"
           >
-            List your property
+            {tx(lang, "List your property", "اپنی جائیداد لگائیں")}
             <ArrowRight className="size-4" />
           </Link>
         </div>
@@ -126,7 +132,7 @@ function HomePage() {
         )}
 
         <section>
-          <SectionHead title="Browse by city" href="/cities" action="All cities" />
+          <SectionHead title={tx(lang, "Browse by city", "شہر کے حساب سے دیکھیں")} href="/cities" action={tx(lang, "All cities", "تمام شہر")} />
           <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
             {leadCities.map((city) => (
               <Link
@@ -136,8 +142,8 @@ function HomePage() {
                 className="group flex items-center justify-between bg-white px-4 py-4 hover:bg-ice"
               >
                 <span>
-                  <span className="block text-sm font-semibold text-black">{city}</span>
-                  <span className="mt-0.5 block text-xs text-muted">{AREA_BOOK[city]?.length ?? 0} areas</span>
+                  <span className="block text-sm font-semibold text-black">{cityLabel(city, lang)}</span>
+                  <span className="mt-0.5 block text-xs text-muted">{AREA_BOOK[city]?.length ?? 0} {tx(lang, "areas", "علاقے")}</span>
                 </span>
                 <ArrowRight className="size-4 text-muted group-hover:text-primary" />
               </Link>
@@ -149,7 +155,7 @@ function HomePage() {
                 <span key={city}>
                   {i > 0 && <span className="mx-2 text-border">·</span>}
                   <Link to="/search" search={{ purpose: "buy", city }} className="font-medium text-fg hover:text-primary">
-                    {city}
+                    {cityLabel(city, lang)}
                   </Link>
                 </span>
               ))}
@@ -158,12 +164,12 @@ function HomePage() {
         </section>
 
         <section>
-          <SectionHead title="Tools" href="/tools" />
+          <SectionHead title={tx(lang, "Tools", "اوزار")} href="/tools" />
           <ToolTiles />
         </section>
 
         <section>
-          <SectionHead title="Area guides" href="/guides" />
+          <SectionHead title={tx(lang, "Area guides", "علاقائی گائیڈ")} href="/guides" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {GUIDES.map((g) => (
               <Link
@@ -184,7 +190,7 @@ function HomePage() {
         </section>
 
         <section>
-          <SectionHead title="From the journal" href="/blog" />
+          <SectionHead title={tx(lang, "From the journal", "مضامین")} href="/blog" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {POSTS.map((p) => (
               <Link

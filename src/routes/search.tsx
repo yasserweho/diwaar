@@ -13,6 +13,7 @@ import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL, CITIES, type Category, type Purpose, type SearchParams } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { seo } from "@/lib/seo";
+import { cityLabel, tx, useLang } from "@/lib/i18n";
 
 function parseSearch(s: Record<string, unknown>): SearchParams {
   const purpose: Purpose = s.purpose === "rent" ? "rent" : "buy";
@@ -192,6 +193,7 @@ function SortSelect({ value }: { value: NonNullable<SearchParams["sort"]> }) {
 }
 
 function FiltersPanel() {
+  const { lang } = useLang();
   const params = Route.useSearch();
   const navigate = useNavigate({ from: "/search" });
   const areas = params.city ? locationsInCity(params.city) : [];
@@ -203,38 +205,38 @@ function FiltersPanel() {
   return (
     <div className="space-y-5 rounded-xl bg-surface p-4 shadow-card lg:sticky lg:top-24">
       <fieldset>
-        <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">Purpose</legend>
+        <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">{tx(lang, "Purpose", "مقصد")}</legend>
         <div className="flex gap-2">
           <Chip active={params.purpose !== "rent"} onClick={() => patch({ purpose: "buy" })}>
-            Buy
+            {tx(lang, "Buy", "خریدیں")}
           </Chip>
           <Chip active={params.purpose === "rent"} onClick={() => patch({ purpose: "rent" })}>
-            Rent
+            {tx(lang, "Rent", "کرایہ")}
           </Chip>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">City</legend>
+        <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">{tx(lang, "City", "شہر")}</legend>
         <SearchSelect
           className="h-11"
           value={params.city ?? ""}
-          placeholder="All cities"
-          searchPlaceholder="Type a city"
-          options={[{ value: "", label: "All cities" }, ...CITIES.map((name) => ({ value: name, label: name }))]}
+          placeholder={tx(lang, "All cities", "تمام شہر")}
+          searchPlaceholder={tx(lang, "Type a city", "شہر لکھیں")}
+          options={[{ value: "", label: tx(lang, "All cities", "تمام شہر") }, ...CITIES.map((name) => ({ value: name, label: cityLabel(name, lang) }))]}
           onChange={(city) => patch({ city: city || undefined, location: undefined })}
         />
       </fieldset>
 
       {areas.length > 0 && (
         <fieldset>
-          <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">Location</legend>
+          <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">{tx(lang, "Location", "علاقہ")}</legend>
           <SearchSelect
             className="h-11"
             value={params.location ?? ""}
-            placeholder="All areas"
-            searchPlaceholder="Type an area"
-            options={[{ value: "", label: "All areas" }, ...areas.map((name) => ({ value: name, label: name }))]}
+            placeholder={tx(lang, "All areas", "تمام علاقے")}
+            searchPlaceholder={tx(lang, "Type an area", "علاقہ لکھیں")}
+            options={[{ value: "", label: tx(lang, "All areas", "تمام علاقے") }, ...areas.map((name) => ({ value: name, label: name }))]}
             onChange={(location) => patch({ location: location || undefined })}
           />
         </fieldset>
