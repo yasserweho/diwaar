@@ -44,10 +44,10 @@ function HomePage() {
         />
         <div className="absolute inset-0 bg-[#071525]/78" />
         <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-14 sm:pb-14 sm:pt-20">
-          <h1 className="mx-auto max-w-3xl text-center text-[2rem] font-semibold leading-[1.12] tracking-tight text-white sm:text-5xl">
+          <h1 className="max-w-3xl text-start text-[2rem] font-semibold leading-[1.15] text-white sm:text-5xl">
             {tx(lang, "Find property for sale and rent in Pakistan", "پاکستان میں خرید، فروخت اور کرایے کی جائیداد تلاش کریں")}
           </h1>
-          <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-white/75 sm:text-base">
+          <p className="mt-3 max-w-2xl text-start text-base leading-relaxed text-white/80">
             {tx(
               lang,
               `Houses, flats, plots, and commercial space across ${CITIES.length} cities.`,

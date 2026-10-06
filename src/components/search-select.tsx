@@ -107,7 +107,7 @@ export function SearchSelect({
                       role="option"
                       aria-selected={option.value === value}
                       className={cn(
-                        "block w-full truncate px-3 py-2.5 text-left text-sm",
+                        "block w-full truncate px-3 py-2.5 text-start text-sm",
                         option.value === value && "font-semibold",
                       )}
                       style={{ color: "#000", backgroundColor: option.value === value ? "#e7f0fc" : "#fff" }}
@@ -136,7 +136,7 @@ export function SearchSelect({
         aria-expanded={open}
         aria-haspopup="listbox"
         className={cn(
-          "flex h-12 w-full items-center justify-between gap-2 rounded-lg border border-border px-3 text-left text-sm font-medium outline-none focus:border-primary",
+          "flex h-12 w-full items-center justify-between gap-2 rounded-lg border border-border px-3 text-start text-sm font-medium outline-none focus:border-primary",
           className,
         )}
         style={{ color: "#000", backgroundColor: "#fff" }}

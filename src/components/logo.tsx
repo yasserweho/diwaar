@@ -22,7 +22,7 @@ export function DiwaarWordmark({
       <span className="leading-tight">
         <span
           className={cn(
-            "block text-[17px] font-semibold tracking-tight",
+            "block font-sans text-[17px] font-semibold tracking-normal",
             inverted ? "text-primary-fg" : "text-primary-dark",
           )}
         >
