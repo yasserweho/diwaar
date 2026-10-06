@@ -26,7 +26,7 @@ export function DiwaarWordmark({
             inverted ? "text-primary-fg" : "text-primary-dark",
           )}
         >
-          Diwaar
+          diwaar
           <span className={inverted ? "text-ice-2" : "text-primary"}>.com</span>
         </span>
         {!compact && (
