@@ -62,6 +62,7 @@ const MENU_GROUPS = [
       { href: "/orders", label: "Payments", ur: "ادائیگیاں" },
       { href: "/loans", label: "Loan files", ur: "لون فائلیں" },
       { href: "/community", label: "Community", ur: "کمیونٹی" },
+      { href: "/faq", label: "Questions", ur: "سوالات" },
       { href: "/about", label: "About", ur: "ہمارے بارے میں" },
       { href: "/contact", label: "Contact", ur: "رابطہ" },
       { href: "/tools?tab=loan", label: "Calculators", ur: "کیلکولیٹر" },
@@ -384,6 +385,10 @@ function Footer() {
         />
       </div>
       <div className="border-t border-primary-fg/10 py-4 text-center text-xs text-ice-2">
+        <a href="/faq" className="hover:text-primary-fg">
+          {tx(lang, "Questions", "سوالات")}
+        </a>
+        <span className="mx-2">·</span>
         <a href="/about" className="hover:text-primary-fg">
           {tx(lang, "About", "ہمارے بارے میں")}
         </a>

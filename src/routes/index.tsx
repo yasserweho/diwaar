@@ -11,6 +11,7 @@ import { CITIES } from "@/lib/types";
 import { AREA_BOOK } from "@/lib/locations";
 import { seo } from "@/lib/seo";
 import { citySlug } from "@/lib/location-pages";
+import { FaqList } from "@/components/faq-list";
 import { SERVICES } from "@/lib/services";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 
@@ -180,6 +181,11 @@ function HomePage() {
               </Link>
             ))}
           </div>
+        </section>
+
+        <section>
+          <SectionHead title={tx(lang, "Questions", "سوالات")} href="/faq" action={tx(lang, "All questions", "تمام سوالات")} />
+          <FaqList limit={4} />
         </section>
 
         <section>
