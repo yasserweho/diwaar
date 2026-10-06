@@ -167,7 +167,7 @@ function HomePage() {
         <section>
           <SectionHead title={tx(lang, "Services", "خدمات")} href="/services" />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {SERVICES.slice(0, 4).map((s) => (
+            {SERVICES.slice(0, 8).map((s) => (
               <Link
                 key={s.slug}
                 to="/services/$slug"

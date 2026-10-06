@@ -7,7 +7,7 @@ export const Route = createFileRoute("/services")({
   head: () =>
     seo(
       "Property Services in Pakistan",
-      "List a property, check asking prices, estimate a home loan, read a sale checklist, and find an agent on diwaar.com.",
+      "List a property, search houses, plots, flats and shops, check prices, estimate a loan or build cost, and find an agent on diwaar.com.",
       { path: "/services" },
     ),
   component: ServicesPage,
