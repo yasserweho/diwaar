@@ -10,6 +10,7 @@ import { useAppStore } from "@/lib/store";
 import { CITIES } from "@/lib/types";
 import { AREA_BOOK } from "@/lib/locations";
 import { seo } from "@/lib/seo";
+import { citySlug } from "@/lib/location-pages";
 import { SERVICES } from "@/lib/services";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 
@@ -133,13 +134,13 @@ function HomePage() {
         )}
 
         <section>
-          <SectionHead title={tx(lang, "Browse by city", "شہر کے حساب سے دیکھیں")} href="/cities" action={tx(lang, "All cities", "تمام شہر")} />
+          <SectionHead title={tx(lang, "Browse by city", "شہر کے حساب سے دیکھیں")} href="/locations" action={tx(lang, "All locations", "تمام مقامات")} />
           <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
             {leadCities.map((city) => (
               <Link
                 key={city}
-                to="/search"
-                search={{ purpose: "buy", city }}
+                to="/locations/$city"
+                params={{ city: citySlug(city) }}
                 className="group flex items-center justify-between bg-white px-4 py-4 hover:bg-ice"
               >
                 <span>
@@ -155,7 +156,7 @@ function HomePage() {
               {moreCities.map((city, i) => (
                 <span key={city}>
                   {i > 0 && <span className="mx-2 text-border">·</span>}
-                  <Link to="/search" search={{ purpose: "buy", city }} className="font-medium text-fg hover:text-primary">
+                  <Link to="/locations/$city" params={{ city: citySlug(city) }} className="font-medium text-fg hover:text-primary">
                     {cityLabel(city, lang)}
                   </Link>
                 </span>

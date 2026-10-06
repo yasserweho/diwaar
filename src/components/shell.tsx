@@ -19,6 +19,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { SignedIn, SignedOut, UserButton } from "@/lib/auth/gates";
 import { AREA_LABEL, type AreaUnit } from "@/lib/format";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
+import { citySlug } from "@/lib/location-pages";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
@@ -32,6 +33,7 @@ const MENU_GROUPS = [
       { href: "/projects", label: "New projects", ur: "نئے منصوبے" },
       { href: "/maps", label: "Plot finder", ur: "پلاٹ فائنڈر" },
       { href: "/cities", label: "Cities", ur: "شہر" },
+      { href: "/locations", label: "Locations", ur: "مقامات" },
       { href: "/services", label: "Services", ur: "خدمات" },
       { href: "/agents", label: "Agents", ur: "ایجنٹس" },
       { href: "/agencies", label: "Agencies", ur: "ایجنسیاں" },
@@ -342,6 +344,7 @@ function Footer() {
         <FooterCol
           title={tx(lang, "Explore", "دریافت کریں")}
           links={[
+            [tx(lang, "Locations", "مقامات"), "/locations"],
             [tx(lang, "Services", "خدمات"), "/services"],
             [tx(lang, "Properties for sale", "فروخت کے لیے جائیداد"), "/search?purpose=buy"],
             [tx(lang, "Properties to rent", "کرایے کی جائیداد"), "/search?purpose=rent"],
@@ -370,11 +373,11 @@ function Footer() {
         <FooterCol
           title={tx(lang, "Cities", "شہر")}
           links={[
-            [cityLabel("Lahore", lang), "/search?city=Lahore&purpose=buy"],
-            [cityLabel("Karachi", lang), "/search?city=Karachi&purpose=buy"],
-            [cityLabel("Islamabad", lang), "/search?city=Islamabad&purpose=buy"],
-            [cityLabel("Rawalpindi", lang), "/search?city=Rawalpindi&purpose=buy"],
-            [cityLabel("Multan", lang), "/search?city=Multan&purpose=buy"],
+            [cityLabel("Lahore", lang), `/locations/${citySlug("Lahore")}`],
+            [cityLabel("Karachi", lang), `/locations/${citySlug("Karachi")}`],
+            [cityLabel("Islamabad", lang), `/locations/${citySlug("Islamabad")}`],
+            [cityLabel("Rawalpindi", lang), `/locations/${citySlug("Rawalpindi")}`],
+            [cityLabel("Multan", lang), `/locations/${citySlug("Multan")}`],
           ]}
         />
       </div>

@@ -21,6 +21,7 @@ import { Route as CompareRouteImport } from './routes/compare'
 import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as InvestRouteImport } from './routes/invest'
 import { Route as LoansRouteImport } from './routes/loans'
+import { Route as LocationsRouteImport } from './routes/locations'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MapsRouteImport } from './routes/maps'
 import { Route as MyAdsRouteImport } from './routes/my-ads'
@@ -39,10 +40,12 @@ import { Route as AgentsIdRouteImport } from './routes/agents.$id'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CommunityIdRouteImport } from './routes/community.$id'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
+import { Route as LocationsCityRouteImport } from './routes/locations.$city'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as PropertyIdRouteImport } from './routes/property.$id'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as LocationsCityAreaRouteImport } from './routes/locations.$city.$area'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -102,6 +105,11 @@ const InvestRoute = InvestRouteImport.update({
 const LoansRoute = LoansRouteImport.update({
   id: '/loans',
   path: '/loans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocationsRoute = LocationsRouteImport.update({
+  id: '/locations',
+  path: '/locations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -194,6 +202,11 @@ const GuidesSlugRoute = GuidesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => GuidesRoute,
 } as any)
+const LocationsCityRoute = LocationsCityRouteImport.update({
+  id: '/$city',
+  path: '/$city',
+  getParentRoute: () => LocationsRoute,
+} as any)
 const ProjectsIdRoute = ProjectsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -214,6 +227,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocationsCityAreaRoute = LocationsCityAreaRouteImport.update({
+  id: '/$area',
+  path: '/$area',
+  getParentRoute: () => LocationsCityRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -228,6 +246,7 @@ export interface FileRoutesByFullPath {
   '/guides': typeof GuidesRouteWithChildren
   '/invest': typeof InvestRoute
   '/loans': typeof LoansRoute
+  '/locations': typeof LocationsRouteWithChildren
   '/login': typeof LoginRoute
   '/maps': typeof MapsRoute
   '/my-ads': typeof MyAdsRoute
@@ -246,10 +265,12 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/community/$id': typeof CommunityIdRoute
   '/guides/$slug': typeof GuidesSlugRoute
+  '/locations/$city': typeof LocationsCityRouteWithChildren
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/locations/$city/$area': typeof LocationsCityAreaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -264,6 +285,7 @@ export interface FileRoutesByTo {
   '/guides': typeof GuidesRouteWithChildren
   '/invest': typeof InvestRoute
   '/loans': typeof LoansRoute
+  '/locations': typeof LocationsRouteWithChildren
   '/login': typeof LoginRoute
   '/maps': typeof MapsRoute
   '/my-ads': typeof MyAdsRoute
@@ -282,10 +304,12 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/community/$id': typeof CommunityIdRoute
   '/guides/$slug': typeof GuidesSlugRoute
+  '/locations/$city': typeof LocationsCityRouteWithChildren
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/locations/$city/$area': typeof LocationsCityAreaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -301,6 +325,7 @@ export interface FileRoutesById {
   '/guides': typeof GuidesRouteWithChildren
   '/invest': typeof InvestRoute
   '/loans': typeof LoansRoute
+  '/locations': typeof LocationsRouteWithChildren
   '/login': typeof LoginRoute
   '/maps': typeof MapsRoute
   '/my-ads': typeof MyAdsRoute
@@ -319,10 +344,12 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/community/$id': typeof CommunityIdRoute
   '/guides/$slug': typeof GuidesSlugRoute
+  '/locations/$city': typeof LocationsCityRouteWithChildren
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/locations/$city/$area': typeof LocationsCityAreaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -339,6 +366,7 @@ export interface FileRouteTypes {
     | '/guides'
     | '/invest'
     | '/loans'
+    | '/locations'
     | '/login'
     | '/maps'
     | '/my-ads'
@@ -357,10 +385,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/community/$id'
     | '/guides/$slug'
+    | '/locations/$city'
     | '/projects/$id'
     | '/property/$id'
     | '/services/$slug'
     | '/api/auth/$'
+    | '/locations/$city/$area'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -375,6 +405,7 @@ export interface FileRouteTypes {
     | '/guides'
     | '/invest'
     | '/loans'
+    | '/locations'
     | '/login'
     | '/maps'
     | '/my-ads'
@@ -393,10 +424,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/community/$id'
     | '/guides/$slug'
+    | '/locations/$city'
     | '/projects/$id'
     | '/property/$id'
     | '/services/$slug'
     | '/api/auth/$'
+    | '/locations/$city/$area'
   id:
     | '__root__'
     | '/'
@@ -411,6 +444,7 @@ export interface FileRouteTypes {
     | '/guides'
     | '/invest'
     | '/loans'
+    | '/locations'
     | '/login'
     | '/maps'
     | '/my-ads'
@@ -429,10 +463,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/community/$id'
     | '/guides/$slug'
+    | '/locations/$city'
     | '/projects/$id'
     | '/property/$id'
     | '/services/$slug'
     | '/api/auth/$'
+    | '/locations/$city/$area'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -448,6 +484,7 @@ export interface RootRouteChildren {
   GuidesRoute: typeof GuidesRouteWithChildren
   InvestRoute: typeof InvestRoute
   LoansRoute: typeof LoansRoute
+  LocationsRoute: typeof LocationsRouteWithChildren
   LoginRoute: typeof LoginRoute
   MapsRoute: typeof MapsRoute
   MyAdsRoute: typeof MyAdsRoute
@@ -549,6 +586,13 @@ declare module '@tanstack/react-router' {
       path: '/loans'
       fullPath: '/loans'
       preLoaderRoute: typeof LoansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/locations': {
+      id: '/locations'
+      path: '/locations'
+      fullPath: '/locations'
+      preLoaderRoute: typeof LocationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -677,6 +721,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuidesSlugRouteImport
       parentRoute: typeof GuidesRoute
     }
+    '/locations/$city': {
+      id: '/locations/$city'
+      path: '/$city'
+      fullPath: '/locations/$city'
+      preLoaderRoute: typeof LocationsCityRouteImport
+      parentRoute: typeof LocationsRoute
+    }
     '/projects/$id': {
       id: '/projects/$id'
       path: '/$id'
@@ -704,6 +755,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/locations/$city/$area': {
+      id: '/locations/$city/$area'
+      path: '/$area'
+      fullPath: '/locations/$city/$area'
+      preLoaderRoute: typeof LocationsCityAreaRouteImport
+      parentRoute: typeof LocationsCityRoute
     }
   }
 }
@@ -764,6 +822,30 @@ const GuidesRouteChildren: GuidesRouteChildren = {
 const GuidesRouteWithChildren =
   GuidesRoute._addFileChildren(GuidesRouteChildren)
 
+interface LocationsCityRouteChildren {
+  LocationsCityAreaRoute: typeof LocationsCityAreaRoute
+}
+
+const LocationsCityRouteChildren: LocationsCityRouteChildren = {
+  LocationsCityAreaRoute: LocationsCityAreaRoute,
+}
+
+const LocationsCityRouteWithChildren = LocationsCityRoute._addFileChildren(
+  LocationsCityRouteChildren,
+)
+
+interface LocationsRouteChildren {
+  LocationsCityRoute: typeof LocationsCityRouteWithChildren
+}
+
+const LocationsRouteChildren: LocationsRouteChildren = {
+  LocationsCityRoute: LocationsCityRouteWithChildren,
+}
+
+const LocationsRouteWithChildren = LocationsRoute._addFileChildren(
+  LocationsRouteChildren,
+)
+
 interface ProjectsRouteChildren {
   ProjectsIdRoute: typeof ProjectsIdRoute
 }
@@ -801,6 +883,7 @@ const rootRouteChildren: RootRouteChildren = {
   GuidesRoute: GuidesRouteWithChildren,
   InvestRoute: InvestRoute,
   LoansRoute: LoansRoute,
+  LocationsRoute: LocationsRouteWithChildren,
   LoginRoute: LoginRoute,
   MapsRoute: MapsRoute,
   MyAdsRoute: MyAdsRoute,
