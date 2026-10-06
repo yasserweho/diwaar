@@ -19,6 +19,7 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CitiesRouteImport } from './routes/cities'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as InvestRouteImport } from './routes/invest'
 import { Route as LoansRouteImport } from './routes/loans'
@@ -96,6 +97,11 @@ const CommunityRoute = CommunityRouteImport.update({
 const CompareRoute = CompareRouteImport.update({
   id: '/compare',
   path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuidesRoute = GuidesRouteImport.update({
@@ -250,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/cities': typeof CitiesRoute
   '/community': typeof CommunityRouteWithChildren
   '/compare': typeof CompareRoute
+  '/contact': typeof ContactRoute
   '/guides': typeof GuidesRouteWithChildren
   '/invest': typeof InvestRoute
   '/loans': typeof LoansRoute
@@ -290,6 +297,7 @@ export interface FileRoutesByTo {
   '/cities': typeof CitiesRoute
   '/community': typeof CommunityRouteWithChildren
   '/compare': typeof CompareRoute
+  '/contact': typeof ContactRoute
   '/guides': typeof GuidesRouteWithChildren
   '/invest': typeof InvestRoute
   '/loans': typeof LoansRoute
@@ -331,6 +339,7 @@ export interface FileRoutesById {
   '/cities': typeof CitiesRoute
   '/community': typeof CommunityRouteWithChildren
   '/compare': typeof CompareRoute
+  '/contact': typeof ContactRoute
   '/guides': typeof GuidesRouteWithChildren
   '/invest': typeof InvestRoute
   '/loans': typeof LoansRoute
@@ -373,6 +382,7 @@ export interface FileRouteTypes {
     | '/cities'
     | '/community'
     | '/compare'
+    | '/contact'
     | '/guides'
     | '/invest'
     | '/loans'
@@ -413,6 +423,7 @@ export interface FileRouteTypes {
     | '/cities'
     | '/community'
     | '/compare'
+    | '/contact'
     | '/guides'
     | '/invest'
     | '/loans'
@@ -453,6 +464,7 @@ export interface FileRouteTypes {
     | '/cities'
     | '/community'
     | '/compare'
+    | '/contact'
     | '/guides'
     | '/invest'
     | '/loans'
@@ -494,6 +506,7 @@ export interface RootRouteChildren {
   CitiesRoute: typeof CitiesRoute
   CommunityRoute: typeof CommunityRouteWithChildren
   CompareRoute: typeof CompareRoute
+  ContactRoute: typeof ContactRoute
   GuidesRoute: typeof GuidesRouteWithChildren
   InvestRoute: typeof InvestRoute
   LoansRoute: typeof LoansRoute
@@ -585,6 +598,13 @@ declare module '@tanstack/react-router' {
       path: '/compare'
       fullPath: '/compare'
       preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guides': {
@@ -901,6 +921,7 @@ const rootRouteChildren: RootRouteChildren = {
   CitiesRoute: CitiesRoute,
   CommunityRoute: CommunityRouteWithChildren,
   CompareRoute: CompareRoute,
+  ContactRoute: ContactRoute,
   GuidesRoute: GuidesRouteWithChildren,
   InvestRoute: InvestRoute,
   LoansRoute: LoansRoute,
@@ -924,6 +945,7 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
 import type { getRouter } from './router.tsx'
 import type { createStart } from '@tanstack/react-start'
 declare module '@tanstack/react-start' {
