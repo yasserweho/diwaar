@@ -29,7 +29,7 @@ function ProjectDetail() {
   }
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <img src={p.images[0]} alt="" className="aspect-16/8 w-full rounded-2xl object-cover" />
+      <img src={p.images[0]} alt={`${p.name} in ${p.city}`} className="aspect-16/8 w-full rounded-2xl object-cover" />
       <p className="mt-6 text-xs font-bold uppercase tracking-wide text-primary">{p.status}</p>
       <h1 className="text-3xl font-extrabold text-black">{p.name}</h1>
       <p className="mt-1 text-muted">

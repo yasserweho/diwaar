@@ -32,7 +32,7 @@ function GuideDetail() {
   }
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <img src={g.image} alt="" className="aspect-16/8 w-full rounded-2xl object-cover" />
+      <img src={g.image} alt={`${g.name} in ${g.city}`} className="aspect-16/8 w-full rounded-2xl object-cover" />
       <p className="mt-6 text-xs font-bold uppercase tracking-wide text-primary">{g.city}</p>
       <h1 className="text-3xl font-extrabold text-black">{g.name}</h1>
       <p className="mt-3 leading-relaxed">{g.overview}</p>

@@ -41,7 +41,7 @@ function HomePage() {
       <section className="relative isolate overflow-hidden bg-[#071525] text-white">
         <img
           src="/images/islamabad-family.jpg"
-          alt=""
+          alt="A family at home in Islamabad"
           decoding="async"
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
@@ -102,7 +102,7 @@ function HomePage() {
                 params={{ id: p.id }}
                 className="snap-start min-w-[260px] max-w-[280px] shrink-0 overflow-hidden rounded-xl bg-surface shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast"
               >
-                <img src={p.images[0]} alt="" loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
+                <img src={p.images[0]} alt={`${p.name}, ${p.city}`} loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
                 <div className="p-4">
                   <p className="text-[11px] font-bold uppercase tracking-wide text-primary">
                     {p.status}
@@ -206,7 +206,7 @@ function HomePage() {
                 params={{ slug: g.slug }}
                 className="overflow-hidden rounded-xl border border-border bg-white"
               >
-                <img src={g.image} alt="" loading="lazy" decoding="async" className="aspect-16/8 w-full object-cover" />
+                <img src={g.image} alt={`${g.name}, ${g.city}`} loading="lazy" decoding="async" className="aspect-16/8 w-full object-cover" />
                 <div className="p-4">
                   <p className="text-xs font-semibold text-primary">{g.city}</p>
                   <p className="font-bold">{g.name}</p>
@@ -227,7 +227,7 @@ function HomePage() {
                 params={{ slug: p.slug }}
                 className="overflow-hidden rounded-xl border border-border bg-white"
               >
-                <img src={p.image} alt="" loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
+                <img src={p.image} alt={p.title} loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
                 <div className="p-4">
                   <p className="text-[11px] font-bold uppercase tracking-wide text-primary">{p.tag}</p>
                   <p className="font-bold mt-1 leading-snug">{p.title}</p>

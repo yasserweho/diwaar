@@ -28,7 +28,7 @@ function ProjectsPage() {
             params={{ id: p.id }}
             className="overflow-hidden rounded-2xl bg-surface shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast"
           >
-            <img src={p.images[0]} alt="" loading="lazy" decoding="async" className="aspect-16/9 w-full object-cover" />
+            <img src={p.images[0]} alt={`${p.name}, ${p.city}`} loading="lazy" decoding="async" className="aspect-16/9 w-full object-cover" />
             <div className="p-5">
               <span className="text-[11px] font-bold uppercase tracking-wide text-primary">{p.status}</span>
               <h2 className="mt-1 text-lg font-bold">{p.name}</h2>

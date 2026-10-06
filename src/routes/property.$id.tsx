@@ -114,7 +114,7 @@ function PropertyBody() {
                     i === shot ? "ring-2 ring-primary" : "opacity-80"
                   }`}
                 >
-                  <img src={src} alt="" loading="lazy" decoding="async" className="size-full object-cover" />
+                  <img src={src} alt={`${property.title}, photo ${i + 1}`} loading="lazy" decoding="async" className="size-full object-cover" />
                 </button>
               ))}
             </div>

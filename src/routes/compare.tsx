@@ -40,7 +40,7 @@ function ComparePage() {
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {rows.map((p) => (
             <article key={p.id} className="rounded-2xl bg-surface p-4 shadow-card">
-              <img src={p.images[0]} alt="" className="aspect-16/10 w-full rounded-lg object-cover" />
+              <img src={p.images[0]} alt={p.title} className="aspect-16/10 w-full rounded-lg object-cover" />
               <Link to="/property/$id" params={{ id: p.id }} className="mt-3 block font-bold hover:text-primary">
                 {p.title}
               </Link>
