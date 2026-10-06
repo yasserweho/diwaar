@@ -32,6 +32,7 @@ import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as PayRouteImport } from './routes/pay'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PropertyIndexRouteImport } from './routes/property-index'
+import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -165,6 +166,11 @@ const PropertyIndexRoute = PropertyIndexRouteImport.update({
   path: '/property-index',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SavedRoute = SavedRouteImport.update({
   id: '/saved',
   path: '/saved',
@@ -275,6 +281,7 @@ export interface FileRoutesByFullPath {
   '/pay': typeof PayRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/property-index': typeof PropertyIndexRoute
+  '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
   '/services': typeof ServicesRouteWithChildren
@@ -317,6 +324,7 @@ export interface FileRoutesByTo {
   '/pay': typeof PayRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/property-index': typeof PropertyIndexRoute
+  '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
   '/services': typeof ServicesRouteWithChildren
@@ -360,6 +368,7 @@ export interface FileRoutesById {
   '/pay': typeof PayRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/property-index': typeof PropertyIndexRoute
+  '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
   '/services': typeof ServicesRouteWithChildren
@@ -404,6 +413,7 @@ export interface FileRouteTypes {
     | '/pay'
     | '/projects'
     | '/property-index'
+    | '/reviews'
     | '/saved'
     | '/search'
     | '/services'
@@ -446,6 +456,7 @@ export interface FileRouteTypes {
     | '/pay'
     | '/projects'
     | '/property-index'
+    | '/reviews'
     | '/saved'
     | '/search'
     | '/services'
@@ -488,6 +499,7 @@ export interface FileRouteTypes {
     | '/pay'
     | '/projects'
     | '/property-index'
+    | '/reviews'
     | '/saved'
     | '/search'
     | '/services'
@@ -531,6 +543,7 @@ export interface RootRouteChildren {
   PayRoute: typeof PayRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   PropertyIndexRoute: typeof PropertyIndexRoute
+  ReviewsRoute: typeof ReviewsRoute
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
   ServicesRoute: typeof ServicesRouteWithChildren
@@ -702,6 +715,13 @@ declare module '@tanstack/react-router' {
       path: '/property-index'
       fullPath: '/property-index'
       preLoaderRoute: typeof PropertyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/saved': {
@@ -954,6 +974,7 @@ const rootRouteChildren: RootRouteChildren = {
   PayRoute: PayRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   PropertyIndexRoute: PropertyIndexRoute,
+  ReviewsRoute: ReviewsRoute,
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
   ServicesRoute: ServicesRouteWithChildren,

@@ -12,6 +12,7 @@ import { AREA_BOOK } from "@/lib/locations";
 import { seo } from "@/lib/seo";
 import { citySlug } from "@/lib/location-pages";
 import { FaqList } from "@/components/faq-list";
+import { ReviewSection } from "@/components/reviews";
 import { SERVICES } from "@/lib/services";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 
@@ -181,6 +182,11 @@ function HomePage() {
               </Link>
             ))}
           </div>
+        </section>
+
+        <section>
+          <SectionHead title={tx(lang, "Reviews", "تبصرے")} href="/reviews" action={tx(lang, "All reviews", "تمام تبصرے")} />
+          <ReviewSection limit={3} />
         </section>
 
         <section>
