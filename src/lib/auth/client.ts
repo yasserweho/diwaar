@@ -102,12 +102,19 @@ export async function signIn(
 
   const popup = inLivePreview() ? openSignInPopup(providerId) : null;
 
-  await runPreSignInSignOut({
-    livePreview: inLivePreview(),
-    hasBearer: Boolean(getBearerToken()),
-    requestSignOut: () => authClient.signOut(),
-    clearToken: () => setBearerToken(null),
-  });
+  // On diwaar.com, signing out first waits on the server and can clear the
+  // Google state cookie after it is set. Go straight to Google instead.
+  const straightToGoogle = providerId === "grok-google" && onCustomDomain();
+  if (!straightToGoogle) {
+    await runPreSignInSignOut({
+      livePreview: inLivePreview(),
+      hasBearer: Boolean(getBearerToken()),
+      requestSignOut: () => authClient.signOut(),
+      clearToken: () => setBearerToken(null),
+    });
+  } else {
+    setBearerToken(null);
+  }
 
   if (inLivePreview()) {
     if (!popup) throw new Error("Pop-up blocked — allow pop-ups for sign-in");

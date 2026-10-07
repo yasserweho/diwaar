@@ -130,13 +130,15 @@ export const auth = betterAuth({
   secret: env("BETTER_AUTH_SECRET") ?? previewAuthSecret(),
   database,
   trustedOrigins,
+  onAPIError: {
+    errorURL: "/login",
+  },
   ...(nativeGoogle
     ? {
         socialProviders: {
           google: {
             clientId: googleClientId as string,
             clientSecret: googleClientSecret as string,
-            prompt: "select_account" as const,
           },
         },
       }

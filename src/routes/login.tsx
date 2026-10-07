@@ -28,15 +28,63 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [embedded, setEmbedded] = useState(false);
-  const [googleFailed, setGoogleFailed] = useState(false);
+  const [note, setNote] = useState("");
+  const [opening, setOpening] = useState<"google" | "x" | null>(null);
+
+  const google = GROK_PROVIDERS.find((p) => p.providerId === "grok-google");
+  const x = GROK_PROVIDERS.find((p) => p.providerId === "grok-x");
+
+  function startSocial(providerId: string, which: "google" | "x", auto = false) {
+    if (inAppBrowser()) {
+      setNote("Open diwaar.com in Safari or Chrome. Google sign-in does not run inside this app.");
+      return;
+    }
+    setNote("");
+    setOpening(which);
+    if (!auto) {
+      try {
+        sessionStorage.removeItem("diwaar-google-retry");
+      } catch {
+        /* ignore */
+      }
+    }
+    void signIn(providerId, {
+      callbackURL: "/",
+      errorCallbackURL: "/login",
+    }).catch((err) => {
+      setOpening(null);
+      setNote(err instanceof Error ? err.message : "Could not open Google. Tap Google to try again.");
+    });
+  }
 
   useEffect(() => {
     setEmbedded(inAppBrowser());
-    const error = new URLSearchParams(window.location.search).get("error");
-    if (!error) return;
-    setGoogleFailed(true);
-    setMode("up");
-    toast.error("Gmail didn't finish. Create a Diwaar password for that Gmail address below.");
+    const params = new URLSearchParams(window.location.search);
+    const code = params.getAll("error").filter(Boolean).at(-1) ?? "";
+    if (!code || !google) return;
+    window.history.replaceState({}, "", "/login");
+    const cancelled = code === "access_denied";
+    const retryable =
+      !cancelled &&
+      /state_|invalid_code|no_code|please_restart|internal_server|unable_to_get_user_info|^google$/.test(code);
+    let already = false;
+    try {
+      already = sessionStorage.getItem("diwaar-google-retry") === "1";
+      if (retryable && !already) sessionStorage.setItem("diwaar-google-retry", "1");
+    } catch {
+      already = true;
+    }
+    if (retryable && !already && !inAppBrowser()) {
+      startSocial(google.providerId, "google", true);
+      return;
+    }
+    setNote(
+      cancelled
+        ? "Google sign-in was closed. Tap Google to try again."
+        : "Google sign-in did not finish. Tap Google to try again.",
+    );
+    // startSocial is stable for this mount; we only want the URL error once.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function onEmail(e: React.FormEvent) {
@@ -75,27 +123,6 @@ function LoginPage() {
     }
   }
 
-  const google = GROK_PROVIDERS.find((p) => p.providerId === "grok-google");
-  const x = GROK_PROVIDERS.find((p) => p.providerId === "grok-x");
-
-  function startSocial(providerId: string, which: "google" | "x") {
-    if (inAppBrowser()) {
-      if (which === "google") {
-        setGoogleFailed(true);
-        setMode("up");
-      }
-      toast.error("Open diwaar.com in Safari or Chrome. This sign-in is blocked in this app.");
-      return;
-    }
-    void signIn(providerId, {
-      callbackURL: "/",
-      errorCallbackURL: `/login?error=${which}`,
-    }).catch((err) => {
-      if (which === "google") setGoogleFailed(true);
-      toast.error(err instanceof Error ? err.message : "Could not sign in");
-    });
-  }
-
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-10 pb-28">
       <DiwaarWordmark />
@@ -110,10 +137,8 @@ function LoginPage() {
           Google blocks Gmail sign-in inside WhatsApp, Instagram and in-app browsers. Open diwaar.com in Safari or Chrome, or create a password below.
         </p>
       )}
-      {googleFailed && (
-        <p className="mt-4 rounded-xl bg-hot-bg px-3 py-3 text-sm text-hot">
-          Gmail sign-in did not finish. Use the same Gmail address below and choose a password for Diwaar. That password is not your Google password.
-        </p>
+      {note && (
+        <p className="mt-4 rounded-xl bg-ice px-3 py-3 text-sm text-primary-dark">{note}</p>
       )}
       {authEnabled ? (
         <>
@@ -121,21 +146,23 @@ function LoginPage() {
             {google && (
               <button
                 type="button"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-border bg-white px-3 text-sm font-semibold text-black"
+                disabled={opening !== null}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-border bg-white px-3 text-sm font-semibold text-black disabled:opacity-60"
                 onClick={() => startSocial(google.providerId, "google")}
               >
                 <GoogleLogo />
-                Google
+                {opening === "google" ? "Opening…" : "Google"}
               </button>
             )}
             {x && (
               <button
                 type="button"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-border bg-white px-3 text-sm font-semibold text-black"
+                disabled={opening !== null}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-border bg-white px-3 text-sm font-semibold text-black disabled:opacity-60"
                 onClick={() => startSocial(x.providerId, "x")}
               >
                 <XLogo />
-                X
+                {opening === "x" ? "Opening…" : "X"}
               </button>
             )}
           </div>
