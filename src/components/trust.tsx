@@ -32,14 +32,16 @@ export function TrustStrip() {
     },
   ];
   return (
-    <div className="grid gap-px overflow-hidden border-y border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-      {items.map((item) => (
-        <Link key={item.label} to={item.href} className="bg-white px-4 py-4 hover:bg-ice">
-          <p className="text-lg font-semibold text-black">{item.value}</p>
-          <p className="text-sm font-medium text-black">{item.label}</p>
-          <p className="mt-1 text-xs leading-relaxed text-muted">{item.note}</p>
-        </Link>
-      ))}
+    <div className="bg-white">
+      <div className="mx-auto grid max-w-7xl gap-x-10 gap-y-6 px-4 py-8 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((item) => (
+          <Link key={item.label} to={item.href} className="block">
+            <p className="text-xl font-semibold tracking-tight text-black">{item.value}</p>
+            <p className="mt-1 text-sm font-medium text-black">{item.label}</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted">{item.note}</p>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

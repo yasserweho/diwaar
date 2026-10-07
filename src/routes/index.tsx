@@ -68,66 +68,7 @@ function HomePage() {
 
       <TrustStrip />
 
-      <div className="border-b border-border bg-white">
-        <div className="mx-auto flex max-w-7xl justify-start px-4 py-3 sm:justify-end">
-          <Link
-            to="/add"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-white"
-          >
-            {tx(lang, "List your property", "اپنی جائیداد لگائیں")}
-            <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-7xl space-y-14 px-4 py-10 sm:py-14">
-        <section>
-          <h2 className="text-2xl font-semibold text-black">
-            {tx(lang, "Houses, flats and plots across Pakistan", "پاکستان بھر میں مکان، فلیٹ اور پلاٹ")}
-          </h2>
-          <div className="mt-4 grid gap-6 lg:grid-cols-3">
-            <div>
-              <h3 className="text-lg font-semibold text-black">{tx(lang, "Property for sale", "فروخت کے لیے جائیداد")}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                {tx(
-                  lang,
-                  "Search houses, flats, plots and commercial property for sale in Lahore, Karachi, Islamabad and 30 more cities. Open a city, then an area, and compare what is listed.",
-                  "لاہور، کراچی، اسلام آباد اور مزید تیس شہروں میں فروخت کے مکان، فلیٹ، پلاٹ اور کمرشل جائیداد تلاش کریں۔ شہر کھولیں، پھر علاقہ، اور جو درج ہے اس کا موازنہ کریں۔",
-                )}
-              </p>
-              <a href="/property-for-sale" className="mt-3 inline-block text-sm font-semibold text-primary">
-                {tx(lang, "Browse property for sale", "فروخت کی جائیداد دیکھیں")}
-              </a>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-black">{tx(lang, "Property for rent", "کرایے کی جائیداد")}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                {tx(
-                  lang,
-                  "Find homes and shops for rent by city and area. Each listing names the person to call. diwaar.com does not take a commission.",
-                  "شہر اور علاقے کے حساب سے کرایے کے مکان اور دکان تلاش کریں۔ ہر اشتہار پر کال کرنے والے کا نام ہے۔ diwaar.com کمیشن نہیں لیتی۔",
-                )}
-              </p>
-              <a href="/property-for-rent" className="mt-3 inline-block text-sm font-semibold text-primary">
-                {tx(lang, "Browse property for rent", "کرایے کی جائیداد دیکھیں")}
-              </a>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-black">{tx(lang, "List a property", "جائیداد لگائیں")}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                {tx(
-                  lang,
-                  "Sign in and post a sale or rent ad with the city, area and price. You can remove it later from My ads.",
-                  "سائن اِن کریں اور شہر، علاقہ اور قیمت کے ساتھ فروخت یا کرایے کا اشتہار لگائیں۔ بعد میں میرے اشتہارات سے ہٹا سکتے ہیں۔",
-                )}
-              </p>
-              <a href="/add" className="mt-3 inline-block text-sm font-semibold text-primary">
-                {tx(lang, "Add your property", "اپنی جائیداد شامل کریں")}
-              </a>
-            </div>
-          </div>
-        </section>
-
+      <div className="mx-auto max-w-7xl space-y-16 px-4 py-12 sm:py-16">
 
         {featured.length > 0 && (
         <section>
@@ -183,13 +124,13 @@ function HomePage() {
 
         <section>
           <SectionHead title={tx(lang, "Browse by city", "شہر کے حساب سے دیکھیں")} href="/locations" action={tx(lang, "All locations", "تمام مقامات")} />
-          <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {leadCities.map((city) => (
               <Link
                 key={city}
                 to="/locations/$city"
                 params={{ city: citySlug(city) }}
-                className="group flex items-center justify-between bg-white px-4 py-4 hover:bg-ice"
+                className="group flex items-center justify-between rounded-lg bg-white px-4 py-4"
               >
                 <span>
                   <span className="block text-sm font-semibold text-black">{cityLabel(city, lang)}</span>

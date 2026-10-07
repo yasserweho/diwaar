@@ -33,13 +33,10 @@ export function RelatedLinks({ links }: { links: PageLink[] }) {
   return (
     <nav className="mt-10" aria-label={tx(lang, "Related pages", "متعلقہ صفحات")}>
       <h2 className="text-sm font-semibold text-black">{tx(lang, "Related pages", "متعلقہ صفحات")}</h2>
-      <ul className="mt-3 flex flex-wrap gap-2">
+      <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
         {links.map((link) => (
           <li key={link.href}>
-            <a
-              href={link.href}
-              className="inline-flex rounded-md border border-border bg-white px-3 py-2 text-sm font-medium text-black hover:border-primary"
-            >
+            <a href={link.href} className="text-sm font-medium text-primary">
               {tx(lang, link.en, link.ur)}
             </a>
           </li>
