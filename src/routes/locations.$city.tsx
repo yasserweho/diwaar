@@ -73,8 +73,7 @@ function CityLocationPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={tx(lang, "Type an area", "علاقہ لکھیں")}
-          className="h-12 w-full rounded-lg border border-border bg-white px-3 text-base text-black"
-          style={{ color: "#000", backgroundColor: "#fff" }}
+          className="ink-control h-12 w-full rounded-lg border border-border px-3 text-base"
         />
       </label>
       <p className="mt-3 text-sm text-muted">

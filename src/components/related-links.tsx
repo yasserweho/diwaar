@@ -3,8 +3,8 @@ import { tx, useLang } from "@/lib/i18n";
 export type PageLink = { href: string; en: string; ur: string };
 
 export const PAGE = {
-  sale: { href: "/search?purpose=buy", en: "Property for sale", ur: "فروخت کی جائیداد" },
-  rent: { href: "/search?purpose=rent", en: "Property for rent", ur: "کرایے کی جائیداد" },
+  sale: { href: "/property-for-sale", en: "Property for sale", ur: "فروخت کی جائیداد" },
+  rent: { href: "/property-for-rent", en: "Property for rent", ur: "کرایے کی جائیداد" },
   locations: { href: "/locations", en: "Locations", ur: "مقامات" },
   services: { href: "/services", en: "Services", ur: "خدمات" },
   guides: { href: "/guides", en: "Area guides", ur: "علاقائی گائیڈ" },

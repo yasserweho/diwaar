@@ -32,6 +32,8 @@ import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as PayRouteImport } from './routes/pay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as PropertyForRentRouteImport } from './routes/property-for-rent'
+import { Route as PropertyForSaleRouteImport } from './routes/property-for-sale'
 import { Route as PropertyIndexRouteImport } from './routes/property-index'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as SavedRouteImport } from './routes/saved'
@@ -167,6 +169,16 @@ const ProjectsRoute = ProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PropertyForRentRoute = PropertyForRentRouteImport.update({
+  id: '/property-for-rent',
+  path: '/property-for-rent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PropertyForSaleRoute = PropertyForSaleRouteImport.update({
+  id: '/property-for-sale',
+  path: '/property-for-sale',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PropertyIndexRoute = PropertyIndexRouteImport.update({
   id: '/property-index',
   path: '/property-index',
@@ -287,6 +299,8 @@ export interface FileRoutesByFullPath {
   '/pay': typeof PayRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/property-for-rent': typeof PropertyForRentRoute
+  '/property-for-sale': typeof PropertyForSaleRoute
   '/property-index': typeof PropertyIndexRoute
   '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
@@ -331,6 +345,8 @@ export interface FileRoutesByTo {
   '/pay': typeof PayRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/property-for-rent': typeof PropertyForRentRoute
+  '/property-for-sale': typeof PropertyForSaleRoute
   '/property-index': typeof PropertyIndexRoute
   '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
@@ -376,6 +392,8 @@ export interface FileRoutesById {
   '/pay': typeof PayRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/property-for-rent': typeof PropertyForRentRoute
+  '/property-for-sale': typeof PropertyForSaleRoute
   '/property-index': typeof PropertyIndexRoute
   '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
@@ -422,6 +440,8 @@ export interface FileRouteTypes {
     | '/pay'
     | '/privacy'
     | '/projects'
+    | '/property-for-rent'
+    | '/property-for-sale'
     | '/property-index'
     | '/reviews'
     | '/saved'
@@ -466,6 +486,8 @@ export interface FileRouteTypes {
     | '/pay'
     | '/privacy'
     | '/projects'
+    | '/property-for-rent'
+    | '/property-for-sale'
     | '/property-index'
     | '/reviews'
     | '/saved'
@@ -510,6 +532,8 @@ export interface FileRouteTypes {
     | '/pay'
     | '/privacy'
     | '/projects'
+    | '/property-for-rent'
+    | '/property-for-sale'
     | '/property-index'
     | '/reviews'
     | '/saved'
@@ -555,6 +579,8 @@ export interface RootRouteChildren {
   PayRoute: typeof PayRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
+  PropertyForRentRoute: typeof PropertyForRentRoute
+  PropertyForSaleRoute: typeof PropertyForSaleRoute
   PropertyIndexRoute: typeof PropertyIndexRoute
   ReviewsRoute: typeof ReviewsRoute
   SavedRoute: typeof SavedRoute
@@ -728,6 +754,20 @@ declare module '@tanstack/react-router' {
       path: '/projects'
       fullPath: '/projects'
       preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/property-for-rent': {
+      id: '/property-for-rent'
+      path: '/property-for-rent'
+      fullPath: '/property-for-rent'
+      preLoaderRoute: typeof PropertyForRentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/property-for-sale': {
+      id: '/property-for-sale'
+      path: '/property-for-sale'
+      fullPath: '/property-for-sale'
+      preLoaderRoute: typeof PropertyForSaleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/property-index': {
@@ -994,6 +1034,8 @@ const rootRouteChildren: RootRouteChildren = {
   PayRoute: PayRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
+  PropertyForRentRoute: PropertyForRentRoute,
+  PropertyForSaleRoute: PropertyForSaleRoute,
   PropertyIndexRoute: PropertyIndexRoute,
   ReviewsRoute: ReviewsRoute,
   SavedRoute: SavedRoute,

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FaqList } from "@/components/faq-list";
 import { PAGE, RelatedLinks } from "@/components/related-links";
+import { FAQ } from "@/lib/faq";
 import { tx, useLang } from "@/lib/i18n";
 import { seo } from "@/lib/seo";
 
@@ -18,6 +19,20 @@ function FaqPage() {
   const { lang } = useLang();
   return (
     <article className="mx-auto max-w-2xl px-4 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: FAQ.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a },
+            })),
+          }),
+        }}
+      />
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">diwaar.com</p>
       <h1 className="mt-1 text-3xl font-extrabold text-black">
         {tx(lang, "Questions", "سوالات")}

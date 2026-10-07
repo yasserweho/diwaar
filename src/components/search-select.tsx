@@ -79,8 +79,8 @@ export function SearchSelect({
       ? createPortal(
           <div
             data-search-select-panel
-            className="diwaar-menu fixed z-[80] overflow-hidden rounded-lg border border-[#5c6b7e] shadow-card"
-            style={{ top: box.top, left: box.left, width: box.width, color: "#000", backgroundColor: "#fff" }}
+            className="diwaar-menu ink-control fixed z-[80] overflow-hidden rounded-lg border border-[#5c6b7e] shadow-card"
+            style={{ top: box.top, left: box.left, width: box.width }}
           >
             <input
               ref={field}
@@ -92,8 +92,7 @@ export function SearchSelect({
                 if (matches[0]) choose(matches[0].value);
               }}
               placeholder={searchPlaceholder}
-              className="h-11 w-full border-b border-[#5c6b7e] px-3 text-base outline-none"
-              style={{ color: "#000", backgroundColor: "#fff", WebkitTextFillColor: "#000" }}
+              className="ink-control h-11 w-full border-b border-[#5c6b7e] px-3 text-base outline-none"
               aria-label={searchPlaceholder}
             />
             <ul role="listbox" className="overflow-y-auto py-1" style={{ maxHeight: box.maxHeight }}>
@@ -107,10 +106,9 @@ export function SearchSelect({
                       role="option"
                       aria-selected={option.value === value}
                       className={cn(
-                        "block w-full truncate px-3 py-2.5 text-start text-sm",
-                        option.value === value && "font-semibold",
+                        "block w-full truncate px-3 py-2.5 text-start text-sm text-black",
+                        option.value === value ? "bg-ice font-semibold" : "bg-white",
                       )}
-                      style={{ color: "#000", backgroundColor: option.value === value ? "#e7f0fc" : "#fff" }}
                       onClick={() => choose(option.value)}
                     >
                       {option.label}
@@ -136,10 +134,9 @@ export function SearchSelect({
         aria-expanded={open}
         aria-haspopup="listbox"
         className={cn(
-          "flex h-12 w-full items-center justify-between gap-2 rounded-lg border border-border px-3 text-start text-sm font-medium outline-none focus:border-primary",
+          "ink-control flex h-12 w-full items-center justify-between gap-2 rounded-lg border border-border px-3 text-start text-sm font-medium outline-none focus:border-primary",
           className,
         )}
-        style={{ color: "#000", backgroundColor: "#fff" }}
         onClick={() => {
           setOpen((was) => !was);
           setQuery("");

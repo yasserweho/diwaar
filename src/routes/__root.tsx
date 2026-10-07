@@ -2,6 +2,8 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-r
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { Shell } from "@/components/shell";
+import { SiteSchema } from "@/components/site-schema";
+import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 
@@ -31,16 +33,25 @@ export const Route = createRootRoute({
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap",
-      },
+      { rel: "sitemap", href: "/sitemap.xml" },
     ],
   }),
   component: () => (
     <html lang="en" className="antialiased" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <link
+          id="diwaar-fonts"
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+          media="print"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "var l=document.getElementById('diwaar-fonts');if(l){var a=function(){l.media='all'};l.onload=a;if(l.sheet)a();}",
+          }}
+        />
       </head>
       <body>
         <PreviewHostBridge />
@@ -49,6 +60,8 @@ export const Route = createRootRoute({
             <Outlet />
           </Shell>
           <Toaster position="top-center" richColors />
+          <Analytics />
+          <SiteSchema />
         </AuthProvider>
         <Scripts />
       </body>

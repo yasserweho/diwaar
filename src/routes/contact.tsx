@@ -97,7 +97,6 @@ function ContactPage() {
               onChange={(e) => setName(e.target.value)}
               autoComplete="name"
               className={inputClass}
-              style={inputStyle}
             />
           </Field>
           <Field label={tx(lang, "Email", "ای میل")}>
@@ -108,7 +107,6 @@ function ContactPage() {
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
               className={inputClass}
-              style={inputStyle}
             />
           </Field>
           <Field label={tx(lang, "Phone, if you want a call", "فون، اگر کال چاہیے")}>
@@ -117,7 +115,6 @@ function ContactPage() {
               onChange={(e) => setPhone(e.target.value)}
               autoComplete="tel"
               className={inputClass}
-              style={inputStyle}
             />
           </Field>
           <Field label={tx(lang, "About", "متعلق")}>
@@ -125,10 +122,9 @@ function ContactPage() {
               value={topic}
               onChange={(e) => setTopic(e.target.value as ContactTopic)}
               className={inputClass}
-              style={inputStyle}
             >
               {TOPICS.map((item) => (
-                <option key={item.id} value={item.id} style={{ color: "#000" }}>
+                <option key={item.id} value={item.id} className="ink-option">
                   {tx(lang, item.en, item.ur)}
                 </option>
               ))}
@@ -141,7 +137,6 @@ function ContactPage() {
               onChange={(e) => setMessage(e.target.value)}
               rows={6}
               className={`${inputClass} h-auto py-3`}
-              style={inputStyle}
             />
           </Field>
           {error && <p className="text-sm text-hot">{error}</p>}
@@ -169,5 +164,4 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 const inputClass =
-  "h-12 w-full rounded-lg border border-border bg-white px-3 text-base text-black outline-none focus:border-primary";
-const inputStyle = { color: "#000", backgroundColor: "#fff" };
+  "ink-control h-12 w-full rounded-lg border border-border px-3 text-base outline-none focus:border-primary";

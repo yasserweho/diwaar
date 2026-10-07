@@ -47,6 +47,8 @@ export function PropertyCard({
         <img
           src={property.images[0]}
           alt={property.title}
+          width={1200}
+          height={675}
           loading="lazy"
           decoding="async"
           className="size-full object-cover transition-transform duration-fast group-hover:scale-[1.03]"

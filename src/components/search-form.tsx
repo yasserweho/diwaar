@@ -121,13 +121,12 @@ export function SearchForm({
         <label className="block">
           <span className="mb-1.5 block text-xs font-medium text-muted">{tx(lang, "Property type", "جائیداد کی قسم")}</span>
           <select
-            className={`${selectClass} bg-white`}
-            style={{ color: "#000", backgroundColor: "#fff", WebkitTextFillColor: "#000" }}
+            className={`${selectClass} ink-control bg-white`}
             value={type}
             onChange={(e) => setType(e.target.value as Category | "")}
           >
             {TYPES.map((t) => (
-              <option key={t.id} value={t.id} style={{ color: "#000" }}>
+              <option key={t.id} value={t.id} className="ink-option">
                 {tx(
                   lang,
                   t.label,

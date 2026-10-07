@@ -73,11 +73,11 @@ function ReviewsPage() {
       <form onSubmit={onSubmit} className="mt-4 max-w-xl space-y-4">
         <label className="block">
           <span className="mb-1.5 block text-sm font-medium text-black">{tx(lang, "Name", "نام")}</span>
-          <input value={name} onChange={(e) => setName(e.target.value)} className={inputClass} style={inputStyle} />
+          <input value={name} onChange={(e) => setName(e.target.value)} className={inputClass} />
         </label>
         <label className="block">
           <span className="mb-1.5 block text-sm font-medium text-black">{tx(lang, "City, optional", "شہر، اگر لکھنا چاہیں")}</span>
-          <input value={city} onChange={(e) => setCity(e.target.value)} className={inputClass} style={inputStyle} />
+          <input value={city} onChange={(e) => setCity(e.target.value)} className={inputClass} />
         </label>
         <fieldset>
           <legend className="mb-1.5 text-sm font-medium text-black">{tx(lang, "Rating", "درجہ")}</legend>
@@ -100,7 +100,7 @@ function ReviewsPage() {
         </fieldset>
         <label className="block">
           <span className="mb-1.5 block text-sm font-medium text-black">{tx(lang, "Review", "تبصرہ")}</span>
-          <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={5} className={`${inputClass} h-auto py-3`} style={inputStyle} />
+          <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={5} className={`${inputClass} h-auto py-3`} />
         </label>
         {error && <p className="text-sm text-hot">{error}</p>}
         <button
@@ -117,5 +117,4 @@ function ReviewsPage() {
 }
 
 const inputClass =
-  "h-12 w-full rounded-lg border border-border bg-white px-3 text-base text-black outline-none focus:border-primary";
-const inputStyle = { color: "#000", backgroundColor: "#fff" };
+  "ink-control h-12 w-full rounded-lg border border-border px-3 text-base outline-none focus:border-primary";

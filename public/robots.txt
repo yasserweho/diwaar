@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /pay
+Disallow: /api/
+
+Sitemap: https://www.diwaar.com/sitemap.xml

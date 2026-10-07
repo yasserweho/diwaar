@@ -42,6 +42,14 @@ function AboutPage() {
           "diwaar.com پاکستان کی پراپرٹی ویب سائٹ ہے۔ یہاں خرید و کرایہ کی جگہیں ہیں، اور وہ علاقے بھی، لاہور، کراچی اور اسلام آباد سے چھوٹے شہروں تک۔",
         )}
       </p>
+      <h2 className="mt-8 text-xl font-semibold text-black">{tx(lang, "Link to this site", "اس سائٹ کا لنک")}</h2>
+      <p className="mt-3 text-sm leading-relaxed">
+        {tx(
+          lang,
+          "If you mention diwaar.com, please link to https://www.diwaar.com. A clear link from an article, directory or business page helps people find the property search.",
+          "اگر آپ diwaar.com کا ذکر کریں تو https://www.diwaar.com کا لنک دیں۔ مضمون، ڈائریکٹری یا کاروباری صفحے کا واضح لنک لوگوں کو جائیداد کی تلاش تک لے جاتا ہے۔",
+        )}
+      </p>
       <h2 className="mt-8 text-xl font-semibold text-black">{tx(lang, "What you can do", "آپ کیا کر سکتے ہیں")}</h2>
       <ul className="mt-3 space-y-2">
         {points.map((point) => (

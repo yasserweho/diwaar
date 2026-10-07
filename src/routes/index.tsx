@@ -42,6 +42,8 @@ function HomePage() {
         <img
           src="/images/islamabad-family.jpg"
           alt="A family at home in Islamabad"
+          width={1200}
+          height={675}
           decoding="async"
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
@@ -79,6 +81,53 @@ function HomePage() {
       </div>
 
       <div className="mx-auto max-w-7xl space-y-14 px-4 py-10 sm:py-14">
+        <section>
+          <h2 className="text-2xl font-semibold text-black">
+            {tx(lang, "Houses, flats and plots across Pakistan", "پاکستان بھر میں مکان، فلیٹ اور پلاٹ")}
+          </h2>
+          <div className="mt-4 grid gap-6 lg:grid-cols-3">
+            <div>
+              <h3 className="text-lg font-semibold text-black">{tx(lang, "Property for sale", "فروخت کے لیے جائیداد")}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {tx(
+                  lang,
+                  "Search houses, flats, plots and commercial property for sale in Lahore, Karachi, Islamabad and 30 more cities. Open a city, then an area, and compare what is listed.",
+                  "لاہور، کراچی، اسلام آباد اور مزید تیس شہروں میں فروخت کے مکان، فلیٹ، پلاٹ اور کمرشل جائیداد تلاش کریں۔ شہر کھولیں، پھر علاقہ، اور جو درج ہے اس کا موازنہ کریں۔",
+                )}
+              </p>
+              <a href="/property-for-sale" className="mt-3 inline-block text-sm font-semibold text-primary">
+                {tx(lang, "Browse property for sale", "فروخت کی جائیداد دیکھیں")}
+              </a>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-black">{tx(lang, "Property for rent", "کرایے کی جائیداد")}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {tx(
+                  lang,
+                  "Find homes and shops for rent by city and area. Each listing names the person to call. diwaar.com does not take a commission.",
+                  "شہر اور علاقے کے حساب سے کرایے کے مکان اور دکان تلاش کریں۔ ہر اشتہار پر کال کرنے والے کا نام ہے۔ diwaar.com کمیشن نہیں لیتی۔",
+                )}
+              </p>
+              <a href="/property-for-rent" className="mt-3 inline-block text-sm font-semibold text-primary">
+                {tx(lang, "Browse property for rent", "کرایے کی جائیداد دیکھیں")}
+              </a>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-black">{tx(lang, "List a property", "جائیداد لگائیں")}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {tx(
+                  lang,
+                  "Sign in and post a sale or rent ad with the city, area and price. You can remove it later from My ads.",
+                  "سائن اِن کریں اور شہر، علاقہ اور قیمت کے ساتھ فروخت یا کرایے کا اشتہار لگائیں۔ بعد میں میرے اشتہارات سے ہٹا سکتے ہیں۔",
+                )}
+              </p>
+              <a href="/add" className="mt-3 inline-block text-sm font-semibold text-primary">
+                {tx(lang, "Add your property", "اپنی جائیداد شامل کریں")}
+              </a>
+            </div>
+          </div>
+        </section>
+
 
         {featured.length > 0 && (
         <section>

@@ -1,0 +1,24 @@
+# diwaar.com
+
+> diwaar.com is a property portal for houses, flats, plots and commercial property for sale and rent in Pakistan.
+
+The site covers 33 cities and the areas inside them. People post their own listings. diwaar.com does not invent listings or reviews, and it does not take a commission. Loan, build-cost and price-index figures are estimates, not offers.
+
+## Main pages
+
+- [Home](https://www.diwaar.com/): search houses, flats, plots and commercial property
+- [Property for sale](https://www.diwaar.com/property-for-sale)
+- [Property for rent](https://www.diwaar.com/property-for-rent)
+- [Locations](https://www.diwaar.com/locations): cities and areas
+- [Services](https://www.diwaar.com/services)
+- [Area guides](https://www.diwaar.com/guides)
+- [Questions](https://www.diwaar.com/faq)
+- [About](https://www.diwaar.com/about)
+- [Contact](https://www.diwaar.com/contact)
+- [Privacy](https://www.diwaar.com/privacy)
+
+## Notes for crawlers
+
+- Preferred language is English. Urdu is available with the language control.
+- Canonical host is https://www.diwaar.com
+- Do not treat calculator results as bank offers or valuations.
