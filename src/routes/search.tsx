@@ -176,6 +176,15 @@ function SortSelect({ value }: { value: NonNullable<SearchParams["sort"]> }) {
   const navigate = useNavigate({ from: "/search" });
   return (
     <select
+      aria-label={
+        value === "price-asc"
+          ? "Sort: Price: low to high"
+          : value === "price-desc"
+            ? "Sort: Price: high to low"
+            : value === "area-desc"
+              ? "Sort: Largest area"
+              : "Sort: Newest"
+      }
       className="h-11 w-full rounded-md border border-border bg-surface px-2 text-base font-medium sm:h-9 sm:w-auto sm:text-sm"
       value={value}
       onChange={(e) =>
@@ -245,6 +254,7 @@ function FiltersPanel() {
       <fieldset>
         <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">Keyword</legend>
         <input
+          aria-label="Keyword"
           className="h-11 w-full rounded-lg border border-border px-3 text-sm"
           placeholder="DHA, corner, furnished"
           value={params.q ?? ""}
@@ -257,6 +267,7 @@ function FiltersPanel() {
         <div className="grid grid-cols-2 gap-2">
           <input
             inputMode="numeric"
+            aria-label="Min price"
             className="h-11 w-full rounded-lg border border-border px-3 text-sm"
             placeholder="Min"
             value={params.minPrice ?? ""}
@@ -264,6 +275,7 @@ function FiltersPanel() {
           />
           <input
             inputMode="numeric"
+            aria-label="Max price"
             className="h-11 w-full rounded-lg border border-border px-3 text-sm"
             placeholder="Max"
             value={params.maxPrice ?? ""}

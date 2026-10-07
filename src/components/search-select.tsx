@@ -79,7 +79,7 @@ export function SearchSelect({
       ? createPortal(
           <div
             data-search-select-panel
-            className="diwaar-menu fixed z-[80] overflow-hidden rounded-lg border border-[#d5e0ee] shadow-card"
+            className="diwaar-menu fixed z-[80] overflow-hidden rounded-lg border border-[#5c6b7e] shadow-card"
             style={{ top: box.top, left: box.left, width: box.width, color: "#000", backgroundColor: "#fff" }}
           >
             <input
@@ -92,7 +92,7 @@ export function SearchSelect({
                 if (matches[0]) choose(matches[0].value);
               }}
               placeholder={searchPlaceholder}
-              className="h-11 w-full border-b border-[#d5e0ee] px-3 text-base outline-none"
+              className="h-11 w-full border-b border-[#5c6b7e] px-3 text-base outline-none"
               style={{ color: "#000", backgroundColor: "#fff", WebkitTextFillColor: "#000" }}
               aria-label={searchPlaceholder}
             />

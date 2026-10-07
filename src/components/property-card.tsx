@@ -33,6 +33,12 @@ export function PropertyCard({
       <Link
         to="/property/$id"
         params={{ id: property.id }}
+        aria-label={`${property.title}, ${[
+          ...property.badges.slice(0, 3).map((b) =>
+            b === "superhot" ? "Super Hot" : b === "hot" ? "Hot" : b === "verified" ? "Verified" : b === "featured" ? "Featured" : "Platinum",
+          ),
+          CATEGORY_LABEL[property.category],
+        ].join(", ")}`}
         className={cn(
           "relative block overflow-hidden bg-ice",
           layout === "list" ? "aspect-16/10 md:aspect-auto md:min-h-full" : "aspect-16/10",

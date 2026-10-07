@@ -51,7 +51,7 @@ function HomePage() {
           <h1 className="max-w-3xl text-start text-[2rem] font-semibold leading-[1.15] text-white sm:text-5xl">
             {tx(lang, "Find property for sale and rent in Pakistan", "پاکستان میں خرید، فروخت اور کرایے کی جائیداد تلاش کریں")}
           </h1>
-          <p className="mt-3 max-w-2xl text-start text-base leading-relaxed text-white/80">
+          <p className="mt-3 max-w-2xl text-start text-base leading-relaxed text-white">
             {tx(
               lang,
               `Houses, flats, plots, and commercial space across ${CITIES.length} cities.`,

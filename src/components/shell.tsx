@@ -94,7 +94,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <AccountSync />
       <header className="sticky top-0 z-40 border-b border-border bg-white">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4">
-          <Link to="/" className="shrink-0" aria-label="Diwaar home">
+          <Link to="/" className="shrink-0">
             <DiwaarWordmark compact />
           </Link>
           <nav className="ml-2 hidden items-center gap-0.5 lg:flex">
@@ -103,7 +103,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 key={item.to}
                 to={item.to}
                 search={"search" in item ? item.search : undefined}
-                className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-fg/80 hover:bg-ice hover:text-fg"
+                className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-fg hover:bg-ice"
               >
                 {tx(lang, item.label, item.ur)}
               </Link>
@@ -226,7 +226,7 @@ function LanguageToggle() {
       onClick={() => setLang(ur ? "en" : "ur")}
       className="inline-flex h-9 items-center rounded-md border border-border bg-white px-2.5 text-sm font-semibold text-black"
       lang={ur ? "en" : "ur"}
-      aria-label={ur ? "Switch to English" : "اردو ویب سائٹ"}
+      dir={ur ? "ltr" : "rtl"}
     >
       {ur ? "English" : "اردو"}
     </button>
@@ -241,7 +241,7 @@ function MoreMenu() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-fg/80 hover:bg-ice hover:text-fg"
+        className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-fg hover:bg-ice"
       >
         {tx(lang, "More", "مزید")}
       </button>

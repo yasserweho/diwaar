@@ -169,13 +169,14 @@ function LoginPage() {
           <form onSubmit={(e) => void onEmail(e)} className="mt-6 space-y-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Or use your Gmail address</p>
             {mode === "up" && (
-              <input className={field} placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+              <input className={field} aria-label="Name" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
             )}
             <input
               className={field}
               type="email"
               required
               autoComplete="email"
+              aria-label="Email"
               placeholder="you@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -186,6 +187,7 @@ function LoginPage() {
               required
               minLength={8}
               autoComplete={mode === "up" ? "new-password" : "current-password"}
+              aria-label={mode === "up" ? "Choose a password" : "Password"}
               placeholder={mode === "up" ? "Choose a password (8+ characters)" : "Diwaar password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}

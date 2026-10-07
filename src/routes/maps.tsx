@@ -112,7 +112,7 @@ function MapsPage() {
                   "aspect-square rounded-md text-[10px] sm:text-xs font-bold",
                   p.status === "open" && "bg-verified text-primary-fg",
                   p.status === "held" && "bg-primary text-primary-fg",
-                  p.status === "sold" && "bg-ice-2/40 text-ice-2",
+                  p.status === "sold" && "bg-[#3e4c5f] text-white",
                   picked?.id === p.id && "ring-2 ring-primary-fg",
                 )}
               >
