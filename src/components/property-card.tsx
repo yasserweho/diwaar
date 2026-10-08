@@ -114,11 +114,13 @@ export function PropertyCard({
           </span>
         </div>
 
-        {agent && (
+        {property.contactName ? (
+          <p className="border-t border-border pt-2 text-xs text-muted">{property.contactName}</p>
+        ) : agent && !property.id.startsWith("user-") ? (
           <p className="border-t border-border pt-2 text-xs text-muted">
             {agent.agency} · {agent.name}
           </p>
-        )}
+        ) : null}
       </div>
     </article>
   );

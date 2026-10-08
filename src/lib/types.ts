@@ -28,6 +28,10 @@ export interface Property {
   yearBuilt?: number;
   floors?: number;
   agencyId: string;
+  /** Name shown on ads you post. Not an agency. */
+  contactName?: string;
+  /** Phone shown on ads you post. */
+  contactPhone?: string;
   badges: Badge[];
   createdAt: string;
   featured?: boolean;

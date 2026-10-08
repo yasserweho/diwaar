@@ -72,7 +72,9 @@ function PropertyBody() {
   const currency = useAppStore((s) => s.currency);
   const saved = useAppStore((s) => s.savedIds.includes(property.id));
   const toggle = useAppStore((s) => s.toggleSaved);
-  const agent = getAgent(property.agencyId);
+  const agent = property.contactName || property.id.startsWith("user-") ? undefined : getAgent(property.agencyId);
+  const posterName = property.contactName;
+  const posterPhone = property.contactPhone;
   const [shot, setShot] = useState(0);
   const similar = similarTo(property, extra);
   const noteRecent = useAppStore((s) => s.noteRecent);
@@ -191,7 +193,31 @@ function PropertyBody() {
         <aside className="min-w-0 lg:sticky lg:top-24 h-fit space-y-4">
           <div className="rounded-2xl bg-surface p-5 shadow-card">
             <p className="text-sm font-semibold text-muted">Listed by</p>
-            {agent ? (
+            {posterName ? (
+              <>
+                <p className="mt-3 text-lg font-bold">{posterName}</p>
+                {posterPhone ? (
+                  <div className="mt-4 grid gap-2">
+                    <a
+                      href={`tel:${posterPhone}`}
+                      className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary text-primary-fg text-sm font-semibold"
+                    >
+                      <Phone className="size-4" /> Call {formatPhone(posterPhone)}
+                    </a>
+                    <a
+                      href={waLink(posterPhone, `Hi, I'm interested in ${property.title} on Diwaar (${property.id})`)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-verified text-primary-fg text-sm font-semibold hover:opacity-90"
+                    >
+                      WhatsApp
+                    </a>
+                  </div>
+                ) : (
+                  <p className="mt-2 text-sm text-muted">Add your phone on My ads so buyers can call.</p>
+                )}
+              </>
+            ) : agent ? (
               <>
                 <div className="mt-3 flex items-center gap-3">
                   <span className="size-12 rounded-full bg-primary-dark text-primary-fg grid place-items-center font-bold">
@@ -302,19 +328,19 @@ function PropertyBody() {
         </section>
       )}
 
-      {agent && (
+      {(posterPhone || agent) && (
         <div
           className="safe-callbar fixed inset-x-0 z-30 flex gap-2 border-t border-border bg-surface px-3 py-2 md:hidden"
         >
           <a
-            href={`tel:${agent.phone.replace(/\s/g, "")}`}
+            href={`tel:${(posterPhone || agent?.phone || "").replace(/\s/g, "")}`}
             className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-sm font-semibold text-primary-fg"
           >
             <Phone className="size-4" /> Call
           </a>
           <a
             href={waLink(
-              agent.phone,
+              posterPhone || agent?.phone || "",
               `Hi, I'm interested in ${property.title} on Diwaar (${property.id})`,
             )}
             target="_blank"

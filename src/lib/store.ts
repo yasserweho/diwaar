@@ -14,6 +14,7 @@ interface AppState {
   userListings: Property[];
   addListing: (p: Property) => void;
   removeListing: (id: string) => void;
+  assignContact: (name: string, phone: string) => void;
   areaUnit: AreaUnit;
   currency: Currency;
   setAreaUnit: (u: AreaUnit) => void;
@@ -72,6 +73,15 @@ export const useAppStore = create<AppState>()(
       addListing: (p) => set((s) => ({ userListings: [p, ...s.userListings] })),
       removeListing: (id) =>
         set((s) => ({ userListings: s.userListings.filter((p) => p.id !== id) })),
+      assignContact: (name, phone) =>
+        set((s) => ({
+          userListings: s.userListings.map((p) => ({
+            ...p,
+            contactName: name,
+            contactPhone: phone,
+            agencyId: "owner",
+          })),
+        })),
       areaUnit: "marla",
       currency: "PKR",
       setAreaUnit: (areaUnit) => set({ areaUnit }),

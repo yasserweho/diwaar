@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { HOUSE_SM } from "@/lib/photos";
@@ -8,6 +8,7 @@ import { useAppStore } from "@/lib/store";
 import { locationsInCity } from "@/lib/data";
 import { SearchSelect } from "@/components/search-select";
 import { CATEGORY_LABEL, CITIES, type Category, type Purpose } from "@/lib/types";
+import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/add")({
@@ -22,7 +23,9 @@ export const Route = createFileRoute("/add")({
 
 function AddPage() {
   const add = useAppStore((s) => s.addListing);
+  const assignContact = useAppStore((s) => s.assignContact);
   const navigate = useNavigate();
+  const { user } = useCurrentUserState();
   const [purpose, setPurpose] = useState<Purpose>("buy");
   const [category, setCategory] = useState<Category>("house");
   const [city, setCity] = useState("Lahore");
@@ -35,9 +38,15 @@ function AddPage() {
   const [area, setArea] = useState("5");
   const [unit, setUnit] = useState<AreaUnit>("marla");
   const [description, setDescription] = useState("");
+  const [ownerName, setOwnerName] = useState("");
+  const [ownerPhone, setOwnerPhone] = useState("");
 
   const field =
     "h-12 w-full rounded-lg border border-border bg-surface px-3 text-sm outline-none focus:border-primary";
+
+  useEffect(() => {
+    if (user?.displayName) setOwnerName((current) => current || user.displayName || "");
+  }, [user?.displayName]);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -47,6 +56,13 @@ function AddPage() {
       toast.error("Add a title, location, price and area.");
       return;
     }
+    const name = ownerName.trim();
+    const phone = ownerPhone.replace(/[^\d+]/g, "");
+    if (name.length < 2 || phone.length < 10) {
+      toast.error("Add the name and phone number that should appear on the ad.");
+      return;
+    }
+    assignContact(name, phone);
     const id = `user-${Date.now()}`;
     add({
       id,
@@ -65,7 +81,9 @@ function AddPage() {
         description.trim() ||
         `${title.trim()} listed on Diwaar in ${location}, ${city}.`,
       amenities: ["Electricity", "Water", "Sewerage"],
-      agencyId: "prime-lhr",
+      agencyId: "owner",
+      contactName: name,
+      contactPhone: phone,
       badges: ["featured"],
       createdAt: new Date().toISOString().slice(0, 10),
       featured: true,
@@ -168,6 +186,27 @@ function AddPage() {
             </select>
           </label>
         </div>
+        <label className="block text-sm font-semibold">
+          Your name on the ad
+          <input
+            className={`${field} mt-1`}
+            value={ownerName}
+            onChange={(e) => setOwnerName(e.target.value)}
+            autoComplete="name"
+            placeholder="Name buyers should see"
+          />
+        </label>
+        <label className="block text-sm font-semibold">
+          Your phone on the ad
+          <input
+            className={`${field} mt-1`}
+            value={ownerPhone}
+            onChange={(e) => setOwnerPhone(e.target.value)}
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="03xx xxx xxxx"
+          />
+        </label>
         <label className="block text-sm font-semibold">
           Description
           <textarea
