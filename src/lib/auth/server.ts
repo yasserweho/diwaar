@@ -44,6 +44,10 @@ const googleClientId = env("GOOGLE_CLIENT_ID");
 const googleClientSecret = env("GOOGLE_CLIENT_SECRET");
 const nativeGoogle = Boolean(googleClientId && googleClientSecret);
 
+const twitterClientId = env("TWITTER_CLIENT_ID") ?? env("X_CLIENT_ID");
+const twitterClientSecret = env("TWITTER_CLIENT_SECRET") ?? env("X_CLIENT_SECRET");
+const nativeTwitter = Boolean(twitterClientId && twitterClientSecret);
+
 export const authConfigured =
   !authDisabled && Boolean(grokClientId && grokClientSecret);
 
@@ -133,13 +137,37 @@ export const auth = betterAuth({
   onAPIError: {
     errorURL: "/login",
   },
-  ...(nativeGoogle
+  ...(nativeGoogle || nativeTwitter
     ? {
         socialProviders: {
-          google: {
-            clientId: googleClientId as string,
-            clientSecret: googleClientSecret as string,
-          },
+          ...(nativeGoogle
+            ? {
+                google: {
+                  clientId: googleClientId as string,
+                  clientSecret: googleClientSecret as string,
+                },
+              }
+            : {}),
+          ...(nativeTwitter
+            ? {
+                twitter: {
+                  clientId: twitterClientId as string,
+                  clientSecret: twitterClientSecret as string,
+                  // users.email fails the whole login if that permission is off in the X app.
+                  disableDefaultScope: true,
+                  scope: ["users.read", "tweet.read", "offline.access"],
+                  mapProfileToUser(profile: {
+                    data?: { email?: string; confirmed_email?: string; username?: string; id?: string };
+                  }) {
+                    const data = profile?.data ?? {};
+                    const email = data.email || data.confirmed_email;
+                    if (email) return { email };
+                    const handle = (data.username || data.id || "user").replace(/[^\w.-]/g, "");
+                    return { email: `${handle}@users.diwaar.com` };
+                  },
+                },
+              }
+            : {}),
         },
       }
     : {}),
@@ -150,6 +178,7 @@ export const auth = betterAuth({
       trustedProviders: [
         ...GROK_PROVIDERS.map((p) => p.providerId),
         ...(nativeGoogle ? ["google"] : []),
+        ...(nativeTwitter ? ["twitter"] : []),
         GATE_PROVIDER_ID,
       ],
       requireLocalEmailVerified: false,

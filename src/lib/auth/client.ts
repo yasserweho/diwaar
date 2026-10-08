@@ -103,9 +103,10 @@ export async function signIn(
   const popup = inLivePreview() ? openSignInPopup(providerId) : null;
 
   // On diwaar.com, signing out first waits on the server and can clear the
-  // Google state cookie after it is set. Go straight to Google instead.
-  const straightToGoogle = providerId === "grok-google" && onCustomDomain();
-  if (!straightToGoogle) {
+  // OAuth state cookie after it is set. Go straight to the provider instead.
+  const straightToProvider =
+    onCustomDomain() && (providerId === "grok-google" || providerId === "grok-x");
+  if (!straightToProvider) {
     await runPreSignInSignOut({
       livePreview: inLivePreview(),
       hasBearer: Boolean(getBearerToken()),
@@ -136,11 +137,22 @@ export async function signIn(
     return;
   }
 
-  // Production diwaar.com cannot complete the shared Grok preview broker
-  // (redirect_uri is www.diwaar.com, which that client rejects). Use native Google.
+  // Production diwaar.com cannot complete the shared Grok preview broker.
+  // Google and X use this app's own OAuth apps instead.
   if (providerId === "grok-google" && onCustomDomain()) {
     const { data, error } = await authClient.signIn.social({
       provider: "google",
+      callbackURL,
+      errorCallbackURL,
+    });
+    if (error) throw new Error(error.message ?? "Sign-in failed");
+    if (data?.url) window.location.href = data.url;
+    return;
+  }
+
+  if (providerId === "grok-x" && onCustomDomain()) {
+    const { data, error } = await authClient.signIn.social({
+      provider: "twitter",
       callbackURL,
       errorCallbackURL,
     });
