@@ -21,6 +21,25 @@ function inAppBrowser() {
   );
 }
 
+/** Keep post-login return paths on this site. Anything else falls back to home. */
+function safeReturnPath(raw: string | null): string {
+  if (!raw) return "/";
+  let path = raw;
+  try {
+    path = decodeURIComponent(raw);
+  } catch {
+    return "/";
+  }
+  if (!path.startsWith("/") || path.startsWith("//") || path.includes("\\") || path.includes("://")) return "/";
+  if (path.startsWith("/login")) return "/";
+  return path;
+}
+
+function returnPathFromLocation(): string {
+  if (typeof window === "undefined") return "/";
+  return safeReturnPath(new URLSearchParams(window.location.search).get("redirect"));
+}
+
 function LoginPage() {
   const [mode, setMode] = useState<"in" | "up">("in");
   const [name, setName] = useState("");
@@ -48,9 +67,10 @@ function LoginPage() {
         /* ignore */
       }
     }
+    const back = returnPathFromLocation();
     void signIn(providerId, {
-      callbackURL: "/",
-      errorCallbackURL: "/login",
+      callbackURL: back,
+      errorCallbackURL: back === "/" ? "/login" : `/login?redirect=${encodeURIComponent(back)}`,
     }).catch((err) => {
       setOpening(null);
       setNote(err instanceof Error ? err.message : "Could not open Google. Tap Google to try again.");
@@ -62,7 +82,8 @@ function LoginPage() {
     const params = new URLSearchParams(window.location.search);
     const code = params.getAll("error").filter(Boolean).at(-1) ?? "";
     if (!code || !google) return;
-    window.history.replaceState({}, "", "/login");
+    const back = returnPathFromLocation();
+    window.history.replaceState({}, "", back === "/" ? "/login" : `/login?redirect=${encodeURIComponent(back)}`);
     const cancelled = code === "access_denied";
     const retryable =
       !cancelled &&
@@ -90,20 +111,21 @@ function LoginPage() {
   async function onEmail(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
+    const back = returnPathFromLocation();
     try {
       if (mode === "up") {
         const res = await authClient.signUp.email({
           name: name.trim() || "Diwaar user",
           email: email.trim(),
           password,
-          callbackURL: "/",
+          callbackURL: back,
         });
         if (res.error) throw new Error(res.error.message);
       } else {
         const res = await authClient.signIn.email({
           email: email.trim(),
           password,
-          callbackURL: "/",
+          callbackURL: back,
         });
         if (res.error) {
           const message = res.error.message ?? "Could not sign in";
@@ -116,7 +138,7 @@ function LoginPage() {
           throw new Error(message);
         }
       }
-      window.location.assign("/");
+      window.location.assign(back);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not sign in");
       setBusy(false);

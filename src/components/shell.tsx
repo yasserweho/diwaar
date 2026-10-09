@@ -81,9 +81,17 @@ const NAV = [
   { to: "/blog", label: "Blog", ur: "بلاگ" },
 ];
 
+/** Same-origin return path for the existing /login page. Open redirects are rejected. */
+function loginHref(href: string): string {
+  if (!href || href === "/" || href.startsWith("/login") || href.startsWith("//")) return "/login";
+  return `/login?redirect=${encodeURIComponent(href)}`;
+}
+
 export function Shell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const { lang } = useLang();
+  const here = useRouterState({ select: (s) => s.location.href });
+  const signInHref = loginHref(here);
 
   useEffect(() => {
     void useAppStore.persist.rehydrate();
@@ -93,10 +101,21 @@ export function Shell({ children }: { children: React.ReactNode }) {
     <div className="min-h-dvh flex flex-col bg-bg text-fg">
       <AccountSync />
       <header className="sticky top-0 z-40 border-b border-border bg-white">
-        <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4">
+        <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-4 sm:gap-6">
           <Link to="/" className="shrink-0">
             <DiwaarWordmark compact />
           </Link>
+          <SignedOut>
+            <a
+              href={signInHref}
+              className={cn(
+                buttonVariants({ variant: "primary", size: "md" }),
+                "min-h-11 shrink-0 px-3.5 md:hidden",
+              )}
+            >
+              {tx(lang, "Login", "لاگ اِن")}
+            </a>
+          </SignedOut>
           <nav className="ml-2 hidden items-center gap-0.5 lg:flex">
             {NAV.map((item) => (
               <Link
@@ -116,9 +135,12 @@ export function Shell({ children }: { children: React.ReactNode }) {
               <UserButton />
             </div>
             <SignedOut>
-              <Link to="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "px-2 sm:px-3")}>
+              <a
+                href={signInHref}
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden px-2 md:inline-flex sm:px-3")}
+              >
                 {tx(lang, "Sign in", "سائن اِن")}
-              </Link>
+              </a>
             </SignedOut>
             <LanguageToggle />
             <Link
@@ -132,7 +154,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             </Link>
             <button
               type="button"
-              className="hidden md:grid lg:hidden size-11 place-items-center rounded-lg hover:bg-ice"
+              className="grid size-11 shrink-0 place-items-center rounded-lg hover:bg-ice lg:hidden"
               aria-label="Open menu"
               onClick={() => setOpen(true)}
             >
@@ -164,13 +186,13 @@ export function Shell({ children }: { children: React.ReactNode }) {
             </div>
             <nav className="flex flex-1 flex-col gap-5 overflow-y-auto p-4 pb-6">
               <SignedOut>
-                <Link
-                  to="/login"
+                <a
+                  href={signInHref}
                   onClick={() => setOpen(false)}
                   className={cn(buttonVariants({ variant: "primary" }), "h-12")}
                 >
-                  {tx(lang, "Sign in", "سائن اِن")}
-                </Link>
+                  {tx(lang, "Login", "لاگ اِن")}
+                </a>
               </SignedOut>
               <SignedIn>
                 <div className="rounded-xl bg-ice px-3 py-3">
