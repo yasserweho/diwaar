@@ -101,7 +101,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
     <div className="min-h-dvh flex flex-col bg-bg text-fg">
       <AccountSync />
       <header className="sticky top-0 z-40 border-b border-border bg-white">
-        <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-4 sm:gap-6">
+        <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-3 sm:gap-6 sm:px-4">
           <Link to="/" className="shrink-0">
             <DiwaarWordmark compact />
           </Link>
@@ -110,7 +110,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               href={signInHref}
               className={cn(
                 buttonVariants({ variant: "primary", size: "md" }),
-                "min-h-11 shrink-0 px-3.5 md:hidden",
+                "min-h-11 shrink-0 px-3 md:hidden",
               )}
             >
               {tx(lang, "Login", "لاگ اِن")}
