@@ -2,7 +2,7 @@
  * Self-hosted Better Auth for THIS app (server-only).
  */
 import { betterAuth } from "better-auth";
-import { bearer, genericOAuth } from "better-auth/plugins";
+import { bearer, genericOAuth, phoneNumber } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { getCookie } from "@tanstack/react-start/server";
 import { randomBytes } from "node:crypto";
@@ -129,6 +129,35 @@ const grokOAuthPlugin = useBroker
     })
   : null;
 
+async function sendSmsOtp(phoneNumber: string, code: string) {
+  const sid = env("TWILIO_ACCOUNT_SID");
+  const token = env("TWILIO_AUTH_TOKEN");
+  const from = env("TWILIO_PHONE_NUMBER");
+  if (!sid || !token || !from) {
+    // Dev / preview fallback — OTP is only logged, not sent.
+    console.log(`[OTP] ${phoneNumber} → ${code}`);
+    return;
+  }
+  const body = new URLSearchParams({
+    To: phoneNumber,
+    From: from,
+    Body: `Your Diwaar verification code is ${code}. It expires in 5 minutes.`,
+  });
+  const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString("base64")}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body,
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    console.error("Twilio SMS failed", res.status, text);
+    throw new Error("Could not send SMS");
+  }
+}
+
 export const auth = betterAuth({
   baseURL,
   secret: env("BETTER_AUTH_SECRET") ?? previewAuthSecret(),
@@ -206,6 +235,19 @@ export const auth = betterAuth({
   plugins: [
     gateIdentitySessions(),
     ...(grokOAuthPlugin ? [grokOAuthPlugin] : []),
+    phoneNumber({
+      sendOTP: async ({ phoneNumber: to, code }) => {
+        // Do not await in a way that blocks the response longer than necessary;
+        // Twilio is called here so the OTP is delivered before the function ends on Vercel.
+        await sendSmsOtp(to, code);
+      },
+      signUpOnVerification: {
+        getTempEmail: (phone) => `${phone.replace(/\D/g, "")}@phone.diwaar.com`,
+        getTempName: (phone) => phone,
+      },
+      otpLength: 6,
+      expiresIn: 300,
+    }),
     bearer(),
     tanstackStartCookies(),
   ],

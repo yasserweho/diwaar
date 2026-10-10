@@ -50,6 +50,12 @@ function LoginPage() {
   const [note, setNote] = useState("");
   const [opening, setOpening] = useState<"google" | "x" | null>(null);
 
+  // Phone OTP
+  const [phone, setPhone] = useState("+92");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [phoneBusy, setPhoneBusy] = useState(false);
+
   const google = GROK_PROVIDERS.find((p) => p.providerId === "grok-google");
   const x = GROK_PROVIDERS.find((p) => p.providerId === "grok-x");
 
@@ -145,6 +151,43 @@ function LoginPage() {
     }
   }
 
+  async function sendPhoneOtp(e: React.FormEvent) {
+    e.preventDefault();
+    const cleaned = phone.trim();
+    if (!cleaned.startsWith("+") || cleaned.length < 10) {
+      toast.error("Enter a full number starting with + (example: +923001234567)");
+      return;
+    }
+    setPhoneBusy(true);
+    try {
+      const res = await authClient.phoneNumber.sendOtp({ phoneNumber: cleaned });
+      if (res.error) throw new Error(res.error.message);
+      setOtpSent(true);
+      toast.success("Code sent. Check your SMS.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not send code");
+    } finally {
+      setPhoneBusy(false);
+    }
+  }
+
+  async function verifyPhoneOtp(e: React.FormEvent) {
+    e.preventDefault();
+    setPhoneBusy(true);
+    const back = returnPathFromLocation();
+    try {
+      const res = await authClient.phoneNumber.verify({
+        phoneNumber: phone.trim(),
+        code: otp.trim(),
+      });
+      if (res.error) throw new Error(res.error.message);
+      window.location.assign(back);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Invalid or expired code");
+      setPhoneBusy(false);
+    }
+  }
+
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-10 pb-28">
       <DiwaarWordmark />
@@ -152,7 +195,7 @@ function LoginPage() {
         {mode === "in" ? "Sign in" : "Create your account"}
       </h1>
       <p className="mt-2 text-sm text-muted">
-        Sign in with Google or X. Saved homes, ads and alerts stay on your account.
+        Sign in with Google, X, phone number, or Gmail. Saved homes, ads and alerts stay on your account.
       </p>
       {embedded && (
         <p className="mt-4 rounded-xl bg-ice px-3 py-3 text-sm text-primary-dark">
@@ -188,7 +231,58 @@ function LoginPage() {
               </button>
             )}
           </div>
-          <form onSubmit={(e) => void onEmail(e)} className="mt-6 space-y-3">
+
+          <div className="mt-8">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Or use your phone number</p>
+            {!otpSent ? (
+              <form onSubmit={(e) => void sendPhoneOtp(e)} className="mt-3 space-y-3">
+                <input
+                  className={field}
+                  type="tel"
+                  required
+                  autoComplete="tel"
+                  aria-label="Phone number"
+                  placeholder="+923001234567"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                <Button type="submit" disabled={phoneBusy} className="w-full">
+                  {phoneBusy ? "Sending…" : "Send code"}
+                </Button>
+              </form>
+            ) : (
+              <form onSubmit={(e) => void verifyPhoneOtp(e)} className="mt-3 space-y-3">
+                <p className="text-sm text-muted">Enter the 6-digit code sent to {phone}</p>
+                <input
+                  className={field}
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={6}
+                  required
+                  autoComplete="one-time-code"
+                  aria-label="Verification code"
+                  placeholder="123456"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+                <Button type="submit" disabled={phoneBusy} className="w-full">
+                  {phoneBusy ? "Verifying…" : "Verify and sign in"}
+                </Button>
+                <button
+                  type="button"
+                  className="text-sm font-semibold text-primary"
+                  onClick={() => {
+                    setOtpSent(false);
+                    setOtp("");
+                  }}
+                >
+                  Change number
+                </button>
+              </form>
+            )}
+          </div>
+
+          <form onSubmit={(e) => void onEmail(e)} className="mt-8 space-y-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Or use your Gmail address</p>
             {mode === "up" && (
               <input className={field} aria-label="Name" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
