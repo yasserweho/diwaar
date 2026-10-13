@@ -26,6 +26,17 @@ import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/property/$id")({
   head: ({ params }) => {
+    // Local preview listings (saved only in the browser) start with "user-"
+    if (params.id.startsWith("user-")) {
+      return seo(
+        "Your listing preview",
+        "This listing is saved on this device only.",
+        {
+          noindex: true,
+          path: `/property/${params.id}`,
+        },
+      );
+    }
     const property = getProperty(params.id);
     if (!property) {
       return seo("Listing not found", "This Diwaar listing is no longer available.", {
