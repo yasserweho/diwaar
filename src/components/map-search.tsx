@@ -47,9 +47,14 @@ export function MapSearch({
       }).addTo(map);
 
       const markers = properties.map((p, i) => {
-        const [lat, lng] = scatterAround(getApproxCoords(p.city, p.location), i, properties.length);
+        let latlng: [number, number];
+        if (typeof p.lat === "number" && typeof p.lng === "number") {
+          latlng = [p.lat, p.lng];
+        } else {
+          latlng = scatterAround(getApproxCoords(p.city, p.location), i, properties.length);
+        }
         const price = formatPrice(p.price, p.purpose);
-        const marker = window.L.marker([lat, lng]).addTo(map);
+        const marker = window.L.marker(latlng).addTo(map);
         marker.bindPopup(
           `<div class="text-sm"><strong>${p.title}</strong><br/>${price}<br/>${p.location}, ${p.city}</div>`,
         );
