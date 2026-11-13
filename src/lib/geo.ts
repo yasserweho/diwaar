@@ -38,22 +38,136 @@ export function scatterAround([lat, lng]: [number, number], index: number, count
   return [lat + Math.sin(angle) * radius, lng + Math.cos(angle) * radius];
 }
 
-/** Geocode a place name using OpenStreetMap Nominatim (free, no key).
- * Respects usage policy: identify the app, avoid bulk requests.
- */
+// ---------------------------------------------------------------------------
+// Geohash (base32) — dependency-free
+// Precision 6 ≈ 1.2 km × 0.6 km — good cache cell for property areas
+// ---------------------------------------------------------------------------
+
+const BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz";
+
+export function encodeGeohash(lat: number, lng: number, precision = 6): string {
+  let idx = 0;
+  let bit = 0;
+  let even = true;
+  let hash = "";
+  let latMin = -90, latMax = 90;
+  let lngMin = -180, lngMax = 180;
+
+  while (hash.length < precision) {
+    if (even) {
+      const mid = (lngMin + lngMax) / 2;
+      if (lng >= mid) {
+        idx = (idx << 1) + 1;
+        lngMin = mid;
+      } else {
+        idx = idx << 1;
+        lngMax = mid;
+      }
+    } else {
+      const mid = (latMin + latMax) / 2;
+      if (lat >= mid) {
+        idx = (idx << 1) + 1;
+        latMin = mid;
+      } else {
+        idx = idx << 1;
+        latMax = mid;
+      }
+    }
+    even = !even;
+    if (++bit === 5) {
+      hash += BASE32[idx];
+      bit = 0;
+      idx = 0;
+    }
+  }
+  return hash;
+}
+
+export function decodeGeohash(hash: string): { lat: number; lng: number; error: { lat: number; lng: number } } {
+  let even = true;
+  let latMin = -90, latMax = 90;
+  let lngMin = -180, lngMax = 180;
+
+  for (const c of hash) {
+    const idx = BASE32.indexOf(c);
+    if (idx < 0) continue;
+    for (let bit = 4; bit >= 0; bit--) {
+      const mask = 1 << bit;
+      if (even) {
+        const mid = (lngMin + lngMax) / 2;
+        if (idx & mask) lngMin = mid;
+        else lngMax = mid;
+      } else {
+        const mid = (latMin + latMax) / 2;
+        if (idx & mask) latMin = mid;
+        else latMax = mid;
+      }
+      even = !even;
+    }
+  }
+  return {
+    lat: (latMin + latMax) / 2,
+    lng: (lngMin + lngMax) / 2,
+    error: { lat: (latMax - latMin) / 2, lng: (lngMax - lngMin) / 2 },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// localStorage geocoding cache keyed by geohash (or query string)
+// ---------------------------------------------------------------------------
+
+const CACHE_PREFIX = "diwaar-geo:";
+const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+interface CacheEntry<T> {
+  value: T;
+  expires: number;
+}
+
+function cacheGet<T>(key: string): T | null {
+  try {
+    const raw = localStorage.getItem(CACHE_PREFIX + key);
+    if (!raw) return null;
+    const entry = JSON.parse(raw) as CacheEntry<T>;
+    if (Date.now() > entry.expires) {
+      localStorage.removeItem(CACHE_PREFIX + key);
+      return null;
+    }
+    return entry.value;
+  } catch {
+    return null;
+  }
+}
+
+function cacheSet<T>(key: string, value: T) {
+  try {
+    const entry: CacheEntry<T> = { value, expires: Date.now() + CACHE_TTL_MS };
+    localStorage.setItem(CACHE_PREFIX + key, JSON.stringify(entry));
+  } catch {
+    // quota exceeded — ignore
+  }
+}
+
+const NOMINATIM_UA = "Diwaar.com property portal (https://www.diwaar.com)";
+
+/** Forward geocode with geohash-aware localStorage cache. */
 export async function geocodePlace(query: string): Promise<[number, number] | null> {
-  if (!query.trim()) return null;
+  const q = query.trim().toLowerCase();
+  if (!q) return null;
+
+  const cacheKey = "fwd:" + q;
+  const cached = cacheGet<[number, number]>(cacheKey);
+  if (cached) return cached;
+
   const url = new URL("https://nominatim.openstreetmap.org/search");
   url.searchParams.set("q", query);
   url.searchParams.set("format", "json");
   url.searchParams.set("limit", "1");
   url.searchParams.set("countrycodes", "pk");
+
   try {
     const res = await fetch(url.toString(), {
-      headers: {
-        "Accept": "application/json",
-        "User-Agent": "Diwaar.com property portal (https://www.diwaar.com)",
-      },
+      headers: { Accept: "application/json", "User-Agent": NOMINATIM_UA },
     });
     if (!res.ok) return null;
     const data = (await res.json()) as { lat: string; lon: string }[];
@@ -61,7 +175,61 @@ export async function geocodePlace(query: string): Promise<[number, number] | nu
     const lat = parseFloat(data[0].lat);
     const lng = parseFloat(data[0].lon);
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-    return [lat, lng];
+    const result: [number, number] = [lat, lng];
+    cacheSet(cacheKey, result);
+    // also cache under geohash so reverse can reuse nearby points
+    cacheSet("geo:" + encodeGeohash(lat, lng, 6), result);
+    return result;
+  } catch {
+    return null;
+  }
+}
+
+export interface ReverseResult {
+  displayName: string;
+  city?: string;
+  suburb?: string;
+  road?: string;
+  lat: number;
+  lng: number;
+}
+
+/** Reverse geocode with geohash cache (precision 6 cell). */
+export async function reverseGeocode(lat: number, lng: number): Promise<ReverseResult | null> {
+  const gh = encodeGeohash(lat, lng, 6);
+  const cacheKey = "rev:" + gh;
+  const cached = cacheGet<ReverseResult>(cacheKey);
+  if (cached) return cached;
+
+  const url = new URL("https://nominatim.openstreetmap.org/reverse");
+  url.searchParams.set("lat", String(lat));
+  url.searchParams.set("lon", String(lng));
+  url.searchParams.set("format", "jsonv2");
+  url.searchParams.set("addressdetails", "1");
+  url.searchParams.set("zoom", "16");
+
+  try {
+    const res = await fetch(url.toString(), {
+      headers: { Accept: "application/json", "User-Agent": NOMINATIM_UA },
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as {
+      display_name?: string;
+      lat?: string;
+      lon?: string;
+      address?: Record<string, string>;
+    };
+    if (!data.display_name) return null;
+    const result: ReverseResult = {
+      displayName: data.display_name,
+      city: data.address?.city || data.address?.town || data.address?.village,
+      suburb: data.address?.suburb || data.address?.neighbourhood || data.address?.quarter,
+      road: data.address?.road,
+      lat: parseFloat(data.lat ?? String(lat)),
+      lng: parseFloat(data.lon ?? String(lng)),
+    };
+    cacheSet(cacheKey, result);
+    return result;
   } catch {
     return null;
   }
