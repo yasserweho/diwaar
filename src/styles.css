@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Source Sans 3", "Noto Naskh Arabic", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Source Serif 4", "Noto Naskh Arabic", Georgia, "Times New Roman", serif;
+  --font-sans: "Plus Jakarta Sans", "Noto Naskh Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Plus Jakarta Sans", "Noto Naskh Arabic", ui-sans-serif, system-ui, sans-serif;
 
   --color-bg: #f4f5f7;
   --color-surface: #ffffff;
@@ -50,8 +50,8 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-sans);
-    font-size: 17px;
-    line-height: 1.6;
+    font-size: 16.5px;
+    line-height: 1.55;
     text-align: start;
     overflow-x: hidden;
   }
@@ -78,13 +78,17 @@
   h2,
   h3,
   h4 {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    line-height: 1.2;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    line-height: 1.15;
     text-align: start;
     text-wrap: balance;
-    letter-spacing: -0.012em;
+    letter-spacing: -0.025em;
   }
+
+  h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+  h2 { font-size: clamp(1.35rem, 3vw, 1.75rem); }
+  h3 { font-size: 1.15rem; }
 
   p,
   li,
@@ -97,7 +101,7 @@
 
   p,
   li {
-    line-height: 1.65;
+    line-height: 1.6;
   }
 
   @media (max-width: 767px) {
@@ -123,7 +127,7 @@ html[lang="ur"] h1,
 html[lang="ur"] h2,
 html[lang="ur"] h3,
 html[lang="ur"] h4 {
-  font-family: "Noto Naskh Arabic", "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Noto Naskh Arabic", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 @media (prefers-reduced-motion: reduce) {
