@@ -51,6 +51,13 @@ export function AccountSync() {
         const remote = await loadDesk();
         if (stop) return;
         const local = snapshot();
+
+        // Merge: keep any local listings that are not yet on the remote desk.
+        // This prevents a newly posted ad from being wiped by an older remote snapshot.
+        const remoteIds = new Set(remote.listings.map((p) => p.id));
+        const localOnly = local.listings.filter((p) => !remoteIds.has(p.id));
+        const mergedListings = [...localOnly, ...remote.listings];
+
         const remoteEmpty =
           remote.listings.length +
             remote.savedIds.length +
@@ -62,8 +69,20 @@ export function AccountSync() {
           0;
         const localHas =
           local.listings.length + local.savedIds.length + local.orders.length + local.loans.length > 0;
-        if (remoteEmpty && localHas) await saveDesk({ data: local });
-        else apply(remote);
+
+        if (remoteEmpty && localHas) {
+          await saveDesk({ data: local });
+        } else if (localOnly.length > 0) {
+          // Save the merged desk so the new listing is not lost
+          const merged: Desk = {
+            ...remote,
+            listings: mergedListings,
+          };
+          await saveDesk({ data: merged });
+          apply(merged);
+        } else {
+          apply(remote);
+        }
         ready.current = true;
       } catch {
         ready.current = false;
