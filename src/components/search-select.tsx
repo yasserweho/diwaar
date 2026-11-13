@@ -2,6 +2,7 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
+import { rankLocations } from "@/lib/location-search";
 
 export function SearchSelect({
   value,
@@ -27,12 +28,10 @@ export function SearchSelect({
   const selected = options.find((option) => option.value === value);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return options;
-    return options.filter((option) => option.label.toLowerCase().includes(q));
+    return rankLocations(options, query, 40);
   }, [options, query]);
 
-  const matches = filtered.slice(0, 80);
+  const matches = filtered;
 
   useEffect(() => {
     if (!open) return;
@@ -115,11 +114,6 @@ export function SearchSelect({
                     </button>
                   </li>
                 ))
-              )}
-              {filtered.length > matches.length && (
-                <li className="px-3 py-2 text-xs text-[#5c6e82]">
-                  Keep typing to see {filtered.length - matches.length} more
-                </li>
               )}
             </ul>
           </div>,
