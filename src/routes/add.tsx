@@ -150,6 +150,11 @@ function AddPage() {
     void navigate({ to: "/my-ads" });
   }
 
+  const typeOptions = (Object.keys(CATEGORY_LABEL) as Category[]).map((c) => ({
+    value: c,
+    label: CATEGORY_LABEL[c],
+  }));
+
   return (
     <div className="mx-auto max-w-xl px-4 py-8">
       <h1 className="text-3xl font-extrabold text-black">Add a property</h1>
@@ -173,13 +178,14 @@ function AddPage() {
         </div>
         <label className="block text-sm font-semibold">
           Type
-          <select className={`${field} mt-1`} value={category} onChange={(e) => setCategory(e.target.value as Category)}>
-            {(Object.keys(CATEGORY_LABEL) as Category[]).map((c) => (
-              <option key={c} value={c}>
-                {CATEGORY_LABEL[c]}
-              </option>
-            ))}
-          </select>
+          <SearchSelect
+            className="mt-1"
+            value={category}
+            placeholder="Select property type"
+            searchPlaceholder="Type to search types"
+            options={typeOptions}
+            onChange={(next) => setCategory(next as Category)}
+          />
         </label>
         <label className="block text-sm font-semibold">
           City
