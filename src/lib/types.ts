@@ -37,6 +37,10 @@ export interface Property {
   featured?: boolean;
   plotType?: "residential" | "commercial" | "agricultural";
   furnished?: "furnished" | "semi" | "unfurnished";
+  /** Precise latitude from geocoding or pin drop. */
+  lat?: number;
+  /** Precise longitude from geocoding or pin drop. */
+  lng?: number;
 }
 
 export interface Agent {
