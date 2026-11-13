@@ -10,6 +10,8 @@ import { SearchSelect } from "@/components/search-select";
 import { CATEGORY_LABEL, CITIES, type Category, type Purpose } from "@/lib/types";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { seo } from "@/lib/seo";
+import { geocodePlace, getApproxCoords } from "@/lib/geo";
+import { PinPicker } from "@/components/pin-picker";
 
 export const Route = createFileRoute("/add")({
   head: () =>
@@ -40,6 +42,9 @@ function AddPage() {
   const [description, setDescription] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [ownerPhone, setOwnerPhone] = useState("");
+  const [lat, setLat] = useState<number | undefined>();
+  const [lng, setLng] = useState<number | undefined>();
+  const [geoStatus, setGeoStatus] = useState<string>("");
 
   const field =
     "h-12 w-full rounded-lg border border-border bg-surface px-3 text-sm outline-none focus:border-primary";
@@ -47,6 +52,40 @@ function AddPage() {
   useEffect(() => {
     if (user?.displayName) setOwnerName((current) => current || user.displayName || "");
   }, [user?.displayName]);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function run() {
+      const query = [location, areaName, city, "Pakistan"].filter(Boolean).join(", ");
+      if (!query || query === "Pakistan") {
+        const [a, b] = getApproxCoords(city, location);
+        if (!cancelled) {
+          setLat(a);
+          setLng(b);
+          setGeoStatus("Using approximate city center — drag the pin to refine");
+        }
+        return;
+      }
+      setGeoStatus("Finding location…");
+      const result = await geocodePlace(query);
+      if (cancelled) return;
+      if (result) {
+        setLat(result[0]);
+        setLng(result[1]);
+        setGeoStatus("Location found — drag the pin or click the map to adjust");
+      } else {
+        const [a, b] = getApproxCoords(city, location);
+        setLat(a);
+        setLng(b);
+        setGeoStatus("Could not find exact match — drag the pin to set the precise spot");
+      }
+    }
+    const t = setTimeout(run, 400);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [city, location, areaName]);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -87,6 +126,8 @@ function AddPage() {
       badges: ["featured"],
       createdAt: new Date().toISOString().slice(0, 10),
       featured: true,
+      lat,
+      lng,
     });
     toast.success("Listing published on this device");
     void navigate({ to: "/property/$id", params: { id } });
@@ -151,6 +192,26 @@ function AddPage() {
           Block / phase
           <input className={`${field} mt-1`} value={areaName} onChange={(e) => setAreaName(e.target.value)} placeholder="Phase 5, Block C" />
         </label>
+
+        <div className="space-y-2">
+          <p className="text-sm font-semibold">Pin on map</p>
+          <p className="text-xs text-muted">{geoStatus || "Set city and location to place the pin"}</p>
+          {lat && lng && (
+            <p className="text-xs text-muted">
+              {lat.toFixed(5)}, {lng.toFixed(5)}
+            </p>
+          )}
+          <PinPicker
+            lat={lat}
+            lng={lng}
+            onChange={(la, ln) => {
+              setLat(la);
+              setLng(ln);
+              setGeoStatus("Pin adjusted manually");
+            }}
+          />
+        </div>
+
         <label className="block text-sm font-semibold">
           Title
           <input className={`${field} mt-1`} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="5 Marla house, park-facing" />
