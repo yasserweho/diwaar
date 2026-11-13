@@ -26,7 +26,6 @@ import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/property/$id")({
   head: ({ params }) => {
-    // Local preview listings (saved only in the browser) start with "user-"
     if (params.id.startsWith("user-")) {
       return seo(
         "Your listing preview",
@@ -60,14 +59,25 @@ function PropertyPage() {
   const extra = useAppStore((s) => s.userListings);
   const property = getProperty(id, extra);
   const navigate = useNavigate();
+  const isLocal = id.startsWith("user-");
 
   if (!property) {
     return (
       <div className="mx-auto max-w-xl px-4 py-20 text-center">
-        <p className="font-bold text-lg">Listing not found</p>
-        <Button className="mt-4" onClick={() => void navigate({ to: "/search" })}>
-          Back to search
-        </Button>
+        <p className="font-bold text-lg">{isLocal ? "Opening your listing\u2026" : "Listing not found"}</p>
+        <p className="mt-2 text-sm text-muted">
+          {isLocal
+            ? "This ad is saved on this device. If it does not appear in a moment, check My ads."
+            : "This listing is no longer available."}
+        </p>
+        <div className="mt-4 flex justify-center gap-2">
+          {isLocal && (
+            <Button onClick={() => void navigate({ to: "/my-ads" })}>Go to My ads</Button>
+          )}
+          <Button variant="outline" onClick={() => void navigate({ to: "/search" })}>
+            Back to search
+          </Button>
+        </div>
       </div>
     );
   }
@@ -321,7 +331,7 @@ function PropertyBody() {
               {tx(
                 lang,
                 "diwaar.com takes no commission on this ad. Confirm the title and the society file before you pay a token.",
-                "diwaar.com اس اشتہار پر کمیشن نہیں لیتی۔ ٹوکن سے پہلے نام اور سوسائٹی کی فائل کی تصدیق کریں۔",
+                "diwaar.com \u0627\u0633 \u0627\u0634\u062a\u06c1\u0627\u0631 \u067e\u0631 \u06a9\u0645\u06cc\u0634\u0646 \u0646\u06c1\u06cc\u06ba \u0644\u06cc\u062a\u06cc\u06d4 \u0679\u0648\u06a9\u0646 \u0633\u06d2 \u067e\u06c1\u0644\u06d2 \u0646\u0627\u0645 \u0627\u0648\u0631 \u0633\u0648\u0633\u0627\u0626\u0679\u06cc \u06a9\u06cc \u0641\u0627\u0626\u0644 \u06a9\u06cc \u062a\u0635\u062f\u06cc\u0642 \u06a9\u0631\u06cc\u06ba\u06d4",
               )}
             </p>
           </div>
