@@ -153,12 +153,16 @@ export interface BankOffer {
 }
 
 export const BANKS: BankOffer[] = [
-  { name: "HBL", product: "Home Loan", rate: 15.5, years: 20, down: 30, note: "Salaried and self-employed. Property must be approved." },
-  { name: "UBL", product: "Address", rate: 16.2, years: 25, down: 20, note: "Longer tenure. Higher markup in year one." },
-  { name: "MCB", product: "Home Finance", rate: 15.9, years: 20, down: 25, note: "Plot-plus-construction allowed on selected societies." },
-  { name: "Meezan", product: "Easy Home", rate: 17.1, years: 20, down: 30, note: "Diminishing musharakah. No conventional interest line." },
-  { name: "Bank Alfalah", product: "Home Finance", rate: 16.4, years: 20, down: 20, note: "Lower down payment on ready houses." },
-  { name: "Askari Bank", product: "Home Loan", rate: 15.75, years: 15, down: 30, note: "Shorter tenure, lower total markup." },
+  { name: "Apna Ghar (Govt)", product: "Affordable Housing", rate: 5.0, years: 20, down: 10, note: "Fixed 5% for first 10 years on loans up to Rs 10 million. First-time buyers. 10% equity." },
+  { name: "HBL", product: "Home Loan", rate: 15.8, years: 20, down: 30, note: "KIBOR + ~3%. Salaried and self-employed. Property must be approved." },
+  { name: "UBL", product: "Address", rate: 15.9, years: 25, down: 20, note: "Longer tenure. Variable, linked to 1-year KIBOR." },
+  { name: "MCB", product: "Home Finance", rate: 15.4, years: 20, down: 25, note: "Often 6-month KIBOR + 2-3%. Plot-plus-construction on selected societies." },
+  { name: "Meezan Bank", product: "Easy Home", rate: 15.8, years: 20, down: 30, note: "Islamic diminishing musharakah. KIBOR + ~3% for salaried." },
+  { name: "Bank Alfalah", product: "Home Finance", rate: 15.8, years: 20, down: 20, note: "KIBOR + 3% salaried. Lower down payment on ready houses." },
+  { name: "Bank AL Habib", product: "Housing Finance", rate: 15.8, years: 25, down: 20, note: "KIBOR + 3% salaried, +3.5% self-employed. Up to Rs 100M." },
+  { name: "Askari Bank", product: "Home Loan", rate: 15.8, years: 15, down: 30, note: "Competitive variable rates. Shorter max tenure available." },
+  { name: "Allied Bank", product: "Home Finance", rate: 16.0, years: 25, down: 25, note: "Variable pricing. Construction and purchase options." },
+  { name: "HBFC", product: "Ghar Sahulat", rate: 15.8, years: 20, down: 15, note: "Specialised housing finance. Competitive for ready and under-construction." },
 ];
 
 export interface ForumPost {
