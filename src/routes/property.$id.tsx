@@ -60,14 +60,35 @@ function PropertyPage() {
   const property = getProperty(id, extra);
   const navigate = useNavigate();
   const isLocal = id.startsWith("user-");
+  const [ready, setReady] = useState(!isLocal);
+
+  useEffect(() => {
+    if (!isLocal) return;
+    let alive = true;
+    // Ensure persisted store is loaded on the client before deciding a local listing is missing.
+    void useAppStore.persist.rehydrate().then(() => {
+      if (alive) setReady(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [isLocal]);
+
+  if (isLocal && !ready) {
+    return (
+      <div className="mx-auto max-w-xl px-4 py-20 text-center">
+        <p className="font-bold text-lg">Opening your listing\u2026</p>
+      </div>
+    );
+  }
 
   if (!property) {
     return (
       <div className="mx-auto max-w-xl px-4 py-20 text-center">
-        <p className="font-bold text-lg">{isLocal ? "Opening your listing\u2026" : "Listing not found"}</p>
+        <p className="font-bold text-lg">{isLocal ? "Listing not found on this device" : "Listing not found"}</p>
         <p className="mt-2 text-sm text-muted">
           {isLocal
-            ? "This ad is saved on this device. If it does not appear in a moment, check My ads."
+            ? "This ad is saved only in the browser you posted it from. Check My ads on the same device."
             : "This listing is no longer available."}
         </p>
         <div className="mt-4 flex justify-center gap-2">
