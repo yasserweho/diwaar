@@ -45,6 +45,7 @@ function AddPage() {
   const [lat, setLat] = useState<number | undefined>();
   const [lng, setLng] = useState<number | undefined>();
   const [geoStatus, setGeoStatus] = useState<string>("");
+  const [publishing, setPublishing] = useState(false);
 
   const field =
     "h-12 w-full rounded-lg border border-border bg-surface px-3 text-sm outline-none focus:border-primary";
@@ -100,8 +101,9 @@ function AddPage() {
     }
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (publishing) return;
     const p = Number(price.replace(/,/g, ""));
     const a = Number(area);
     if (!title.trim() || !location.trim() || !p || !a) {
@@ -114,6 +116,7 @@ function AddPage() {
       toast.error("Add the name and phone number that should appear on the ad.");
       return;
     }
+    setPublishing(true);
     assignContact(name, phone);
     const id = `user-${Date.now()}`;
     add({
@@ -142,7 +145,9 @@ function AddPage() {
       lat,
       lng,
     });
-    toast.success("Listing published on this device");
+    toast.success("Listing published \u2014 opening your ad");
+    // Give the store a tick to commit before navigating so the property page can find it.
+    await new Promise((r) => setTimeout(r, 50));
     void navigate({ to: "/property/$id", params: { id } });
   }
 
@@ -281,8 +286,8 @@ function AddPage() {
             onChange={(e) => setDescription(e.target.value)}
           />
         </label>
-        <Button type="submit" size="lg" className="w-full">
-          Publish listing
+        <Button type="submit" size="lg" className="w-full" disabled={publishing}>
+          {publishing ? "Publishing\u2026" : "Publish listing"}
         </Button>
       </form>
     </div>
