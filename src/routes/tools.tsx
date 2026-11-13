@@ -5,13 +5,13 @@ import { BANKS } from "@/lib/portal";
 import { cn } from "@/lib/utils";
 import { seo } from "@/lib/seo";
 
-type Tab = "loan" | "build" | "area" | "banks";
+type Tab = "loan" | "build" | "area" | "loans";
 
 function parse(s: Record<string, unknown>): { tab: Tab; rate?: number } {
   const tab =
-    s.tab === "build" || s.tab === "area" || s.tab === "loan" || s.tab === "banks" ? s.tab : "loan";
+    s.tab === "build" || s.tab === "area" || s.tab === "loan" || s.tab === "loans" || s.tab === "banks" ? (s.tab === "banks" ? "loans" : s.tab) : "loan";
   const n = Number(s.rate);
-  return { tab, rate: Number.isFinite(n) && n > 0 ? n : undefined };
+  return { tab: tab as Tab, rate: Number.isFinite(n) && n > 0 ? n : undefined };
 }
 
 export const Route = createFileRoute("/tools")({
@@ -30,7 +30,7 @@ function ToolsPage() {
   const navigate = useNavigate({ from: "/tools" });
   const tabs: { id: Tab; label: string }[] = [
     { id: "loan", label: "Home loan" },
-    { id: "banks", label: "Banks" },
+    { id: "loans", label: "Loans" },
     { id: "build", label: "Construction cost" },
     { id: "area", label: "Area converter" },
   ];
@@ -56,7 +56,7 @@ function ToolsPage() {
       </div>
       <div className="mt-6">
         {tab === "loan" && <LoanCalc />}
-        {tab === "banks" && <BankList />}
+        {tab === "loans" && <BankList />}
         {tab === "build" && <BuildCalc />}
         {tab === "area" && <AreaCalc />}
       </div>
