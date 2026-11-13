@@ -145,10 +145,9 @@ function AddPage() {
       lat,
       lng,
     });
-    toast.success("Listing published \u2014 opening your ad");
-    // Give the store a tick to commit before navigating so the property page can find it.
-    await new Promise((r) => setTimeout(r, 50));
-    void navigate({ to: "/property/$id", params: { id } });
+    toast.success("Listing published \u2014 saved to My ads");
+    // Go to My ads (client store) instead of the property page, which can SSR before the listing is visible.
+    void navigate({ to: "/my-ads" });
   }
 
   return (
