@@ -18,12 +18,31 @@ function MyAdsPage() {
   const { user } = useCurrentUserState();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    void useAppStore.persist.rehydrate().then(() => {
+      if (alive) setReady(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     const posted = listings.find((p) => p.contactName);
     setName(posted?.contactName || user?.displayName || "");
     setPhone(posted?.contactPhone || "");
   }, [user?.displayName, listings]);
+
+  if (!ready) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-20 text-center">
+        <p className="font-semibold">Loading your ads\u2026</p>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -81,7 +100,7 @@ function MyAdsPage() {
               <div className="flex gap-2">
                 <Link
                   to="/pay"
-                  search={{ kind: "boost", title: `Hot listing · ${p.title}`, amount: 5000 }}
+                  search={{ kind: "boost", title: `Hot listing \u00b7 ${p.title}`, amount: 5000 }}
                   className="text-sm font-semibold text-primary"
                 >
                   Promote for PKR 5,000
