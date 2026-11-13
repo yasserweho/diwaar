@@ -1,5 +1,5 @@
 /** Approximate centers for major cities and popular societies in Pakistan.
- * Used for map search until precise lat/lng is stored on each listing.
+ * Fallback when geocoding fails.
  */
 export const CITY_CENTERS: Record<string, [number, number]> = {
   Lahore: [31.5204, 74.3587],
@@ -13,7 +13,7 @@ export const CITY_CENTERS: Record<string, [number, number]> = {
 };
 
 export const LOCATION_CENTERS: Record<string, [number, number]> = {
-  "DHA Defence": [31.4815, 74.4048], // Lahore approx
+  "DHA Defence": [31.4815, 74.4048],
   "Bahria Town": [31.3667, 74.1833],
   "Gulberg": [31.5167, 74.3500],
   "Johar Town": [31.4697, 74.2728],
@@ -29,11 +29,40 @@ export const LOCATION_CENTERS: Record<string, [number, number]> = {
 export function getApproxCoords(city?: string, location?: string): [number, number] {
   if (location && LOCATION_CENTERS[location]) return LOCATION_CENTERS[location];
   if (city && CITY_CENTERS[city]) return CITY_CENTERS[city];
-  return [31.5, 74.3]; // fallback Pakistan center-ish
+  return [31.5, 74.3];
 }
 
 export function scatterAround([lat, lng]: [number, number], index: number, count: number): [number, number] {
   const angle = (index / Math.max(1, count)) * Math.PI * 2;
-  const radius = 0.008 + (index % 5) * 0.002; // ~1km jitter
+  const radius = 0.008 + (index % 5) * 0.002;
   return [lat + Math.sin(angle) * radius, lng + Math.cos(angle) * radius];
+}
+
+/** Geocode a place name using OpenStreetMap Nominatim (free, no key).
+ * Respects usage policy: identify the app, avoid bulk requests.
+ */
+export async function geocodePlace(query: string): Promise<[number, number] | null> {
+  if (!query.trim()) return null;
+  const url = new URL("https://nominatim.openstreetmap.org/search");
+  url.searchParams.set("q", query);
+  url.searchParams.set("format", "json");
+  url.searchParams.set("limit", "1");
+  url.searchParams.set("countrycodes", "pk");
+  try {
+    const res = await fetch(url.toString(), {
+      headers: {
+        "Accept": "application/json",
+        "User-Agent": "Diwaar.com property portal (https://www.diwaar.com)",
+      },
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { lat: string; lon: string }[];
+    if (!data.length) return null;
+    const lat = parseFloat(data[0].lat);
+    const lng = parseFloat(data[0].lon);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+    return [lat, lng];
+  } catch {
+    return null;
+  }
 }
