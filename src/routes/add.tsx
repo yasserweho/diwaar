@@ -146,7 +146,9 @@ function AddPage() {
       lng,
     });
     toast.success("Listing published \u2014 saved to My ads");
-    // Go to My ads (client store) instead of the property page, which can SSR before the listing is visible.
+    // Give the persisted store time to flush to localStorage before navigating,
+    // otherwise a rehydrate on the next page can overwrite the new listing.
+    await new Promise((r) => setTimeout(r, 250));
     void navigate({ to: "/my-ads" });
   }
 
