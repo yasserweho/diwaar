@@ -10,7 +10,7 @@ import { SearchSelect } from "@/components/search-select";
 import { CATEGORY_LABEL, CITIES, type Category, type Purpose } from "@/lib/types";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { seo } from "@/lib/seo";
-import { geocodePlace, getApproxCoords } from "@/lib/geo";
+import { geocodePlace, getApproxCoords, reverseGeocode } from "@/lib/geo";
 import { PinPicker } from "@/components/pin-picker";
 
 export const Route = createFileRoute("/add")({
@@ -62,22 +62,22 @@ function AddPage() {
         if (!cancelled) {
           setLat(a);
           setLng(b);
-          setGeoStatus("Using approximate city center — drag the pin to refine");
+          setGeoStatus("Using approximate city center \u2014 drag the pin to refine");
         }
         return;
       }
-      setGeoStatus("Finding location…");
+      setGeoStatus("Finding location\u2026");
       const result = await geocodePlace(query);
       if (cancelled) return;
       if (result) {
         setLat(result[0]);
         setLng(result[1]);
-        setGeoStatus("Location found — drag the pin or click the map to adjust");
+        setGeoStatus("Location found \u2014 drag the pin or click the map to adjust");
       } else {
         const [a, b] = getApproxCoords(city, location);
         setLat(a);
         setLng(b);
-        setGeoStatus("Could not find exact match — drag the pin to set the precise spot");
+        setGeoStatus("Could not find exact match \u2014 drag the pin to set the precise spot");
       }
     }
     const t = setTimeout(run, 400);
@@ -86,6 +86,19 @@ function AddPage() {
       clearTimeout(t);
     };
   }, [city, location, areaName]);
+
+  async function onPinChange(la: number, ln: number) {
+    setLat(la);
+    setLng(ln);
+    setGeoStatus("Looking up address\u2026");
+    const rev = await reverseGeocode(la, ln);
+    if (rev) {
+      const hint = [rev.road, rev.suburb, rev.city].filter(Boolean).join(", ") || rev.displayName;
+      setGeoStatus(`Near ${hint}`);
+    } else {
+      setGeoStatus("Pin adjusted manually");
+    }
+  }
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -137,7 +150,7 @@ function AddPage() {
     <div className="mx-auto max-w-xl px-4 py-8">
       <h1 className="text-3xl font-extrabold text-black">Add a property</h1>
       <p className="mt-2 text-sm text-muted">
-        Free listing — saved in this browser so you can preview the full seller flow.
+        Free listing \u2014 saved in this browser so you can preview the full seller flow.
       </p>
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
         <div className="grid grid-cols-2 gap-2">
@@ -201,15 +214,7 @@ function AddPage() {
               {lat.toFixed(5)}, {lng.toFixed(5)}
             </p>
           )}
-          <PinPicker
-            lat={lat}
-            lng={lng}
-            onChange={(la, ln) => {
-              setLat(la);
-              setLng(ln);
-              setGeoStatus("Pin adjusted manually");
-            }}
-          />
+          <PinPicker lat={lat} lng={lng} onChange={onPinChange} />
         </div>
 
         <label className="block text-sm font-semibold">
