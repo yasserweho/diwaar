@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, Map, List } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { SearchSelect } from "@/components/search-select";
@@ -14,6 +14,7 @@ import { CATEGORY_LABEL, CITIES, type Category, type Purpose, type SearchParams 
 import { cn } from "@/lib/utils";
 import { seo } from "@/lib/seo";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
+import { MapSearch } from "@/components/map-search";
 
 function parseSearch(s: Record<string, unknown>): SearchParams {
   const purpose: Purpose = s.purpose === "rent" ? "rent" : "buy";
@@ -66,6 +67,7 @@ function SearchPage() {
   const visible = results.slice((page - 1) * pageSize, page * pageSize);
   const pages = Math.max(1, Math.ceil(results.length / pageSize));
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [view, setView] = useState<"list" | "map">("list");
   const addAlert = useAppStore((s) => s.addAlert);
 
   return (
@@ -86,6 +88,28 @@ function SearchPage() {
           {results.length > pageSize ? ` · page ${page} of ${pages}` : ""}
         </h1>
         <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
+          <div className="col-span-2 flex rounded-lg border border-border p-0.5 sm:col-span-1">
+            <button
+              type="button"
+              onClick={() => setView("list")}
+              className={cn(
+                "flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-semibold",
+                view === "list" ? "bg-primary text-primary-fg" : "text-muted hover:text-fg",
+              )}
+            >
+              <List className="size-4" /> List
+            </button>
+            <button
+              type="button"
+              onClick={() => setView("map")}
+              className={cn(
+                "flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-semibold",
+                view === "map" ? "bg-primary text-primary-fg" : "text-muted hover:text-fg",
+              )}
+            >
+              <Map className="size-4" /> Map
+            </button>
+          </div>
           <Button variant="outline" size="sm" className="lg:hidden h-11" onClick={() => setFiltersOpen(true)}>
             <SlidersHorizontal /> Filters
           </Button>
@@ -114,7 +138,9 @@ function SearchPage() {
           <FiltersPanel />
         </aside>
         <div className="space-y-4">
-          {results.length === 0 ? (
+          {view === "map" ? (
+            <MapSearch properties={results} city={params.city} location={params.location} />
+          ) : results.length === 0 ? (
             <div className="rounded-xl bg-surface p-10 text-center shadow-card">
               <p className="font-bold">No listings match these filters</p>
               <p className="mt-1 text-sm text-muted">Widen the city, type or price range.</p>
@@ -122,7 +148,7 @@ function SearchPage() {
           ) : (
             visible.map((p) => <PropertyCard key={p.id} property={p} />)
           )}
-          {pages > 1 && (
+          {view === "list" && pages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <Button
                 variant="outline"
