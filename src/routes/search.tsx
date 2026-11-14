@@ -27,6 +27,7 @@ function parseSearch(s: Record<string, unknown>): SearchParams {
     s.sort === "price-asc" || s.sort === "price-desc" || s.sort === "area-desc" || s.sort === "newest"
       ? s.sort
       : "newest";
+  const view = s.view === "map" || s.view === "list" ? s.view : undefined;
   return {
     purpose,
     city: typeof s.city === "string" ? s.city : undefined,
@@ -40,6 +41,7 @@ function parseSearch(s: Record<string, unknown>): SearchParams {
     sort,
     q: typeof s.q === "string" ? s.q : undefined,
     page: num(s.page),
+    view,
   };
 }
 
@@ -67,7 +69,7 @@ function SearchPage() {
   const visible = results.slice((page - 1) * pageSize, page * pageSize);
   const pages = Math.max(1, Math.ceil(results.length / pageSize));
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [view, setView] = useState<"list" | "map">("list");
+  const [view, setView] = useState<"list" | "map">(params.view === "map" ? "map" : "list");
   const addAlert = useAppStore((s) => s.addAlert);
 
   return (
