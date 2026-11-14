@@ -2,10 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Map } from "lucide-react";
 import { PropertyCard } from "@/components/property-card";
 import { SearchForm } from "@/components/search-form";
-import { SectionHead, ToolTiles } from "@/components/shell";
+import { SectionHead } from "@/components/shell";
 import { PROPERTIES, PROJECTS, GUIDES, POSTS } from "@/lib/data";
 import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
+import { BANKS } from "@/lib/portal";
 
 import { CITIES } from "@/lib/types";
 import { AREA_BOOK } from "@/lib/locations";
@@ -81,8 +82,52 @@ function HomePage() {
       <div className="mx-auto max-w-7xl space-y-16 px-4 py-12 sm:py-16">
 
         <section>
-          <SectionHead title={tx(lang, "Loans & Tools", "لون اور اوزار")} href="/tools?tab=loans" />
-          <ToolTiles />
+          <SectionHead title={tx(lang, "Home loans", "ہوم لون")} href="/tools?tab=loans" action={tx(lang, "All rates", "تمام ریٹس")} />
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {BANKS.slice(0, 6).map((b) => (
+              <Link
+                key={b.name}
+                to="/tools"
+                search={{ tab: "loans" }}
+                className="rounded-xl border border-border bg-white p-4 hover:border-primary"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="font-semibold text-black">{b.name}</p>
+                    <p className="mt-0.5 text-xs text-muted">{b.product}</p>
+                  </div>
+                  <p className="text-lg font-extrabold tabular-nums text-primary-dark">{b.rate}%</p>
+                </div>
+                <p className="mt-2 text-xs leading-relaxed text-muted line-clamp-2">{b.note}</p>
+                <p className="mt-2 text-xs font-medium text-muted">
+                  {b.down}% down · up to {b.years} years
+                </p>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link
+              to="/tools"
+              search={{ tab: "loan" }}
+              className="inline-flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-fg"
+            >
+              {tx(lang, "Loan calculator", "لون کیلکولیٹر")}
+            </Link>
+            <Link
+              to="/tools"
+              search={{ tab: "build" }}
+              className="inline-flex h-10 items-center rounded-lg border border-border bg-white px-4 text-sm font-semibold"
+            >
+              {tx(lang, "Construction cost", "تعمیراتی لاگت")}
+            </Link>
+            <Link
+              to="/tools"
+              search={{ tab: "area" }}
+              className="inline-flex h-10 items-center rounded-lg border border-border bg-white px-4 text-sm font-semibold"
+            >
+              {tx(lang, "Area converter", "رقبہ کنورٹر")}
+            </Link>
+          </div>
         </section>
 
         {featured.length > 0 && (
