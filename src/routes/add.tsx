@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -24,10 +24,10 @@ export const Route = createFileRoute("/add")({
 });
 
 function AddPage() {
+  const { user, isPending } = useCurrentUserState();
   const add = useAppStore((s) => s.addListing);
   const assignContact = useAppStore((s) => s.assignContact);
   const navigate = useNavigate();
-  const { user } = useCurrentUserState();
   const [purpose, setPurpose] = useState<Purpose>("buy");
   const [category, setCategory] = useState<Category>("house");
   const [city, setCity] = useState("Lahore");
@@ -104,6 +104,10 @@ function AddPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (publishing) return;
+    if (!user) {
+      toast.error("Please sign in to publish a listing.");
+      return;
+    }
     const p = Number(price.replace(/,/g, ""));
     const a = Number(area);
     if (!title.trim() || !location.trim() || !p || !a) {
@@ -152,6 +156,19 @@ function AddPage() {
     void navigate({ to: "/my-ads" });
   }
 
+  // Require sign-in before the form is shown.
+  // Wait for the session to resolve so we don't redirect signed-in users on a hard reload.
+  if (isPending) {
+    return (
+      <div className="mx-auto max-w-xl px-4 py-20 text-center">
+        <p className="font-semibold">Checking your account\u2026</p>
+      </div>
+    );
+  }
+  if (!user) {
+    return <Navigate to="/login" search={{ redirect: "/add" }} />;
+  }
+
   const typeOptions = (Object.keys(CATEGORY_LABEL) as Category[]).map((c) => ({
     value: c,
     label: CATEGORY_LABEL[c],
@@ -161,7 +178,7 @@ function AddPage() {
     <div className="mx-auto max-w-xl px-4 py-8">
       <h1 className="text-3xl font-extrabold text-black">Add a property</h1>
       <p className="mt-2 text-sm text-muted">
-        Free listing \u2014 saved in this browser so you can preview the full seller flow.
+        Signed in as {user.displayName || user.primaryEmail || "your account"}. Your listing is saved to your account.
       </p>
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
         <div className="grid grid-cols-2 gap-2">
