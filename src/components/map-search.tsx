@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import type { Property } from "@/lib/types";
 import { getApproxCoords, scatterAround } from "@/lib/geo";
 import { formatPrice } from "@/lib/format";
+import { ClusterMarker } from "@/lib/map/cluster-marker";
 
 declare global {
   interface Window {
@@ -37,43 +38,6 @@ function loadCss(href: string) {
   document.head.appendChild(link);
 }
 
-/** Circular cluster icon sized and colored by listing count. */
-function createClusterIcon(cluster: any) {
-  const count = cluster.getChildCount();
-  let size = 36;
-  let bg = "#0ea5e9"; // sky
-  if (count >= 50) {
-    size = 52;
-    bg = "#0369a1"; // darker blue
-  } else if (count >= 20) {
-    size = 46;
-    bg = "#0284c7";
-  } else if (count >= 10) {
-    size = 42;
-    bg = "#0ea5e9";
-  }
-
-  const html = `
-    <div style="
-      width:${size}px;height:${size}px;
-      border-radius:9999px;
-      background:${bg};
-      color:#fff;
-      display:flex;align-items:center;justify-content:center;
-      font-weight:700;font-size:${size < 42 ? 13 : 15}px;
-      border:3px solid #fff;
-      box-shadow:0 2px 8px rgb(0 0 0 / 0.25);
-      font-family:system-ui,sans-serif;
-    ">${count}</div>`;
-
-  return window.L.divIcon({
-    html,
-    className: "diwaar-cluster-icon",
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-  });
-}
-
 export function MapSearch({
   properties,
   city,
@@ -85,6 +49,7 @@ export function MapSearch({
 }) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
+  const clusterRef = useRef<ClusterMarker | null>(null);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -102,6 +67,7 @@ export function MapSearch({
       }
       if (cancelled || !window.L || !mapRef.current) return;
       if (mapInstance.current) mapInstance.current.remove();
+      clusterRef.current?.destroy();
 
       const center = getApproxCoords(city, location);
       const map = window.L.map(mapRef.current).setView(center, city ? 12 : 6);
@@ -111,15 +77,10 @@ export function MapSearch({
         attribution: '&copy; OpenStreetMap',
       }).addTo(map);
 
-      const cluster = window.L.markerClusterGroup({
-        maxClusterRadius: 50,
-        spiderfyOnMaxZoom: true,
-        showCoverageOnHover: false,
-        zoomToBoundsOnClick: true,
-        iconCreateFunction: createClusterIcon,
-      });
+      const cluster = new ClusterMarker(map, { maxClusterRadius: 50 });
+      clusterRef.current = cluster;
 
-      properties.forEach((p, i) => {
+      const items = properties.map((p, i) => {
         let latlng: [number, number];
         if (typeof p.lat === "number" && typeof p.lng === "number") {
           latlng = [p.lat, p.lng];
@@ -127,25 +88,21 @@ export function MapSearch({
           latlng = scatterAround(getApproxCoords(p.city, p.location), i, properties.length);
         }
         const price = formatPrice(p.price, p.purpose);
-        const marker = window.L.marker(latlng);
-        marker.bindPopup(
-          `<div class="text-sm"><strong>${p.title}</strong><br/>${price}<br/>${p.location}, ${p.city}</div>`,
-        );
-        cluster.addLayer(marker);
+        const popupHtml = `<div class="text-sm"><strong>${p.title}</strong><br/>${price}<br/>${p.location}, ${p.city}</div>`;
+        return { latlng, popupHtml };
       });
 
-      map.addLayer(cluster);
+      cluster.addMarkers(items);
 
       if (properties.length > 0) {
-        const bounds = cluster.getBounds();
-        if (bounds.isValid()) {
-          map.fitBounds(bounds.pad(0.1));
-        }
+        cluster.fitBounds(0.1);
       }
     })();
 
     return () => {
       cancelled = true;
+      clusterRef.current?.destroy();
+      clusterRef.current = null;
       if (mapInstance.current) {
         mapInstance.current.remove();
         mapInstance.current = null;
