@@ -13,7 +13,6 @@ const LEAFLET_JS = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
 const LEAFLET_CSS = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
 const CLUSTER_JS = "https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js";
 const CLUSTER_CSS = "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css";
-const CLUSTER_DEFAULT_CSS = "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css";
 
 function loadScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -38,6 +37,43 @@ function loadCss(href: string) {
   document.head.appendChild(link);
 }
 
+/** Circular cluster icon sized and colored by listing count. */
+function createClusterIcon(cluster: any) {
+  const count = cluster.getChildCount();
+  let size = 36;
+  let bg = "#0ea5e9"; // sky
+  if (count >= 50) {
+    size = 52;
+    bg = "#0369a1"; // darker blue
+  } else if (count >= 20) {
+    size = 46;
+    bg = "#0284c7";
+  } else if (count >= 10) {
+    size = 42;
+    bg = "#0ea5e9";
+  }
+
+  const html = `
+    <div style="
+      width:${size}px;height:${size}px;
+      border-radius:9999px;
+      background:${bg};
+      color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:${size < 42 ? 13 : 15}px;
+      border:3px solid #fff;
+      box-shadow:0 2px 8px rgb(0 0 0 / 0.25);
+      font-family:system-ui,sans-serif;
+    ">${count}</div>`;
+
+  return window.L.divIcon({
+    html,
+    className: "diwaar-cluster-icon",
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
+}
+
 export function MapSearch({
   properties,
   city,
@@ -56,7 +92,6 @@ export function MapSearch({
 
     loadCss(LEAFLET_CSS);
     loadCss(CLUSTER_CSS);
-    loadCss(CLUSTER_DEFAULT_CSS);
 
     (async () => {
       try {
@@ -81,6 +116,7 @@ export function MapSearch({
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: true,
+        iconCreateFunction: createClusterIcon,
       });
 
       properties.forEach((p, i) => {
