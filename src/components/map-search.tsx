@@ -9,6 +9,35 @@ declare global {
   }
 }
 
+const LEAFLET_JS = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+const LEAFLET_CSS = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+const CLUSTER_JS = "https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js";
+const CLUSTER_CSS = "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css";
+const CLUSTER_DEFAULT_CSS = "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css";
+
+function loadScript(src: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+      resolve();
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = src;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error(`Failed to load ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+function loadCss(href: string) {
+  if (document.querySelector(`link[href="${href}"]`)) return;
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = href;
+  document.head.appendChild(link);
+}
+
 export function MapSearch({
   properties,
   city,
@@ -23,19 +52,20 @@ export function MapSearch({
 
   useEffect(() => {
     if (!mapRef.current) return;
+    let cancelled = false;
 
-    const script = document.createElement("script");
-    script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-    script.async = true;
-    document.head.appendChild(script);
+    loadCss(LEAFLET_CSS);
+    loadCss(CLUSTER_CSS);
+    loadCss(CLUSTER_DEFAULT_CSS);
 
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-    document.head.appendChild(link);
-
-    const init = () => {
-      if (!window.L || !mapRef.current) return;
+    (async () => {
+      try {
+        await loadScript(LEAFLET_JS);
+        await loadScript(CLUSTER_JS);
+      } catch {
+        return;
+      }
+      if (cancelled || !window.L || !mapRef.current) return;
       if (mapInstance.current) mapInstance.current.remove();
 
       const center = getApproxCoords(city, location);
@@ -46,7 +76,14 @@ export function MapSearch({
         attribution: '&copy; OpenStreetMap',
       }).addTo(map);
 
-      const markers = properties.map((p, i) => {
+      const cluster = window.L.markerClusterGroup({
+        maxClusterRadius: 50,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true,
+      });
+
+      properties.forEach((p, i) => {
         let latlng: [number, number];
         if (typeof p.lat === "number" && typeof p.lng === "number") {
           latlng = [p.lat, p.lng];
@@ -54,26 +91,29 @@ export function MapSearch({
           latlng = scatterAround(getApproxCoords(p.city, p.location), i, properties.length);
         }
         const price = formatPrice(p.price, p.purpose);
-        const marker = window.L.marker(latlng).addTo(map);
+        const marker = window.L.marker(latlng);
         marker.bindPopup(
           `<div class="text-sm"><strong>${p.title}</strong><br/>${price}<br/>${p.location}, ${p.city}</div>`,
         );
-        return marker;
+        cluster.addLayer(marker);
       });
 
-      if (markers.length > 0) {
-        const group = window.L.featureGroup(markers);
-        map.fitBounds(group.getBounds().pad(0.1));
-      }
-    };
+      map.addLayer(cluster);
 
-    script.onload = init;
-    if (window.L) init();
+      if (properties.length > 0) {
+        const bounds = cluster.getBounds();
+        if (bounds.isValid()) {
+          map.fitBounds(bounds.pad(0.1));
+        }
+      }
+    })();
 
     return () => {
-      if (mapInstance.current) mapInstance.current.remove();
-      script.remove();
-      link.remove();
+      cancelled = true;
+      if (mapInstance.current) {
+        mapInstance.current.remove();
+        mapInstance.current = null;
+      }
     };
   }, [properties, city, location]);
 
