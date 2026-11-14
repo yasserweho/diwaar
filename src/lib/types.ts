@@ -106,6 +106,8 @@ export interface SearchParams {
   sort?: "newest" | "price-asc" | "price-desc" | "area-desc";
   q?: string;
   page?: number;
+  /** "map" opens the map view on /search. */
+  view?: "list" | "map";
 }
 
 export const CATEGORY_LABEL: Record<Category, string> = {
