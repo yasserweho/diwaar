@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Map } from "lucide-react";
 import { PropertyCard } from "@/components/property-card";
 import { SearchForm } from "@/components/search-form";
 import { SectionHead, ToolTiles } from "@/components/shell";
@@ -62,6 +62,16 @@ function HomePage() {
           </p>
           <div className="mt-8">
             <SearchForm />
+          </div>
+          <div className="mt-4 flex justify-center sm:justify-start">
+            <Link
+              to="/search"
+              search={{ view: "map" }}
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
+            >
+              <Map className="size-4" />
+              {tx(lang, "Search by map", "نقشے سے تلاش کریں")}
+            </Link>
           </div>
         </div>
       </section>
