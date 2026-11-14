@@ -80,6 +80,11 @@ function HomePage() {
 
       <div className="mx-auto max-w-7xl space-y-16 px-4 py-12 sm:py-16">
 
+        <section>
+          <SectionHead title={tx(lang, "Loans & Tools", "لون اور اوزار")} href="/tools?tab=loans" />
+          <ToolTiles />
+        </section>
+
         {featured.length > 0 && (
         <section>
           <SectionHead title="Featured properties" href="/search?purpose=buy" />
@@ -189,11 +194,6 @@ function HomePage() {
         <section>
           <SectionHead title={tx(lang, "Questions", "سوالات")} href="/faq" action={tx(lang, "All questions", "تمام سوالات")} />
           <FaqList limit={4} />
-        </section>
-
-        <section>
-          <SectionHead title={tx(lang, "Tools", "اوزار")} href="/tools" />
-          <ToolTiles />
         </section>
 
         <section>
