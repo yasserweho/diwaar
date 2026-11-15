@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { formatPkr } from "@/lib/format";
 import { areasInCity, rateFor } from "@/lib/valuation";
 import { CITIES, type Category } from "@/lib/types";
+import { AREA_BOOK } from "@/lib/locations";
 import { seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { SearchSelect } from "@/components/search-select";
@@ -47,7 +48,7 @@ function DestimatePage() {
   const [finish, setFinish] = useState<"grey" | "standard" | "premium">("standard");
   const [ready, setReady] = useState(false);
 
-  const areaOptions = areasInCity(city);
+  const areaOptions = (AREA_BOOK[city] ?? areasInCity(city)).slice();
 
   const result = useMemo(() => {
     if (!ready) return null;
@@ -95,7 +96,7 @@ function DestimatePage() {
             <SearchSelect
               value={city}
               searchPlaceholder="Type a city"
-              options={CITIES.slice(0, 12).map((c) => ({ value: c, label: c }))}
+              options={CITIES.map((c) => ({ value: c, label: c }))}
               onChange={(next) => {
                 setCity(next);
                 setArea("");
