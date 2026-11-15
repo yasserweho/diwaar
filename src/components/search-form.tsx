@@ -92,7 +92,7 @@ export function SearchForm({
           onClick={() => void navigate({ to: "/d-value" })}
           className={cn(tabBase, "text-muted hover:bg-white hover:text-fg")}
         >
-          {tx(lang, "D-Value", "ڈی ویلیو")}
+          {tx(lang, "Destimate", "ڈیسٹیمیٹ")}
         </button>
       </div>
 
