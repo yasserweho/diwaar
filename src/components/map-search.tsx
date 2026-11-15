@@ -89,7 +89,7 @@ export function MapSearch({
         }
         const price = formatPrice(p.price, p.purpose);
         const popupHtml = `<div class="text-sm"><strong>${p.title}</strong><br/>${price}<br/>${p.location}, ${p.city}</div>`;
-        return { latlng, popupHtml };
+        return { latlng, popupHtml, category: p.category };
       });
 
       cluster.addMarkers(items);
