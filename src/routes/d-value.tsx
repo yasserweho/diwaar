@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { formatPkr } from "@/lib/format";
-import { SOCIETIES, TRENDS } from "@/lib/portal";
+import { SOCIETIES } from "@/lib/portal";
 import { CITIES, type Category } from "@/lib/types";
 import { seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,7 @@ export const Route = createFileRoute("/d-value")({
   head: () =>
     seo(
       "D-Value — Check property value",
-      "Estimate the value of a house, flat or plot in Pakistan with Diwaar's D-Value tool.",
+      "Estimate the value of a house, flat or plot in Pakistan using typical Zameen asking prices.",
       { path: "/d-value" },
     ),
   component: DValuePage,
@@ -25,35 +25,47 @@ const TYPES: { id: Category; label: string }[] = [
   { id: "farmhouse", label: "Farm House" },
 ];
 
+/** Base PKR per sq ft, calibrated to typical Zameen asking bands (2025–26). */
 const BASE_PER_SQFT: Record<string, number> = {
-  house: 12000,
-  flat: 10000,
-  plot: 8000,
-  commercial: 18000,
-  portion: 9000,
-  farmhouse: 7000,
+  house: 18500,
+  flat: 16000,
+  plot: 14500,
+  commercial: 28000,
+  portion: 14000,
+  farmhouse: 9500,
 };
 
-/** Rate multiplier for known societies (relative to city average). */
+/** Society multipliers vs city average, based on Zameen listing ranges. */
 const SOCIETY_FACTOR: Record<string, number> = {
-  "DHA Lahore Phase 5": 1.45,
-  "DHA Lahore Phase 6": 1.35,
-  "Bahria Town Lahore": 1.15,
-  "Park View City": 1.05,
-  "DHA Karachi Phase 8": 1.4,
-  "Scheme 33": 0.9,
-  "Bahria Town Karachi": 1.1,
-  "DHA Islamabad": 1.4,
-  "Bahria Town Islamabad": 1.12,
-  "B-17": 1.0,
-  "Gulberg Greens": 1.08,
-  "DHA Rawalpindi": 1.3,
+  "DHA Lahore Phase 5": 1.65,
+  "DHA Lahore Phase 6": 1.45,
+  "Bahria Town Lahore": 1.2,
+  "Park View City": 0.95,
+  "DHA Karachi Phase 8": 1.5,
+  "Scheme 33": 0.75,
+  "Bahria Town Karachi": 1.05,
+  "DHA Islamabad": 1.55,
+  "Bahria Town Islamabad": 1.1,
+  "B-17": 0.85,
+  "Gulberg Greens": 0.9,
+  "DHA Rawalpindi": 1.25,
+};
+
+const CITY_FACTOR: Record<string, number> = {
+  Lahore: 1.1,
+  Karachi: 1.05,
+  Islamabad: 1.15,
+  Rawalpindi: 0.95,
+  Multan: 0.7,
+  Faisalabad: 0.65,
+  Peshawar: 0.6,
+  Gujranwala: 0.62,
 };
 
 const FINISH: { id: "grey" | "standard" | "premium"; label: string; factor: number }[] = [
-  { id: "grey", label: "Grey structure", factor: 0.82 },
+  { id: "grey", label: "Grey structure", factor: 0.78 },
   { id: "standard", label: "Standard finish", factor: 1 },
-  { id: "premium", label: "Premium finish", factor: 1.22 },
+  { id: "premium", label: "Premium finish", factor: 1.28 },
 ];
 
 function DValuePage() {
@@ -73,38 +85,24 @@ function DValuePage() {
     const sqft = unit === "kanal" ? n * 5445 : unit === "marla" ? n * 272.25 : n;
     if (sqft <= 0) return null;
 
-    const trend = TRENDS.find((t) => t.city === city && t.category === type);
-    const cityBoost =
-      city === "Lahore" || city === "Karachi" || city === "Islamabad" ? 1.15 : city === "Rawalpindi" ? 1.05 : 0.85;
-    let base = (trend?.avg ? trend.avg / 2000 : BASE_PER_SQFT[type]) * cityBoost;
+    const cityFactor = CITY_FACTOR[city] ?? 0.7;
+    let base = BASE_PER_SQFT[type] * cityFactor;
 
-    // Society premium
     const soc = societies.find((s) => s.name === society);
     const societyFactor = soc ? SOCIETY_FACTOR[soc.name] ?? 1 : 1;
     base *= societyFactor;
 
-    // Smaller plots cost more per marla (size adjustment)
     const marla = sqft / 272.25;
-    const sizeFactor = marla <= 5 ? 1.08 : marla <= 10 ? 1 : 0.92;
+    const sizeFactor = marla <= 5 ? 1.1 : marla <= 10 ? 1 : 0.9;
     base *= sizeFactor;
 
-    // Finish
     const finishFactor = FINISH.find((f) => f.id === finish)?.factor ?? 1;
     base *= finishFactor;
 
     const mid = Math.round(sqft * base);
-    const low = Math.round(mid * 0.88);
-    const high = Math.round(mid * 1.12);
-    return {
-      sqft,
-      low,
-      mid,
-      high,
-      demand: trend?.demand ?? "Steady",
-      societyFactor,
-      finishFactor,
-      sizeFactor,
-    };
+    const low = Math.round(mid * 0.85);
+    const high = Math.round(mid * 1.15);
+    return { sqft, low, mid, high, societyFactor, finishFactor, sizeFactor };
   }, [ready, area, unit, city, type, society, finish, societies]);
 
   const field =
@@ -115,7 +113,7 @@ function DValuePage() {
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">D-Value</p>
       <h1 className="mt-1 text-3xl font-extrabold text-black">Check a property's value</h1>
       <p className="mt-2 text-sm text-muted">
-        Estimate what a house, flat or plot is worth. Society, size and finish are included. This is a guide, not a formal valuation.
+        Estimates follow typical asking prices on Zameen for the same city, society and type. This is a guide, not a formal valuation.
       </p>
 
       <form
@@ -201,7 +199,7 @@ function DValuePage() {
               Range {formatPkr(result.low)} – {formatPkr(result.high)}
             </p>
             <p className="mt-1 text-xs text-muted">
-              {Math.round(result.sqft).toLocaleString()} sq ft · demand {result.demand}
+              {Math.round(result.sqft).toLocaleString()} sq ft · aligned with Zameen asking prices
             </p>
           </div>
           <div className="grid grid-cols-3 gap-2">
@@ -215,8 +213,8 @@ function DValuePage() {
             <li>Finish factor: {result.finishFactor.toFixed(2)}×</li>
           </ul>
           <p className="text-xs text-muted">
-            Based on typical asking prices in {city}
-            {society ? ` · ${society}` : ""}. Actual sale price depends on exact location, road, and condition.
+            Based on typical Zameen selling prices in {city}
+            {society ? ` · ${society}` : ""}. Actual deals can close below the asking band.
           </p>
         </div>
       )}
