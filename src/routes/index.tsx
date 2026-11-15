@@ -41,15 +41,16 @@ function HomePage() {
     <>
       <section className="relative isolate overflow-hidden bg-black text-white">
         <img
-          src="/images/islamabad-family.jpg"
-          alt="A family at home in Islamabad"
-          width={1800}
-          height={1200}
+          src="/images/house-isb.jpg"
+          alt="Modern house in Islamabad"
+          width={1200}
+          height={800}
           decoding="async"
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
+          className="absolute inset-0 h-full w-full object-cover object-[center_40%]"
           style={{ imageRendering: "auto" }}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10" />
         <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-14 sm:pb-14 sm:pt-20">
           <h1 className="max-w-3xl text-start text-[2rem] font-semibold leading-[1.15] text-white sm:text-5xl">
             {tx(lang, "Find property for sale and rent in Pakistan", "پاکستان میں خرید، فروخت اور کرایے کی جائیداد تلاش کریں")}
