@@ -82,17 +82,17 @@ export function SearchForm({
         ))}
         <button
           type="button"
+          onClick={() => void navigate({ to: "/add" })}
+          className={cn(tabBase, "text-muted hover:bg-white hover:text-fg")}
+        >
+          {tx(lang, "Sell", "فروخت")}
+        </button>
+        <button
+          type="button"
           onClick={() => void navigate({ to: "/d-value" })}
           className={cn(tabBase, "text-muted hover:bg-white hover:text-fg")}
         >
           {tx(lang, "D-Value", "ڈی ویلیو")}
-        </button>
-        <button
-          type="button"
-          onClick={() => void navigate({ to: "/projects" })}
-          className={cn(tabBase, "text-muted hover:bg-white hover:text-fg")}
-        >
-          {tx(lang, "Projects", "منصوبے")}
         </button>
       </div>
 
