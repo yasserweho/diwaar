@@ -5,6 +5,7 @@ import { areasInCity, rateFor } from "@/lib/valuation";
 import { CITIES, type Category } from "@/lib/types";
 import { seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+import { SearchSelect } from "@/components/search-select";
 
 export const Route = createFileRoute("/d-value")({
   head: () =>
@@ -29,6 +30,12 @@ const FINISH: { id: "grey" | "standard" | "premium"; label: string; factor: numb
   { id: "grey", label: "Grey structure", factor: 0.78 },
   { id: "standard", label: "Standard finish", factor: 1 },
   { id: "premium", label: "Premium finish", factor: 1.28 },
+];
+
+const UNITS: { value: "marla" | "kanal" | "sqft"; label: string }[] = [
+  { value: "marla", label: "Marla" },
+  { value: "kanal", label: "Kanal" },
+  { value: "sqft", label: "Sq. Ft." },
 ];
 
 function DestimatePage() {
@@ -84,41 +91,43 @@ function DestimatePage() {
       >
         <label className="block text-sm font-semibold">
           City
-          <select
-            className={`${field} mt-1`}
-            value={city}
-            onChange={(e) => {
-              setCity(e.target.value);
-              setArea("");
-            }}
-          >
-            {CITIES.slice(0, 12).map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
+          <div className="mt-1">
+            <SearchSelect
+              value={city}
+              searchPlaceholder="Type a city"
+              options={CITIES.slice(0, 12).map((c) => ({ value: c, label: c }))}
+              onChange={(next) => {
+                setCity(next);
+                setArea("");
+              }}
+            />
+          </div>
         </label>
         <label className="block text-sm font-semibold">
           Area
-          <select className={`${field} mt-1`} value={area} onChange={(e) => setArea(e.target.value)}>
-            <option value="">City average</option>
-            {areaOptions.map((a) => (
-              <option key={a} value={a}>
-                {a}
-              </option>
-            ))}
-          </select>
+          <div className="mt-1">
+            <SearchSelect
+              value={area}
+              placeholder="City average"
+              searchPlaceholder="Type an area"
+              options={[
+                { value: "", label: "City average" },
+                ...areaOptions.map((a) => ({ value: a, label: a })),
+              ]}
+              onChange={setArea}
+            />
+          </div>
         </label>
         <label className="block text-sm font-semibold">
           Property type
-          <select className={`${field} mt-1`} value={type} onChange={(e) => setType(e.target.value as Category)}>
-            {TYPES.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.label}
-              </option>
-            ))}
-          </select>
+          <div className="mt-1">
+            <SearchSelect
+              value={type}
+              searchPlaceholder="Type a property type"
+              options={TYPES.map((t) => ({ value: t.id, label: t.label }))}
+              onChange={(next) => setType(next as Category)}
+            />
+          </div>
         </label>
         <div className="grid grid-cols-[1fr_8rem] gap-3">
           <label className="block text-sm font-semibold">
@@ -127,22 +136,26 @@ function DestimatePage() {
           </label>
           <label className="block text-sm font-semibold">
             Unit
-            <select className={`${field} mt-1`} value={unit} onChange={(e) => setUnit(e.target.value as typeof unit)}>
-              <option value="marla">Marla</option>
-              <option value="kanal">Kanal</option>
-              <option value="sqft">Sq. Ft.</option>
-            </select>
+            <div className="mt-1">
+              <SearchSelect
+                value={unit}
+                searchPlaceholder="Unit"
+                options={UNITS}
+                onChange={(next) => setUnit(next as typeof unit)}
+              />
+            </div>
           </label>
         </div>
         <label className="block text-sm font-semibold">
           Finish
-          <select className={`${field} mt-1`} value={finish} onChange={(e) => setFinish(e.target.value as typeof finish)}>
-            {FINISH.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.label}
-              </option>
-            ))}
-          </select>
+          <div className="mt-1">
+            <SearchSelect
+              value={finish}
+              searchPlaceholder="Finish"
+              options={FINISH.map((f) => ({ value: f.id, label: f.label }))}
+              onChange={(next) => setFinish(next as typeof finish)}
+            />
+          </div>
         </label>
         <button type="submit" className="h-12 w-full rounded-lg bg-primary text-sm font-semibold text-primary-fg">
           Get Destimate
