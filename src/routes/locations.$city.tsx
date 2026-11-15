@@ -48,8 +48,12 @@ function CityLocationPage() {
       <h1 className="mt-1 text-3xl font-extrabold text-black">
         {tx(lang, `Property in ${cityLabel(city, lang)}`, `${cityLabel(city, lang)} میں جائیداد`)}
       </h1>
-      <p className="mt-3 text-sm text-muted">
-        {areas.length.toLocaleString()} {tx(lang, "areas", "علاقے")}
+      <p className="mt-3 max-w-2xl rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-950">
+        {tx(
+          lang,
+          "We will not allow any listings related to fraudulent societies.",
+          "ہم فراڈ سوسائٹیز سے متعلق کوئی بھی اشتہار قبول نہیں کریں گے۔",
+        )}
       </p>
       <div className="mt-5 flex flex-wrap gap-2">
         <Link
