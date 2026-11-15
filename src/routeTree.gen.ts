@@ -12,46 +12,47 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AddRouteImport } from './routes/add'
-import { Route as AgenciesRouteImport } from './routes/agencies'
-import { Route as AgentsRouteImport } from './routes/agents'
 import { Route as AlertsRouteImport } from './routes/alerts'
-import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CitiesRouteImport } from './routes/cities'
-import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DValueRouteImport } from './routes/d-value'
 import { Route as FaqRouteImport } from './routes/faq'
-import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as InvestRouteImport } from './routes/invest'
 import { Route as LoansRouteImport } from './routes/loans'
-import { Route as LocationsRouteImport } from './routes/locations'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MapsRouteImport } from './routes/maps'
 import { Route as MyAdsRouteImport } from './routes/my-ads'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as PayRouteImport } from './routes/pay'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PropertyForRentRouteImport } from './routes/property-for-rent'
 import { Route as PropertyForSaleRouteImport } from './routes/property-for-sale'
 import { Route as PropertyIndexRouteImport } from './routes/property-index'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
-import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WantedRouteImport } from './routes/wanted'
+import { Route as AgenciesIndexRouteImport } from './routes/agencies.index'
 import { Route as AgenciesIdRouteImport } from './routes/agencies.$id'
+import { Route as AgentsIndexRouteImport } from './routes/agents.index'
 import { Route as AgentsIdRouteImport } from './routes/agents.$id'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as CommunityIndexRouteImport } from './routes/community.index'
 import { Route as CommunityIdRouteImport } from './routes/community.$id'
+import { Route as GuidesIndexRouteImport } from './routes/guides.index'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
-import { Route as LocationsCityRouteImport } from './routes/locations.$city'
+import { Route as LocationsIndexRouteImport } from './routes/locations.index'
+import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as PropertyIdRouteImport } from './routes/property.$id'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as LocationsCityIndexRouteImport } from './routes/locations.$city.index'
 import { Route as LocationsCityAreaRouteImport } from './routes/locations.$city.$area'
 
 const IndexRoute = IndexRouteImport.update({
@@ -69,34 +70,14 @@ const AddRoute = AddRouteImport.update({
   path: '/add',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AgenciesRoute = AgenciesRouteImport.update({
-  id: '/agencies',
-  path: '/agencies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgentsRoute = AgentsRouteImport.update({
-  id: '/agents',
-  path: '/agents',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AlertsRoute = AlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CitiesRoute = CitiesRouteImport.update({
   id: '/cities',
   path: '/cities',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CommunityRoute = CommunityRouteImport.update({
-  id: '/community',
-  path: '/community',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompareRoute = CompareRouteImport.update({
@@ -109,14 +90,14 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DValueRoute = DValueRouteImport.update({
+  id: '/d-value',
+  path: '/d-value',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GuidesRoute = GuidesRouteImport.update({
-  id: '/guides',
-  path: '/guides',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InvestRoute = InvestRouteImport.update({
@@ -127,11 +108,6 @@ const InvestRoute = InvestRouteImport.update({
 const LoansRoute = LoansRouteImport.update({
   id: '/loans',
   path: '/loans',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LocationsRoute = LocationsRouteImport.update({
-  id: '/locations',
-  path: '/locations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -164,11 +140,6 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsRoute = ProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PropertyForRentRoute = PropertyForRentRouteImport.update({
   id: '/property-for-rent',
   path: '/property-for-rent',
@@ -199,11 +170,6 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ToolsRoute = ToolsRouteImport.update({
   id: '/tools',
   path: '/tools',
@@ -219,93 +185,126 @@ const WantedRoute = WantedRouteImport.update({
   path: '/wanted',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgenciesIndexRoute = AgenciesIndexRouteImport.update({
+  id: '/agencies/',
+  path: '/agencies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AgenciesIdRoute = AgenciesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AgenciesRoute,
+  id: '/agencies/$id',
+  path: '/agencies/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentsIndexRoute = AgentsIndexRouteImport.update({
+  id: '/agents/',
+  path: '/agents/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AgentsIdRoute = AgentsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AgentsRoute,
+  id: '/agents/$id',
+  path: '/agents/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => BlogRoute,
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityIndexRoute = CommunityIndexRouteImport.update({
+  id: '/community/',
+  path: '/community/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CommunityIdRoute = CommunityIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => CommunityRoute,
+  id: '/community/$id',
+  path: '/community/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesIndexRoute = GuidesIndexRouteImport.update({
+  id: '/guides/',
+  path: '/guides/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const GuidesSlugRoute = GuidesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => GuidesRoute,
+  id: '/guides/$slug',
+  path: '/guides/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const LocationsCityRoute = LocationsCityRouteImport.update({
-  id: '/$city',
-  path: '/$city',
-  getParentRoute: () => LocationsRoute,
+const LocationsIndexRoute = LocationsIndexRouteImport.update({
+  id: '/locations/',
+  path: '/locations/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsIdRoute = ProjectsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ProjectsRoute,
+  id: '/projects/$id',
+  path: '/projects/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PropertyIdRoute = PropertyIdRouteImport.update({
   id: '/property/$id',
   path: '/property/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ServicesRoute,
+  id: '/services/$slug',
+  path: '/services/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocationsCityIndexRoute = LocationsCityIndexRouteImport.update({
+  id: '/locations/$city/',
+  path: '/locations/$city/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LocationsCityAreaRoute = LocationsCityAreaRouteImport.update({
-  id: '/$area',
-  path: '/$area',
-  getParentRoute: () => LocationsCityRoute,
+  id: '/locations/$city/$area',
+  path: '/locations/$city/$area',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/add': typeof AddRoute
-  '/agencies': typeof AgenciesRouteWithChildren
-  '/agents': typeof AgentsRouteWithChildren
   '/alerts': typeof AlertsRoute
-  '/blog': typeof BlogRouteWithChildren
   '/cities': typeof CitiesRoute
-  '/community': typeof CommunityRouteWithChildren
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
+  '/d-value': typeof DValueRoute
   '/faq': typeof FaqRoute
-  '/guides': typeof GuidesRouteWithChildren
   '/invest': typeof InvestRoute
   '/loans': typeof LoansRoute
-  '/locations': typeof LocationsRouteWithChildren
   '/login': typeof LoginRoute
   '/maps': typeof MapsRoute
   '/my-ads': typeof MyAdsRoute
   '/orders': typeof OrdersRoute
   '/pay': typeof PayRoute
   '/privacy': typeof PrivacyRoute
-  '/projects': typeof ProjectsRouteWithChildren
   '/property-for-rent': typeof PropertyForRentRoute
   '/property-for-sale': typeof PropertyForSaleRoute
   '/property-index': typeof PropertyIndexRoute
   '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
-  '/services': typeof ServicesRouteWithChildren
   '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
@@ -314,44 +313,45 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/community/$id': typeof CommunityIdRoute
   '/guides/$slug': typeof GuidesSlugRoute
-  '/locations/$city': typeof LocationsCityRouteWithChildren
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/agencies/': typeof AgenciesIndexRoute
+  '/agents/': typeof AgentsIndexRoute
+  '/blog/': typeof BlogIndexRoute
+  '/community/': typeof CommunityIndexRoute
+  '/guides/': typeof GuidesIndexRoute
+  '/locations/': typeof LocationsIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
+  '/services/': typeof ServicesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/locations/$city/$area': typeof LocationsCityAreaRoute
+  '/locations/$city/': typeof LocationsCityIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/add': typeof AddRoute
-  '/agencies': typeof AgenciesRouteWithChildren
-  '/agents': typeof AgentsRouteWithChildren
   '/alerts': typeof AlertsRoute
-  '/blog': typeof BlogRouteWithChildren
   '/cities': typeof CitiesRoute
-  '/community': typeof CommunityRouteWithChildren
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
+  '/d-value': typeof DValueRoute
   '/faq': typeof FaqRoute
-  '/guides': typeof GuidesRouteWithChildren
   '/invest': typeof InvestRoute
   '/loans': typeof LoansRoute
-  '/locations': typeof LocationsRouteWithChildren
   '/login': typeof LoginRoute
   '/maps': typeof MapsRoute
   '/my-ads': typeof MyAdsRoute
   '/orders': typeof OrdersRoute
   '/pay': typeof PayRoute
   '/privacy': typeof PrivacyRoute
-  '/projects': typeof ProjectsRouteWithChildren
   '/property-for-rent': typeof PropertyForRentRoute
   '/property-for-sale': typeof PropertyForSaleRoute
   '/property-index': typeof PropertyIndexRoute
   '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
-  '/services': typeof ServicesRouteWithChildren
   '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
@@ -360,45 +360,46 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/community/$id': typeof CommunityIdRoute
   '/guides/$slug': typeof GuidesSlugRoute
-  '/locations/$city': typeof LocationsCityRouteWithChildren
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/agencies': typeof AgenciesIndexRoute
+  '/agents': typeof AgentsIndexRoute
+  '/blog': typeof BlogIndexRoute
+  '/community': typeof CommunityIndexRoute
+  '/guides': typeof GuidesIndexRoute
+  '/locations': typeof LocationsIndexRoute
+  '/projects': typeof ProjectsIndexRoute
+  '/services': typeof ServicesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/locations/$city/$area': typeof LocationsCityAreaRoute
+  '/locations/$city': typeof LocationsCityIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/add': typeof AddRoute
-  '/agencies': typeof AgenciesRouteWithChildren
-  '/agents': typeof AgentsRouteWithChildren
   '/alerts': typeof AlertsRoute
-  '/blog': typeof BlogRouteWithChildren
   '/cities': typeof CitiesRoute
-  '/community': typeof CommunityRouteWithChildren
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
+  '/d-value': typeof DValueRoute
   '/faq': typeof FaqRoute
-  '/guides': typeof GuidesRouteWithChildren
   '/invest': typeof InvestRoute
   '/loans': typeof LoansRoute
-  '/locations': typeof LocationsRouteWithChildren
   '/login': typeof LoginRoute
   '/maps': typeof MapsRoute
   '/my-ads': typeof MyAdsRoute
   '/orders': typeof OrdersRoute
   '/pay': typeof PayRoute
   '/privacy': typeof PrivacyRoute
-  '/projects': typeof ProjectsRouteWithChildren
   '/property-for-rent': typeof PropertyForRentRoute
   '/property-for-sale': typeof PropertyForSaleRoute
   '/property-index': typeof PropertyIndexRoute
   '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
-  '/services': typeof ServicesRouteWithChildren
   '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
@@ -407,12 +408,20 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/community/$id': typeof CommunityIdRoute
   '/guides/$slug': typeof GuidesSlugRoute
-  '/locations/$city': typeof LocationsCityRouteWithChildren
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/agencies/': typeof AgenciesIndexRoute
+  '/agents/': typeof AgentsIndexRoute
+  '/blog/': typeof BlogIndexRoute
+  '/community/': typeof CommunityIndexRoute
+  '/guides/': typeof GuidesIndexRoute
+  '/locations/': typeof LocationsIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
+  '/services/': typeof ServicesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/locations/$city/$area': typeof LocationsCityAreaRoute
+  '/locations/$city/': typeof LocationsCityIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -420,33 +429,26 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/add'
-    | '/agencies'
-    | '/agents'
     | '/alerts'
-    | '/blog'
     | '/cities'
-    | '/community'
     | '/compare'
     | '/contact'
+    | '/d-value'
     | '/faq'
-    | '/guides'
     | '/invest'
     | '/loans'
-    | '/locations'
     | '/login'
     | '/maps'
     | '/my-ads'
     | '/orders'
     | '/pay'
     | '/privacy'
-    | '/projects'
     | '/property-for-rent'
     | '/property-for-sale'
     | '/property-index'
     | '/reviews'
     | '/saved'
     | '/search'
-    | '/services'
     | '/tools'
     | '/trends'
     | '/wanted'
@@ -455,44 +457,45 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/community/$id'
     | '/guides/$slug'
-    | '/locations/$city'
     | '/projects/$id'
     | '/property/$id'
     | '/services/$slug'
+    | '/agencies/'
+    | '/agents/'
+    | '/blog/'
+    | '/community/'
+    | '/guides/'
+    | '/locations/'
+    | '/projects/'
+    | '/services/'
     | '/api/auth/$'
     | '/locations/$city/$area'
+    | '/locations/$city/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/add'
-    | '/agencies'
-    | '/agents'
     | '/alerts'
-    | '/blog'
     | '/cities'
-    | '/community'
     | '/compare'
     | '/contact'
+    | '/d-value'
     | '/faq'
-    | '/guides'
     | '/invest'
     | '/loans'
-    | '/locations'
     | '/login'
     | '/maps'
     | '/my-ads'
     | '/orders'
     | '/pay'
     | '/privacy'
-    | '/projects'
     | '/property-for-rent'
     | '/property-for-sale'
     | '/property-index'
     | '/reviews'
     | '/saved'
     | '/search'
-    | '/services'
     | '/tools'
     | '/trends'
     | '/wanted'
@@ -501,44 +504,45 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/community/$id'
     | '/guides/$slug'
-    | '/locations/$city'
     | '/projects/$id'
     | '/property/$id'
     | '/services/$slug'
+    | '/agencies'
+    | '/agents'
+    | '/blog'
+    | '/community'
+    | '/guides'
+    | '/locations'
+    | '/projects'
+    | '/services'
     | '/api/auth/$'
     | '/locations/$city/$area'
+    | '/locations/$city'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/add'
-    | '/agencies'
-    | '/agents'
     | '/alerts'
-    | '/blog'
     | '/cities'
-    | '/community'
     | '/compare'
     | '/contact'
+    | '/d-value'
     | '/faq'
-    | '/guides'
     | '/invest'
     | '/loans'
-    | '/locations'
     | '/login'
     | '/maps'
     | '/my-ads'
     | '/orders'
     | '/pay'
     | '/privacy'
-    | '/projects'
     | '/property-for-rent'
     | '/property-for-sale'
     | '/property-index'
     | '/reviews'
     | '/saved'
     | '/search'
-    | '/services'
     | '/tools'
     | '/trends'
     | '/wanted'
@@ -547,50 +551,68 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/community/$id'
     | '/guides/$slug'
-    | '/locations/$city'
     | '/projects/$id'
     | '/property/$id'
     | '/services/$slug'
+    | '/agencies/'
+    | '/agents/'
+    | '/blog/'
+    | '/community/'
+    | '/guides/'
+    | '/locations/'
+    | '/projects/'
+    | '/services/'
     | '/api/auth/$'
     | '/locations/$city/$area'
+    | '/locations/$city/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AddRoute: typeof AddRoute
-  AgenciesRoute: typeof AgenciesRouteWithChildren
-  AgentsRoute: typeof AgentsRouteWithChildren
   AlertsRoute: typeof AlertsRoute
-  BlogRoute: typeof BlogRouteWithChildren
   CitiesRoute: typeof CitiesRoute
-  CommunityRoute: typeof CommunityRouteWithChildren
   CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
+  DValueRoute: typeof DValueRoute
   FaqRoute: typeof FaqRoute
-  GuidesRoute: typeof GuidesRouteWithChildren
   InvestRoute: typeof InvestRoute
   LoansRoute: typeof LoansRoute
-  LocationsRoute: typeof LocationsRouteWithChildren
   LoginRoute: typeof LoginRoute
   MapsRoute: typeof MapsRoute
   MyAdsRoute: typeof MyAdsRoute
   OrdersRoute: typeof OrdersRoute
   PayRoute: typeof PayRoute
   PrivacyRoute: typeof PrivacyRoute
-  ProjectsRoute: typeof ProjectsRouteWithChildren
   PropertyForRentRoute: typeof PropertyForRentRoute
   PropertyForSaleRoute: typeof PropertyForSaleRoute
   PropertyIndexRoute: typeof PropertyIndexRoute
   ReviewsRoute: typeof ReviewsRoute
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
-  ServicesRoute: typeof ServicesRouteWithChildren
   ToolsRoute: typeof ToolsRoute
   TrendsRoute: typeof TrendsRoute
   WantedRoute: typeof WantedRoute
+  AgenciesIdRoute: typeof AgenciesIdRoute
+  AgentsIdRoute: typeof AgentsIdRoute
+  BlogSlugRoute: typeof BlogSlugRoute
+  CommunityIdRoute: typeof CommunityIdRoute
+  GuidesSlugRoute: typeof GuidesSlugRoute
+  ProjectsIdRoute: typeof ProjectsIdRoute
   PropertyIdRoute: typeof PropertyIdRoute
+  ServicesSlugRoute: typeof ServicesSlugRoute
+  AgenciesIndexRoute: typeof AgenciesIndexRoute
+  AgentsIndexRoute: typeof AgentsIndexRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  CommunityIndexRoute: typeof CommunityIndexRoute
+  GuidesIndexRoute: typeof GuidesIndexRoute
+  LocationsIndexRoute: typeof LocationsIndexRoute
+  ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  LocationsCityAreaRoute: typeof LocationsCityAreaRoute
+  LocationsCityIndexRoute: typeof LocationsCityIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -616,20 +638,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AddRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agencies': {
-      id: '/agencies'
-      path: '/agencies'
-      fullPath: '/agencies'
-      preLoaderRoute: typeof AgenciesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agents': {
-      id: '/agents'
-      path: '/agents'
-      fullPath: '/agents'
-      preLoaderRoute: typeof AgentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/alerts': {
       id: '/alerts'
       path: '/alerts'
@@ -637,25 +645,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlertsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/cities': {
       id: '/cities'
       path: '/cities'
       fullPath: '/cities'
       preLoaderRoute: typeof CitiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/community': {
-      id: '/community'
-      path: '/community'
-      fullPath: '/community'
-      preLoaderRoute: typeof CommunityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
@@ -672,18 +666,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/d-value': {
+      id: '/d-value'
+      path: '/d-value'
+      fullPath: '/d-value'
+      preLoaderRoute: typeof DValueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/guides': {
-      id: '/guides'
-      path: '/guides'
-      fullPath: '/guides'
-      preLoaderRoute: typeof GuidesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/invest': {
@@ -698,13 +692,6 @@ declare module '@tanstack/react-router' {
       path: '/loans'
       fullPath: '/loans'
       preLoaderRoute: typeof LoansRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/locations': {
-      id: '/locations'
-      path: '/locations'
-      fullPath: '/locations'
-      preLoaderRoute: typeof LocationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -749,13 +736,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/projects': {
-      id: '/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof ProjectsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/property-for-rent': {
       id: '/property-for-rent'
       path: '/property-for-rent'
@@ -798,13 +778,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/tools': {
       id: '/tools'
       path: '/tools'
@@ -826,54 +799,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WantedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agencies/': {
+      id: '/agencies/'
+      path: '/agencies'
+      fullPath: '/agencies/'
+      preLoaderRoute: typeof AgenciesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/agencies/$id': {
       id: '/agencies/$id'
-      path: '/$id'
+      path: '/agencies/$id'
       fullPath: '/agencies/$id'
       preLoaderRoute: typeof AgenciesIdRouteImport
-      parentRoute: typeof AgenciesRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/agents/': {
+      id: '/agents/'
+      path: '/agents'
+      fullPath: '/agents/'
+      preLoaderRoute: typeof AgentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/agents/$id': {
       id: '/agents/$id'
-      path: '/$id'
+      path: '/agents/$id'
       fullPath: '/agents/$id'
       preLoaderRoute: typeof AgentsIdRouteImport
-      parentRoute: typeof AgentsRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/blog/$slug': {
       id: '/blog/$slug'
-      path: '/$slug'
+      path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof BlogRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/community/': {
+      id: '/community/'
+      path: '/community'
+      fullPath: '/community/'
+      preLoaderRoute: typeof CommunityIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/community/$id': {
       id: '/community/$id'
-      path: '/$id'
+      path: '/community/$id'
       fullPath: '/community/$id'
       preLoaderRoute: typeof CommunityIdRouteImport
-      parentRoute: typeof CommunityRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/': {
+      id: '/guides/'
+      path: '/guides'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof GuidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/guides/$slug': {
       id: '/guides/$slug'
-      path: '/$slug'
+      path: '/guides/$slug'
       fullPath: '/guides/$slug'
       preLoaderRoute: typeof GuidesSlugRouteImport
-      parentRoute: typeof GuidesRoute
+      parentRoute: typeof rootRouteImport
     }
-    '/locations/$city': {
-      id: '/locations/$city'
-      path: '/$city'
-      fullPath: '/locations/$city'
-      preLoaderRoute: typeof LocationsCityRouteImport
-      parentRoute: typeof LocationsRoute
+    '/locations/': {
+      id: '/locations/'
+      path: '/locations'
+      fullPath: '/locations/'
+      preLoaderRoute: typeof LocationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/projects/$id': {
       id: '/projects/$id'
-      path: '/$id'
+      path: '/projects/$id'
       fullPath: '/projects/$id'
       preLoaderRoute: typeof ProjectsIdRouteImport
-      parentRoute: typeof ProjectsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/property/$id': {
       id: '/property/$id'
@@ -882,12 +897,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PropertyIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/$slug': {
       id: '/services/$slug'
-      path: '/$slug'
+      path: '/services/$slug'
       fullPath: '/services/$slug'
       preLoaderRoute: typeof ServicesSlugRouteImport
-      parentRoute: typeof ServicesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -896,156 +918,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/locations/$city/': {
+      id: '/locations/$city/'
+      path: '/locations/$city'
+      fullPath: '/locations/$city/'
+      preLoaderRoute: typeof LocationsCityIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/locations/$city/$area': {
       id: '/locations/$city/$area'
-      path: '/$area'
+      path: '/locations/$city/$area'
       fullPath: '/locations/$city/$area'
       preLoaderRoute: typeof LocationsCityAreaRouteImport
-      parentRoute: typeof LocationsCityRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface AgenciesRouteChildren {
-  AgenciesIdRoute: typeof AgenciesIdRoute
-}
-
-const AgenciesRouteChildren: AgenciesRouteChildren = {
-  AgenciesIdRoute: AgenciesIdRoute,
-}
-
-const AgenciesRouteWithChildren = AgenciesRoute._addFileChildren(
-  AgenciesRouteChildren,
-)
-
-interface AgentsRouteChildren {
-  AgentsIdRoute: typeof AgentsIdRoute
-}
-
-const AgentsRouteChildren: AgentsRouteChildren = {
-  AgentsIdRoute: AgentsIdRoute,
-}
-
-const AgentsRouteWithChildren =
-  AgentsRoute._addFileChildren(AgentsRouteChildren)
-
-interface BlogRouteChildren {
-  BlogSlugRoute: typeof BlogSlugRoute
-}
-
-const BlogRouteChildren: BlogRouteChildren = {
-  BlogSlugRoute: BlogSlugRoute,
-}
-
-const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
-
-interface CommunityRouteChildren {
-  CommunityIdRoute: typeof CommunityIdRoute
-}
-
-const CommunityRouteChildren: CommunityRouteChildren = {
-  CommunityIdRoute: CommunityIdRoute,
-}
-
-const CommunityRouteWithChildren = CommunityRoute._addFileChildren(
-  CommunityRouteChildren,
-)
-
-interface GuidesRouteChildren {
-  GuidesSlugRoute: typeof GuidesSlugRoute
-}
-
-const GuidesRouteChildren: GuidesRouteChildren = {
-  GuidesSlugRoute: GuidesSlugRoute,
-}
-
-const GuidesRouteWithChildren =
-  GuidesRoute._addFileChildren(GuidesRouteChildren)
-
-interface LocationsCityRouteChildren {
-  LocationsCityAreaRoute: typeof LocationsCityAreaRoute
-}
-
-const LocationsCityRouteChildren: LocationsCityRouteChildren = {
-  LocationsCityAreaRoute: LocationsCityAreaRoute,
-}
-
-const LocationsCityRouteWithChildren = LocationsCityRoute._addFileChildren(
-  LocationsCityRouteChildren,
-)
-
-interface LocationsRouteChildren {
-  LocationsCityRoute: typeof LocationsCityRouteWithChildren
-}
-
-const LocationsRouteChildren: LocationsRouteChildren = {
-  LocationsCityRoute: LocationsCityRouteWithChildren,
-}
-
-const LocationsRouteWithChildren = LocationsRoute._addFileChildren(
-  LocationsRouteChildren,
-)
-
-interface ProjectsRouteChildren {
-  ProjectsIdRoute: typeof ProjectsIdRoute
-}
-
-const ProjectsRouteChildren: ProjectsRouteChildren = {
-  ProjectsIdRoute: ProjectsIdRoute,
-}
-
-const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
-  ProjectsRouteChildren,
-)
-
-interface ServicesRouteChildren {
-  ServicesSlugRoute: typeof ServicesSlugRoute
-}
-
-const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesSlugRoute: ServicesSlugRoute,
-}
-
-const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
-  ServicesRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AddRoute: AddRoute,
-  AgenciesRoute: AgenciesRouteWithChildren,
-  AgentsRoute: AgentsRouteWithChildren,
   AlertsRoute: AlertsRoute,
-  BlogRoute: BlogRouteWithChildren,
   CitiesRoute: CitiesRoute,
-  CommunityRoute: CommunityRouteWithChildren,
   CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,
+  DValueRoute: DValueRoute,
   FaqRoute: FaqRoute,
-  GuidesRoute: GuidesRouteWithChildren,
   InvestRoute: InvestRoute,
   LoansRoute: LoansRoute,
-  LocationsRoute: LocationsRouteWithChildren,
   LoginRoute: LoginRoute,
   MapsRoute: MapsRoute,
   MyAdsRoute: MyAdsRoute,
   OrdersRoute: OrdersRoute,
   PayRoute: PayRoute,
   PrivacyRoute: PrivacyRoute,
-  ProjectsRoute: ProjectsRouteWithChildren,
   PropertyForRentRoute: PropertyForRentRoute,
   PropertyForSaleRoute: PropertyForSaleRoute,
   PropertyIndexRoute: PropertyIndexRoute,
   ReviewsRoute: ReviewsRoute,
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
-  ServicesRoute: ServicesRouteWithChildren,
   ToolsRoute: ToolsRoute,
   TrendsRoute: TrendsRoute,
   WantedRoute: WantedRoute,
+  AgenciesIdRoute: AgenciesIdRoute,
+  AgentsIdRoute: AgentsIdRoute,
+  BlogSlugRoute: BlogSlugRoute,
+  CommunityIdRoute: CommunityIdRoute,
+  GuidesSlugRoute: GuidesSlugRoute,
+  ProjectsIdRoute: ProjectsIdRoute,
   PropertyIdRoute: PropertyIdRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
+  AgenciesIndexRoute: AgenciesIndexRoute,
+  AgentsIndexRoute: AgentsIndexRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  CommunityIndexRoute: CommunityIndexRoute,
+  GuidesIndexRoute: GuidesIndexRoute,
+  LocationsIndexRoute: LocationsIndexRoute,
+  ProjectsIndexRoute: ProjectsIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  LocationsCityAreaRoute: LocationsCityAreaRoute,
+  LocationsCityIndexRoute: LocationsCityIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

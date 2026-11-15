@@ -4,7 +4,7 @@ import { tx, useLang } from "@/lib/i18n";
 import { seo } from "@/lib/seo";
 import { SERVICES } from "@/lib/services";
 
-export const Route = createFileRoute("/services")({
+export const Route = createFileRoute("/services/")({
   head: () =>
     seo(
       "Property Services in Pakistan",

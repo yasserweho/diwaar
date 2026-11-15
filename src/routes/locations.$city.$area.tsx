@@ -3,6 +3,7 @@ import { PAGE, RelatedLinks } from "@/components/related-links";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { areaFromSlug, areasOf, cityFromSlug } from "@/lib/location-pages";
 import { seo } from "@/lib/seo";
+import { breadcrumbLd, withSchema } from "@/lib/schema";
 
 export const Route = createFileRoute("/locations/$city/$area")({
   head: ({ params }) => {
@@ -11,10 +12,18 @@ export const Route = createFileRoute("/locations/$city/$area")({
     if (!city || !area) {
       return seo("Area not found", "This area is not on diwaar.com.", { noindex: true });
     }
-    return seo(
-      `${area}, ${city}`,
-      `Houses, flats, plots and commercial property for sale and rent in ${area}, ${city} on diwaar.com.`,
-      { path: `/locations/${params.city}/${params.area}` },
+    return withSchema(
+      seo(
+        `Property for Sale and Rent in ${area}, ${city}`,
+        `Houses, flats, portions, plots and commercial property for sale and rent in ${area}, ${city} on diwaar.com.`,
+        { path: `/locations/${params.city}/${params.area}` },
+      ),
+      breadcrumbLd([
+        { name: "Home", path: "/" },
+        { name: "Locations", path: "/locations" },
+        { name: city, path: `/locations/${params.city}` },
+        { name: area, path: `/locations/${params.city}/${params.area}` },
+      ]),
     );
   },
   component: AreaLocationPage,

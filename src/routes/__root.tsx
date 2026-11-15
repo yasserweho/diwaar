@@ -22,6 +22,8 @@ export const Route = createRootRoute({
       { name: "description", content: DESC },
       { property: "og:site_name", content: "Diwaar.com" },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "en_PK" },
+      { property: "og:locale:alternate", content: "ur_PK" },
       { property: "og:title", content: APP_NAME },
       { property: "og:description", content: DESC },
       { property: "og:url", content: SITE },
@@ -48,7 +50,6 @@ export const Route = createRootRoute({
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "sitemap", href: "/sitemap.xml" },
-      { rel: "canonical", href: SITE },
     ],
   }),
   component: () => (

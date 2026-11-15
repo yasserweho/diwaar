@@ -4,16 +4,24 @@ import { PAGE, RelatedLinks } from "@/components/related-links";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { areasOf, cityFromSlug, provinceOf } from "@/lib/location-pages";
 import { seo } from "@/lib/seo";
+import { breadcrumbLd, withSchema } from "@/lib/schema";
 
-export const Route = createFileRoute("/locations/$city")({
+export const Route = createFileRoute("/locations/$city/")({
   head: ({ params }) => {
     const city = cityFromSlug(params.city);
     if (!city) return seo("City not found", "This city is not on diwaar.com.", { noindex: true });
     const n = areasOf(city).length;
-    return seo(
-      `Property in ${city}`,
-      `Houses, flats, plots and commercial property in ${city}, with ${n.toLocaleString()} areas on diwaar.com.`,
-      { path: `/locations/${params.city}` },
+    return withSchema(
+      seo(
+        `Property for Sale and Rent in ${city}`,
+        `Houses, flats, portions, plots and commercial property for sale and rent in ${city}. Browse ${n.toLocaleString()} areas on diwaar.com, no commission.`,
+        { path: `/locations/${params.city}` },
+      ),
+      breadcrumbLd([
+        { name: "Home", path: "/" },
+        { name: "Locations", path: "/locations" },
+        { name: city, path: `/locations/${params.city}` },
+      ]),
     );
   },
   component: CityLocationPage,

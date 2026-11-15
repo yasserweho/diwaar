@@ -2,12 +2,22 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PAGE, RelatedLinks } from "@/components/related-links";
 import { POSTS } from "@/lib/data";
 import { seo } from "@/lib/seo";
+import { blogPostingLd, breadcrumbLd, withSchema } from "@/lib/schema";
 
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => {
     const post = POSTS.find((p) => p.slug === params.slug);
     if (!post) return seo("Article not found", "This Diwaar article is not available.", { noindex: true });
-    return seo(post.title, post.excerpt, { path: `/blog/${params.slug}` });
+    const path = `/blog/${params.slug}`;
+    return withSchema(
+      seo(post.title, post.excerpt, { path, image: post.image }),
+      blogPostingLd(post, path),
+      breadcrumbLd([
+        { name: "Home", path: "/" },
+        { name: "Blog", path: "/blog" },
+        { name: post.title, path },
+      ]),
+    );
   },
   component: PostPage });
 

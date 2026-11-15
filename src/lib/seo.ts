@@ -8,7 +8,9 @@ export function seo(
   opts?: { noindex?: boolean; path?: string; image?: string },
 ) {
   const full = title.includes(BRAND) ? title : `${title} | ${BRAND}`;
-  const image = opts?.image ?? DEFAULT_IMAGE;
+  const raw = opts?.image;
+  // Only absolute http(s) or site-relative images are shareable; data: URLs fall back.
+  const image = raw && raw.startsWith("/") ? `${SITE}${raw}` : raw && raw.startsWith("http") ? raw : DEFAULT_IMAGE;
   const url = opts?.path ? `${SITE}${opts.path}` : SITE;
   const meta: Array<Record<string, string>> = [
     { title: full },
