@@ -39,7 +39,7 @@ function HomePage() {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-[#071525] text-white">
+      <section className="relative isolate overflow-hidden bg-black text-white">
         <img
           src="/images/islamabad-family.jpg"
           alt="A family at home in Islamabad"
@@ -49,7 +49,6 @@ function HomePage() {
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
         />
-        <div className="absolute inset-0 bg-[#071525]/78" />
         <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-14 sm:pb-14 sm:pt-20">
           <h1 className="max-w-3xl text-start text-[2rem] font-semibold leading-[1.15] text-white sm:text-5xl">
             {tx(lang, "Find property for sale and rent in Pakistan", "پاکستان میں خرید، فروخت اور کرایے کی جائیداد تلاش کریں")}
