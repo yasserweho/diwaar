@@ -93,13 +93,6 @@ export function SearchForm({
         >
           {tx(lang, "Projects", "منصوبے")}
         </button>
-        <button
-          type="button"
-          onClick={() => void navigate({ to: "/invest" })}
-          className="-mb-px h-10 shrink-0 border-b-2 border-transparent px-3 text-sm font-semibold text-muted hover:text-fg"
-        >
-          {tx(lang, "Invest", "سرمایہ کاری")}
-        </button>
       </div>
 
       <div className="grid gap-2 sm:grid-cols-[1fr_1fr_1fr_auto]">
