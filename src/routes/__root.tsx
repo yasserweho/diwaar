@@ -8,6 +8,9 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 
 const APP_NAME = "Diwaar.com — Pakistan's Property Portal";
+const SITE = "https://www.diwaar.com";
+const DESC =
+  "Find houses, flats, plots and commercial property for sale and rent across Pakistan on diwaar.com. Quality listings in Lahore, Karachi, Islamabad and 30+ cities.";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -16,15 +19,22 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: APP_NAME },
       { name: "theme-color", content: "#0B4A8C" },
-      {
-        name: "description",
-        content:
-          "Find houses, flats, plots and commercial property for sale and rent across Pakistan on diwaar.com.",
-      },
+      { name: "description", content: DESC },
       { property: "og:site_name", content: "Diwaar.com" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://www.diwaar.com" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:title", content: APP_NAME },
+      { property: "og:description", content: DESC },
+      { property: "og:url", content: SITE },
+      { property: "og:image", content: `${SITE}/og.jpg` },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: APP_NAME },
+      { name: "twitter:description", content: DESC },
+      { name: "twitter:image", content: `${SITE}/og.jpg` },
+      { itemprop: "name", content: APP_NAME },
+      { itemprop: "description", content: DESC },
+      { itemprop: "image", content: `${SITE}/og.jpg` },
+      { itemprop: "url", content: SITE },
+      { name: "robots", content: "max-image-preview:large" },
       {
         name: "facebook-domain-verification",
         content: "rp8zx3y7s3oc8as8150t5jni89p6u0",
@@ -38,6 +48,7 @@ export const Route = createRootRoute({
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "sitemap", href: "/sitemap.xml" },
+      { rel: "canonical", href: SITE },
     ],
   }),
   component: () => (
