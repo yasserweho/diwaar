@@ -25,3 +25,20 @@ export const PLOT = [PHOTO.plot, PHOTO.proj];
 export const COMM = [PHOTO.plaza, PHOTO.shop];
 export const SHOP = [PHOTO.shop, PHOTO.plaza];
 export const PROJ = [PHOTO.proj, PHOTO.marla, PHOTO.plot, PHOTO.dha];
+
+/** Pick default photos for a listing that has none uploaded.
+ *  Commercial → plaza/shop. Residential: small area → small house, large → large house.
+ */
+export function defaultImagesFor(category: string, areaSqft: number): string[] {
+  if (category === "commercial" || category === "shop" || category === "office" || category === "plaza") {
+    return COMM;
+  }
+  if (category === "plot") return PLOT;
+  if (category === "flat" || category === "apartment") {
+    return areaSqft >= 2500 ? PENT : FLAT;
+  }
+  if (category === "farmhouse" || category === "farm") return FARM;
+  // Houses and other residential: small ≤ 5 marla (~1,361 sq ft), large above that
+  const SMALL_THRESHOLD = 5 * 272.25; // 5 marla
+  return areaSqft <= SMALL_THRESHOLD ? HOUSE_SM : HOUSE_LUX;
+}
