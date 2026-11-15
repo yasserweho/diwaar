@@ -54,6 +54,9 @@ export function SearchForm({
   const selectClass =
     "h-12 w-full rounded-lg border border-border bg-surface px-3 text-sm font-medium text-fg outline-none focus:border-primary";
 
+  const tabBase =
+    "flex h-10 flex-1 items-center justify-center rounded-lg px-2 text-sm font-semibold transition-colors";
+
   return (
     <form
       onSubmit={submit}
@@ -63,17 +66,15 @@ export function SearchForm({
           : "rounded-xl border border-border bg-white p-3",
       )}
     >
-      <div className="mb-4 flex gap-1 border-b border-border overflow-x-auto no-scrollbar">
+      <div className="mb-4 grid grid-cols-4 gap-1 rounded-xl bg-ice p-1">
         {(["buy", "rent"] as const).map((p) => (
           <button
             key={p}
             type="button"
             onClick={() => setPurpose(p)}
             className={cn(
-              "-mb-px h-10 shrink-0 border-b-2 px-3 text-sm font-semibold capitalize",
-              purpose === p
-                ? "border-primary text-black"
-                : "border-transparent text-muted hover:text-fg",
+              tabBase,
+              purpose === p ? "bg-primary text-primary-fg shadow-sm" : "text-muted hover:text-fg",
             )}
           >
             {tx(lang, p === "buy" ? "Buy" : "Rent", p === "buy" ? "خریدیں" : "کرایہ")}
@@ -82,14 +83,14 @@ export function SearchForm({
         <button
           type="button"
           onClick={() => void navigate({ to: "/d-value" })}
-          className="-mb-px h-10 shrink-0 border-b-2 border-transparent px-3 text-sm font-semibold text-muted hover:text-fg"
+          className={cn(tabBase, "text-muted hover:bg-white hover:text-fg")}
         >
           {tx(lang, "D-Value", "ڈی ویلیو")}
         </button>
         <button
           type="button"
           onClick={() => void navigate({ to: "/projects" })}
-          className="-mb-px h-10 shrink-0 border-b-2 border-transparent px-3 text-sm font-semibold text-muted hover:text-fg"
+          className={cn(tabBase, "text-muted hover:bg-white hover:text-fg")}
         >
           {tx(lang, "Projects", "منصوبے")}
         </button>
