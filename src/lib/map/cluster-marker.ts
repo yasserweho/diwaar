@@ -6,7 +6,7 @@
  *
  * Usage (after Leaflet + markercluster scripts are loaded):
  *   const cluster = new ClusterMarker(map, { maxClusterRadius: 50 });
- *   cluster.addMarker(latlng, popupHtml);
+ *   cluster.addMarker(latlng, popupHtml, "house");
  *   cluster.fitBounds();
  *   cluster.destroy();
  */
@@ -24,8 +24,25 @@ export interface ClusterMarkerOptions {
   zoomToBoundsOnClick?: boolean;
 }
 
-/** Teardrop pin icon used for individual listings. */
-function createPinIcon() {
+/** Pin colors by property category. */
+const PIN_COLORS: Record<string, string> = {
+  house: "#0ea5e9",      // sky blue
+  flat: "#8b5cf6",       // violet
+  plot: "#22c55e",       // green
+  commercial: "#f59e0b", // amber
+  portion: "#06b6d4",    // cyan
+  farmhouse: "#84cc16",  // lime
+};
+
+const DEFAULT_PIN = "#0ea5e9";
+
+function pinColor(category?: string): string {
+  return (category && PIN_COLORS[category]) || DEFAULT_PIN;
+}
+
+/** Teardrop pin icon colored by property type. */
+function createPinIcon(category?: string) {
+  const fill = pinColor(category);
   const html = `
     <div style="
       width:28px;height:36px;
@@ -33,7 +50,7 @@ function createPinIcon() {
       filter:drop-shadow(0 2px 4px rgb(0 0 0 / 0.3));
     ">
       <svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14 0C6.268 0 0 6.268 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.268 21.732 0 14 0z" fill="#0ea5e9"/>
+        <path d="M14 0C6.268 0 0 6.268 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.268 21.732 0 14 0z" fill="${fill}"/>
         <circle cx="14" cy="14" r="6" fill="#fff"/>
       </svg>
     </div>`;
@@ -49,14 +66,12 @@ function createPinIcon() {
 export class ClusterMarker {
   private group: any;
   private map: any;
-  private pinIcon: any;
 
   constructor(map: any, options: ClusterMarkerOptions = {}) {
     if (!window.L?.markerClusterGroup) {
       throw new Error("leaflet.markercluster is not loaded");
     }
     this.map = map;
-    this.pinIcon = createPinIcon();
     this.group = window.L.markerClusterGroup({
       maxClusterRadius: options.maxClusterRadius ?? 50,
       spiderfyOnMaxZoom: options.spiderfyOnMaxZoom ?? true,
@@ -67,16 +82,16 @@ export class ClusterMarker {
     this.map.addLayer(this.group);
   }
 
-  addMarker(latlng: [number, number], popupHtml: string): any {
-    const marker = window.L.marker(latlng, { icon: this.pinIcon });
+  addMarker(latlng: [number, number], popupHtml: string, category?: string): any {
+    const marker = window.L.marker(latlng, { icon: createPinIcon(category) });
     if (popupHtml) marker.bindPopup(popupHtml);
     this.group.addLayer(marker);
     return marker;
   }
 
-  addMarkers(items: { latlng: [number, number]; popupHtml: string }[]): void {
-    const markers = items.map(({ latlng, popupHtml }) => {
-      const marker = window.L.marker(latlng, { icon: this.pinIcon });
+  addMarkers(items: { latlng: [number, number]; popupHtml: string; category?: string }[]): void {
+    const markers = items.map(({ latlng, popupHtml, category }) => {
+      const marker = window.L.marker(latlng, { icon: createPinIcon(category) });
       if (popupHtml) marker.bindPopup(popupHtml);
       return marker;
     });
