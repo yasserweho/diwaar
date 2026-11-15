@@ -9,11 +9,11 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/d-value")({
   head: () =>
     seo(
-      "D-Value — Check property value",
+      "Destimate — Check property value",
       "Estimate property value from typical asking prices across cities and areas in Pakistan.",
       { path: "/d-value" },
     ),
-  component: DValuePage,
+  component: DestimatePage,
 });
 
 const TYPES: { id: Category; label: string }[] = [
@@ -31,7 +31,7 @@ const FINISH: { id: "grey" | "standard" | "premium"; label: string; factor: numb
   { id: "premium", label: "Premium finish", factor: 1.28 },
 ];
 
-function DValuePage() {
+function DestimatePage() {
   const [city, setCity] = useState("Lahore");
   const [area, setArea] = useState("");
   const [type, setType] = useState<Category>("house");
@@ -69,7 +69,7 @@ function DValuePage() {
 
   return (
     <div className="mx-auto max-w-xl px-4 py-8">
-      <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">D-Value</p>
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Destimate</p>
       <h1 className="mt-1 text-3xl font-extrabold text-black">Check a property's value</h1>
       <p className="mt-2 text-sm text-muted">
         Based on typical asking prices by city and area. This is a guide, not a formal valuation.
@@ -145,7 +145,7 @@ function DValuePage() {
           </select>
         </label>
         <button type="submit" className="h-12 w-full rounded-lg bg-primary text-sm font-semibold text-primary-fg">
-          Get D-Value
+          Get Destimate
         </button>
       </form>
 
