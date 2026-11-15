@@ -2,7 +2,7 @@ import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { HOUSE_SM } from "@/lib/photos";
+import { defaultImagesFor } from "@/lib/photos";
 import { toSqft, type AreaUnit } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { locationsInCity } from "@/lib/data";
@@ -123,6 +123,7 @@ function AddPage() {
     setPublishing(true);
     assignContact(name, phone);
     const id = `user-${Date.now()}`;
+    const areaSqft = toSqft(a, unit);
     add({
       id,
       title: title.trim(),
@@ -134,8 +135,8 @@ function AddPage() {
       price: p,
       beds: category === "plot" || category === "commercial" ? undefined : Number(beds) || undefined,
       baths: category === "plot" || category === "commercial" ? undefined : Number(baths) || undefined,
-      areaSqft: toSqft(a, unit),
-      images: HOUSE_SM,
+      areaSqft,
+      images: defaultImagesFor(category, areaSqft),
       description:
         description.trim() ||
         `${title.trim()} listed on Diwaar in ${location}, ${city}.`,
