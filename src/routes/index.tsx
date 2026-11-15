@@ -43,11 +43,12 @@ function HomePage() {
         <img
           src="/images/islamabad-family.jpg"
           alt="A family at home in Islamabad"
-          width={1200}
-          height={675}
+          width={1800}
+          height={1200}
           decoding="async"
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
+          style={{ imageRendering: "auto" }}
         />
         <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-14 sm:pb-14 sm:pt-20">
           <h1 className="max-w-3xl text-start text-[2rem] font-semibold leading-[1.15] text-white sm:text-5xl">
