@@ -25,6 +25,10 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.diwaar.com" },
       { name: "twitter:card", content: "summary" },
+      {
+        name: "facebook-domain-verification",
+        content: "rp8zx3y7s3oc8as8150t5jni89p6u0",
+      },
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
