@@ -24,15 +24,39 @@ export interface ClusterMarkerOptions {
   zoomToBoundsOnClick?: boolean;
 }
 
+/** Teardrop pin icon used for individual listings. */
+function createPinIcon() {
+  const html = `
+    <div style="
+      width:28px;height:36px;
+      position:relative;
+      filter:drop-shadow(0 2px 4px rgb(0 0 0 / 0.3));
+    ">
+      <svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 0C6.268 0 0 6.268 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.268 21.732 0 14 0z" fill="#0ea5e9"/>
+        <circle cx="14" cy="14" r="6" fill="#fff"/>
+      </svg>
+    </div>`;
+  return window.L.divIcon({
+    html,
+    className: "diwaar-pin-icon",
+    iconSize: [28, 36],
+    iconAnchor: [14, 36],
+    popupAnchor: [0, -32],
+  });
+}
+
 export class ClusterMarker {
   private group: any;
   private map: any;
+  private pinIcon: any;
 
   constructor(map: any, options: ClusterMarkerOptions = {}) {
     if (!window.L?.markerClusterGroup) {
       throw new Error("leaflet.markercluster is not loaded");
     }
     this.map = map;
+    this.pinIcon = createPinIcon();
     this.group = window.L.markerClusterGroup({
       maxClusterRadius: options.maxClusterRadius ?? 50,
       spiderfyOnMaxZoom: options.spiderfyOnMaxZoom ?? true,
@@ -44,7 +68,7 @@ export class ClusterMarker {
   }
 
   addMarker(latlng: [number, number], popupHtml: string): any {
-    const marker = window.L.marker(latlng);
+    const marker = window.L.marker(latlng, { icon: this.pinIcon });
     if (popupHtml) marker.bindPopup(popupHtml);
     this.group.addLayer(marker);
     return marker;
@@ -52,7 +76,7 @@ export class ClusterMarker {
 
   addMarkers(items: { latlng: [number, number]; popupHtml: string }[]): void {
     const markers = items.map(({ latlng, popupHtml }) => {
-      const marker = window.L.marker(latlng);
+      const marker = window.L.marker(latlng, { icon: this.pinIcon });
       if (popupHtml) marker.bindPopup(popupHtml);
       return marker;
     });
