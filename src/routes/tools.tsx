@@ -133,26 +133,43 @@ function LoanCalc() {
 function BuildCalc() {
   const [marla, setMarla] = useState("5");
   const [cover, setCover] = useState("70");
+  const [floors, setFloors] = useState("2");
+  const [basement, setBasement] = useState(false);
   const [tier, setTier] = useState<"economy" | "standard" | "premium">("standard");
   const rates = { economy: 4500, standard: 7500, premium: 12000 };
 
   const result = useMemo(() => {
-    const covered = (Number(marla) || 0) * MARLA_SQFT * ((Number(cover) || 0) / 100);
+    const footprint = (Number(marla) || 0) * MARLA_SQFT * ((Number(cover) || 0) / 100);
+    const nFloors = Math.max(1, Math.min(20, Number(floors) || 1));
+    const levels = nFloors + (basement ? 1 : 0);
+    const covered = footprint * levels;
     const rate = rates[tier];
     const total = covered * rate;
     return {
+      footprint,
       covered,
+      levels,
       grey: total * 0.45,
       finish: total * 0.35,
       mep: total * 0.2,
       total,
     };
-  }, [marla, cover, tier]);
+  }, [marla, cover, floors, basement, tier]);
 
   return (
     <div className="space-y-4 rounded-2xl bg-surface p-5 shadow-card">
       <Field label="Plot size (Marla)" value={marla} onChange={setMarla} />
       <Field label="Covered area %" value={cover} onChange={setCover} />
+      <Field label="Number of floors" value={floors} onChange={setFloors} />
+      <label className="flex items-center gap-3 text-sm font-semibold">
+        <input
+          type="checkbox"
+          checked={basement}
+          onChange={(e) => setBasement(e.target.checked)}
+          className="size-4 rounded border-border"
+        />
+        Basement included
+      </label>
       <div className="flex gap-2">
         {(["economy", "standard", "premium"] as const).map((t) => (
           <button
@@ -169,7 +186,7 @@ function BuildCalc() {
         ))}
       </div>
       <p className="text-xs text-muted">
-        {trimNum(result.covered)} sq ft at PKR {rates[tier].toLocaleString()} / sq ft
+        {trimNum(result.footprint)} sq ft footprint × {result.levels} levels = {trimNum(result.covered)} sq ft at PKR {rates[tier].toLocaleString()} / sq ft
       </p>
       <div className="grid grid-cols-2 gap-3">
         <Stat k="Grey structure" v={formatPkr(result.grey)} />
