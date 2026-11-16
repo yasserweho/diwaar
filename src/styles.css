@@ -38,9 +38,15 @@
 
 @layer base {
   html {
+    /* Whole-pixel root size: every rem-based padding, gap and border position
+       lands on a real pixel, so 1px borders and text edges stay crisp. */
+    font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    /* Never fake bold or italic: use the weights we actually load. */
+    font-synthesis: none;
   }
 
   html,
@@ -50,7 +56,6 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-sans);
-    font-size: 16.5px;
     line-height: 1.55;
     text-align: start;
     overflow-x: hidden;
@@ -117,8 +122,13 @@
     cursor: pointer;
   }
 
+  body {
+    font-size: 1.0625rem;
+  }
+
   img {
     max-width: 100%;
+    image-rendering: auto;
   }
 }
 
@@ -128,6 +138,16 @@ html[lang="ur"] h2,
 html[lang="ur"] h3,
 html[lang="ur"] h4 {
   font-family: "Noto Naskh Arabic", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Noto Naskh Arabic ships up to 700; map heavier weights to its real bold. */
+html[lang="ur"] .font-extrabold,
+html[lang="ur"] .font-black {
+  font-weight: 700;
+}
+
+.hero-text {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
 }
 
 @media (prefers-reduced-motion: reduce) {

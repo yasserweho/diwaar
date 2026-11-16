@@ -51,7 +51,7 @@ export function PropertyCard({
           height={675}
           loading="lazy"
           decoding="async"
-          className="size-full object-cover transition-transform duration-fast group-hover:scale-[1.03]"
+          className="size-full object-cover"
         />
         <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1">
           {property.badges.slice(0, 3).map((b) => (

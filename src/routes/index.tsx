@@ -39,23 +39,27 @@ function HomePage() {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-black text-white">
+      <section className="relative isolate overflow-hidden bg-primary-dark text-white">
+        {/* The photo is 1200x675. On phones it sits as a 16:9 band at the top
+            (shown at its own size, so it stays sharp) and fades into the dark
+            panel behind the search form, instead of being stretched to fill a
+            tall stacked hero. From sm up it covers the whole hero as before. */}
         <img
           src="/images/house-isb.jpg"
           alt="Modern house in Islamabad"
           width={1200}
-          height={800}
+          height={675}
           decoding="async"
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-[center_40%]"
-          style={{ imageRendering: "auto" }}
+          className="absolute inset-x-0 top-0 aspect-video w-full object-cover sm:inset-0 sm:aspect-auto sm:h-full sm:object-[center_40%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10" />
+        <div className="absolute inset-x-0 top-0 aspect-video w-full bg-gradient-to-b from-black/30 via-black/40 to-primary-dark sm:hidden" />
+        <div className="absolute inset-0 hidden bg-gradient-to-t from-black/60 via-black/25 to-black/15 sm:block" />
         <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-14 sm:pb-14 sm:pt-20">
-          <h1 className="max-w-3xl text-start text-[2rem] font-semibold leading-[1.15] text-white sm:text-5xl">
+          <h1 className="hero-text max-w-3xl text-start text-[2rem] font-semibold leading-[1.15] text-white sm:text-5xl">
             {tx(lang, "Find property for sale and rent in Pakistan", "پاکستان میں خرید، فروخت اور کرایے کی جائیداد تلاش کریں")}
           </h1>
-          <p className="mt-3 max-w-2xl text-start text-base leading-relaxed text-white">
+          <p className="hero-text mt-3 max-w-2xl text-start text-base font-medium leading-relaxed text-white">
             {tx(
               lang,
               `Houses, flats, plots, and commercial space across ${CITIES.length} cities.`,
@@ -69,7 +73,7 @@ function HomePage() {
             <Link
               to="/search"
               search={{ view: "map" }}
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
+              className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-black/45 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-black/60"
             >
               <Map className="size-4" />
               {tx(lang, "Search by map", "نقشے سے تلاش کریں")}
@@ -90,7 +94,7 @@ function HomePage() {
                 key={b.name}
                 to="/tools"
                 search={{ tab: "loans" }}
-                className="rounded-xl border border-border bg-white p-4 hover:border-primary"
+                className="rounded-xl border border-border bg-white p-4 transition-colors hover:border-primary/40"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -151,9 +155,9 @@ function HomePage() {
                 key={p.id}
                 to="/projects/$id"
                 params={{ id: p.id }}
-                className="snap-start min-w-[260px] max-w-[280px] shrink-0 overflow-hidden rounded-xl bg-surface shadow-card hover:shadow-card-hover transition-[box-shadow] duration-fast"
+                className="snap-start min-w-[260px] max-w-[280px] shrink-0 overflow-hidden rounded-xl border border-border bg-white transition-colors hover:border-primary/40"
               >
-                <img src={p.images[0]} alt={`${p.name}, ${p.city}`} loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
+                <img src={p.images[0]} alt={`${p.name}, ${p.city}`} width={1200} height={675} loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
                 <div className="p-4">
                   <p className="text-[11px] font-bold uppercase tracking-wide text-primary">
                     {p.status}
@@ -191,7 +195,7 @@ function HomePage() {
                 key={city}
                 to="/locations/$city"
                 params={{ city: citySlug(city) }}
-                className="group flex items-center justify-between rounded-lg bg-white px-4 py-4"
+                className="group flex items-center justify-between rounded-xl border border-border bg-white px-4 py-4 transition-colors hover:border-primary/40"
               >
                 <span>
                   <span className="block text-sm font-semibold text-black">{cityLabel(city, lang)}</span>
@@ -202,16 +206,15 @@ function HomePage() {
             ))}
           </div>
           {moreCities.length > 0 && (
-            <p className="mt-4 text-sm leading-7 text-muted">
-              {moreCities.map((city, i) => (
-                <span key={city}>
-                  {i > 0 && <span className="mx-2 text-border">·</span>}
+            <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+              {moreCities.map((city) => (
+                <li key={city}>
                   <Link to="/locations/$city" params={{ city: citySlug(city) }} className="font-medium text-fg hover:text-primary">
                     {cityLabel(city, lang)}
                   </Link>
-                </span>
+                </li>
               ))}
-            </p>
+            </ul>
           )}
         </section>
 
@@ -223,7 +226,7 @@ function HomePage() {
                 key={s.slug}
                 to="/services/$slug"
                 params={{ slug: s.slug }}
-                className="rounded-xl border border-border bg-white p-4 hover:border-primary"
+                className="rounded-xl border border-border bg-white p-4 transition-colors hover:border-primary/40"
               >
                 <p className="font-semibold text-black">{tx(lang, s.title, s.titleUr)}</p>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{tx(lang, s.summary, s.summaryUr)}</p>
@@ -250,9 +253,9 @@ function HomePage() {
                 key={g.slug}
                 to="/guides/$slug"
                 params={{ slug: g.slug }}
-                className="overflow-hidden rounded-xl border border-border bg-white"
+                className="overflow-hidden rounded-xl border border-border bg-white transition-colors hover:border-primary/40"
               >
-                <img src={g.image} alt={`${g.name}, ${g.city}`} loading="lazy" decoding="async" className="aspect-16/8 w-full object-cover" />
+                <img src={g.image} alt={`${g.name}, ${g.city}`} width={1200} height={675} loading="lazy" decoding="async" className="aspect-16/8 w-full object-cover" />
                 <div className="p-4">
                   <p className="text-xs font-semibold text-primary">{g.city}</p>
                   <p className="font-bold">{g.name}</p>
@@ -271,9 +274,9 @@ function HomePage() {
                 key={p.slug}
                 to="/blog/$slug"
                 params={{ slug: p.slug }}
-                className="overflow-hidden rounded-xl border border-border bg-white"
+                className="overflow-hidden rounded-xl border border-border bg-white transition-colors hover:border-primary/40"
               >
-                <img src={p.image} alt={p.title} loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
+                <img src={p.image} alt={p.title} width={1200} height={675} loading="lazy" decoding="async" className="aspect-16/10 w-full object-cover" />
                 <div className="p-4">
                   <p className="text-[11px] font-bold uppercase tracking-wide text-primary">{p.tag}</p>
                   <p className="font-bold mt-1 leading-snug">{p.title}</p>
