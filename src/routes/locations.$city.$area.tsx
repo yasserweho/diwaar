@@ -2,7 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PAGE, RelatedLinks } from "@/components/related-links";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { areaFromSlug, areasOf, cityFromSlug } from "@/lib/location-pages";
-import { seo } from "@/lib/seo";
+import { OG, seo } from "@/lib/seo";
+import { ShareBar } from "@/components/share-bar";
+import { PostFreeCta } from "@/components/post-free-cta";
 import { breadcrumbLd, withSchema } from "@/lib/schema";
 import { ListingSection } from "@/components/listing-section";
 import { listPublicListings } from "@/lib/listings.functions";
@@ -28,7 +30,7 @@ export const Route = createFileRoute("/locations/$city/$area")({
       seo(
         `Property for Sale and Rent in ${area}, ${city}`,
         `Houses, flats, portions, plots and commercial property for sale and rent in ${area}, ${city} on diwaar.com.`,
-        { path: `/locations/${params.city}/${params.area}` },
+        { path: `/locations/${params.city}/${params.area}`, image: OG.city(params.city), imageAlt: `Property in ${area}, ${city} on Diwaar.com` },
       ),
       breadcrumbLd([
         { name: "Home", path: "/" },
@@ -91,6 +93,15 @@ function AreaLocationPage() {
         </Link>
       </div>
       <ListingSection listings={listings} place={area} search={{ city, location: area }} />
+      <PostFreeCta className="mt-8" place={area} />
+      <ShareBar
+        className="mt-4"
+        path={`/locations/${citySlug}/${areaSlug}`}
+        campaign="area"
+        title={{ en: `Looking in ${area}? Share this page with family.`, ur: `${area} میں تلاش ہے؟ یہ صفحہ گھر والوں کو بھیجیں۔` }}
+        en={`Property for sale and rent in ${area}, ${city}. Owners post directly on Diwaar.com:`}
+        ur={`${area}، ${cityLabel(city, lang)} میں فروخت اور کرایے کی جائیداد۔ مالکان دیوار ڈاٹ کام پر خود اشتہار لگاتے ہیں:`}
+      />
       {nearby.length > 0 && (
         <div className="mt-10">
           <h2 className="text-lg font-semibold text-black">{tx(lang, "Other areas", "دیگر علاقے")}</h2>

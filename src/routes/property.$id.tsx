@@ -11,14 +11,13 @@ import {
   Share2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { toast } from "sonner";
 import { PropertyCard } from "@/components/property-card";
 import { ListingBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getAgent, getProperty, similarTo } from "@/lib/data";
-import { tx, useLang } from "@/lib/i18n";
-import { pricePath } from "@/lib/portal";
+import { cityLabel, tx, useLang } from "@/lib/i18n";
+import { ShareBar } from "@/components/share-bar";
 import { formatArea, formatPhone, formatPrice, relativeDate, waLink } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL } from "@/lib/types";
@@ -159,7 +158,6 @@ function PropertyBody() {
   const { lang } = useLang();
   const reportListing = useAppStore((s) => s.reportListing);
   const img = property.images[shot] ?? property.images[0];
-  const history = pricePath(property.price, property.id);
 
   useEffect(() => {
     noteRecent(property.id);
@@ -233,20 +231,14 @@ function PropertyBody() {
             </dl>
           </div>
 
-          <div className="mt-4 rounded-2xl bg-surface p-5 shadow-card">
-            <h2 className="font-bold text-primary-dark">Asking price since 2021</h2>
-            <p className="mt-1 text-sm text-muted">Crore PKR. The last point is today's asking price.</p>
-            <div className="mt-3 h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={history}>
-                  <XAxis dataKey="year" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="crore" name="Crore" stroke="var(--color-primary)" strokeWidth={2} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+          <ShareBar
+            className="mt-4"
+            path={`/property/${property.id}`}
+            campaign="listing"
+            title={{ en: "Share this ad on WhatsApp", ur: "یہ اشتہار واٹس ایپ پر بھیجیں" }}
+            en={`${property.title}, ${property.purpose === "rent" ? "for rent" : "for sale"} in ${property.location}, ${property.city}: ${formatPrice(property.price, property.purpose, "PKR")}. See photos and call the owner on Diwaar.com:`}
+            ur={`${property.title}، ${property.location}، ${cityLabel(property.city, "ur")} میں ${property.purpose === "rent" ? "کرایے کے لیے" : "برائے فروخت"}: ${formatPrice(property.price, property.purpose, "PKR")}۔ تصاویر دیکھیں اور مالک سے رابطہ کریں:`}
+          />
 
           <div className="mt-4 rounded-2xl bg-surface p-5 shadow-card">
             <h2 className="font-bold text-primary-dark">Description</h2>

@@ -5,7 +5,7 @@
 // (pages, content, cities, areas). Redirecting URLs (/property-for-sale,
 // /property-for-rent) and form pages (/add) are left out on purpose: a sitemap
 // should list only canonical, indexable 200 pages.
-import { readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { AREA_BOOK, CITIES } from "../src/lib/locations.ts";
 
 const origin = "https://www.diwaar.com";
@@ -23,10 +23,11 @@ function slugify(name) {
 /** Pull `slug: "..."` (and optional `date: "..."`) from one exported array in a TS source file. */
 function slugsFrom(file, exportName) {
   const src = readFileSync(new URL(`../src/lib/${file}`, import.meta.url), "utf8");
-  const start = src.indexOf(`export const ${exportName}`);
+  const at = src.search(new RegExp(`(?:export )?const ${exportName}\\b`));
+  const start = at;
   if (start < 0) return [];
-  const next = src.indexOf("export ", start + 10);
-  const block = src.slice(start, next < 0 ? undefined : next);
+  const next = src.slice(start + 10).search(/\n(?:export |const )/);
+  const block = src.slice(start, next < 0 ? undefined : start + 10 + next);
   const out = [];
   const re = /slug:\s*"([^"]+)"[\s\S]*?(?:date:\s*"(\d{4}-\d{2}-\d{2})"|(?=slug:)|$)/g;
   for (const m of block.matchAll(re)) out.push({ slug: m[1], date: m[2] });
@@ -44,6 +45,8 @@ const pages = [
   "/maps",
   "/property-index",
   "/tools",
+  "/tools/rent-vs-buy",
+  "/tools/transfer-cost",
   "/loans",
   "/blog",
   "/faq",
@@ -53,8 +56,22 @@ const pages = [
   "/reviews",
 ];
 
+/** Long-form articles in src/content/blog/*.md (front matter: slug, date). */
+function articles() {
+  const dir = new URL("../src/content/blog/", import.meta.url);
+  return readdirSync(dir)
+    .filter((f) => f.endsWith(".md"))
+    .map((f) => {
+      const head = readFileSync(new URL(f, dir), "utf8").split("---")[1] ?? "";
+      const get = (k) => new RegExp(`^${k}:\\s*(.+)$`, "m").exec(head)?.[1]?.trim();
+      return { path: `/blog/${get("slug")}`, lastmod: get("date") };
+    })
+    .filter((a) => a.path !== "/blog/undefined");
+}
+
 const content = [
-  ...slugsFrom("data.ts", "POSTS").map((p) => ({ path: `/blog/${p.slug}`, lastmod: p.date })),
+  ...articles(),
+  ...slugsFrom("data.ts", "SHORT_POSTS").map((p) => ({ path: `/blog/${p.slug}`, lastmod: p.date })),
   ...slugsFrom("data.ts", "GUIDES").map((g) => ({ path: `/guides/${g.slug}` })),
   ...slugsFrom("services.ts", "SERVICES").map((s) => ({ path: `/services/${s.slug}` })),
 ];

@@ -3,7 +3,9 @@ import { useMemo, useState } from "react";
 import { PAGE, RelatedLinks } from "@/components/related-links";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { areasOf, cityFromSlug, provinceOf } from "@/lib/location-pages";
-import { seo } from "@/lib/seo";
+import { OG, seo } from "@/lib/seo";
+import { ShareBar } from "@/components/share-bar";
+import { PostFreeCta } from "@/components/post-free-cta";
 import { breadcrumbLd, withSchema } from "@/lib/schema";
 import { ListingSection } from "@/components/listing-section";
 import { listPublicListings } from "@/lib/listings.functions";
@@ -26,7 +28,7 @@ export const Route = createFileRoute("/locations/$city/")({
       seo(
         `Property for Sale and Rent in ${city}`,
         `Houses, flats, portions, plots and commercial property for sale and rent in ${city}. Browse ${n.toLocaleString()} areas on diwaar.com, no commission.`,
-        { path: `/locations/${params.city}` },
+        { path: `/locations/${params.city}`, image: OG.city(params.city), imageAlt: `Property for sale and rent in ${city} on Diwaar.com` },
       ),
       breadcrumbLd([
         { name: "Home", path: "/" },
@@ -92,6 +94,15 @@ function CityLocationPage() {
         </Link>
       </div>
       <ListingSection listings={listings} place={cityLabel(city, lang)} search={{ city }} />
+      <PostFreeCta className="mt-8" place={cityLabel(city, lang)} />
+      <ShareBar
+        className="mt-4"
+        path={`/locations/${slug}`}
+        campaign="city"
+        title={{ en: `Share ${city} listings with your family group`, ur: `${cityLabel(city, lang)} کے اشتہارات فیملی گروپ میں بھیجیں` }}
+        en={`Houses, flats, portions and plots for sale and rent in ${city}, posted by owners on Diwaar.com:`}
+        ur={`${cityLabel(city, lang)} میں گھر، فلیٹ، پورشن اور پلاٹ، فروخت اور کرایے کے لیے، مالکان کے اشتہارات دیوار ڈاٹ کام پر:`}
+      />
       <label className="mt-8 block max-w-md">
         <span className="mb-1.5 block text-xs font-medium text-muted">{tx(lang, "Find an area", "علاقہ تلاش کریں")}</span>
         <input

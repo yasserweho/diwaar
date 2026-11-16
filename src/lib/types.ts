@@ -91,6 +91,12 @@ export interface BlogPost {
   date: string;
   tag: string;
   image: string;
+  /** Markdown body for long-form articles (rendered instead of `body`). */
+  markdown?: string;
+  /** Article language; Urdu posts render right-to-left. Defaults to "en". */
+  lang?: "en" | "ur";
+  /** Search-result title when it should differ from the on-page H1. */
+  metaTitle?: string;
 }
 
 export interface SearchParams {

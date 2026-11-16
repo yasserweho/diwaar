@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { POSTS } from "@/lib/data";
-import { seo } from "@/lib/seo";
+import { OG, seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/blog/")({
   head: () =>
     seo(
       "Pakistan Property Market Notes",
-      "Prices, transfers, home loans and buying checklists for houses and plots in Pakistan.",
-      { path: "/blog" },
+      "Renting guides, rent agreements, CDA/RDA society checks, Marla sizes and buying checklists for Pakistan, in English and Urdu.",
+      { path: "/blog", image: OG.site },
     ),
   component: BlogPage,
 });
@@ -30,8 +30,12 @@ function BlogPage() {
               <p className="text-[11px] font-bold uppercase tracking-wide text-primary">
                 {p.tag} · {p.date}
               </p>
-              <h2 className="mt-1 text-lg font-bold">{p.title}</h2>
-              <p className="mt-2 text-sm text-muted">{p.excerpt}</p>
+              <h2 className="mt-1 text-lg font-bold" lang={p.lang === "ur" ? "ur" : undefined} dir={p.lang === "ur" ? "rtl" : undefined}>
+                {p.title}
+              </h2>
+              <p className="mt-2 text-sm text-muted" lang={p.lang === "ur" ? "ur" : undefined} dir={p.lang === "ur" ? "rtl" : undefined}>
+                {p.excerpt}
+              </p>
             </div>
           </Link>
         ))}

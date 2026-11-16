@@ -1,5 +1,6 @@
 import { HOUSE_ISB, HOUSE_LUX, HOUSE_SM, PENT, PLOT } from "./photos";
 import { AREA_BOOK, listingById, neighborsOf } from "./catalog";
+import { ARTICLES } from "./articles";
 import type { Agent, AreaGuide, BlogPost, Project, Property, SearchParams } from "./types";
 
 export const AGENTS: Agent[] = [
@@ -214,14 +215,14 @@ export const GUIDES: AreaGuide[] = [
   },
 ];
 
-export const POSTS: BlogPost[] = [
+const SHORT_POSTS: BlogPost[] = [
   {
     slug: "kanal-vs-marla",
     title: "Kanal, Marla and Square Yards — a buyer’s cheat sheet",
     excerpt: "Punjab talks Marla. Karachi talks yards. Here is how to convert without getting burned.",
     body: [
-      "In Punjab and Islamabad, 1 Marla is 272.25 square feet and 1 Kanal is 20 Marla (5,445 sq ft). Karachi listings usually quote square yards (9 sq ft each), so a 500-yard DHA house is about 4,500 sq ft — just under a Lahore Kanal.",
-      "Always ask which Marla the seller means. Some older files still use 225 sq ft. Diwaar stores every listing in square feet and lets you switch the display unit in the header.",
+      "Revenue records in Punjab use a Marla of 272.25 square feet, but LDA’s building regulations define a Marla as 225 sq ft in Lahore District (272 sq ft in other Punjab districts). 1 Kanal is always 20 Marla: 4,500 or 5,445 sq ft depending on which Marla is meant. Karachi listings usually quote square yards (9 sq ft each), so a 500-yard DHA house is about 4,500 sq ft, the same as a 225-sq-ft-Marla Kanal.",
+      "Always ask which Marla the seller means, and ask for the plot dimensions in feet. Diwaar stores every listing in square feet and lets you switch the display unit in the header.",
       "For plots, frontage matters as much as area. A 30-foot road 5 Marla will rent faster than a 20-foot road 5 Marla in the same block.",
     ],
     date: "2026-08-12",
@@ -268,6 +269,9 @@ export const POSTS: BlogPost[] = [
     image: HOUSE_SM[0],
   },
 ];
+
+/** Long-form articles from src/content/blog first (newest), then the short notes. */
+export const POSTS: BlogPost[] = [...ARTICLES, ...SHORT_POSTS];
 
 export function getAgent(id: string) {
   return AGENTS.find((a) => a.id === id);

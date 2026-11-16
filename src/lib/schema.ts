@@ -42,7 +42,7 @@ export function blogPostingLd(post: BlogPost, path: string): Ld {
     datePublished: post.date,
     image: abs(post.image),
     mainEntityOfPage: abs(path),
-    inLanguage: "en",
+    inLanguage: post.lang === "ur" ? "ur" : "en",
     author: { "@id": ORG_ID },
     publisher: { "@id": ORG_ID },
   };

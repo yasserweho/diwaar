@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { formatPkr, MARLA_SQFT, KANAL_SQFT, SQYD_SQFT, ACRE_SQFT, trimNum } from "@/lib/format";
 import { BANKS } from "@/lib/portal";
 import { cn } from "@/lib/utils";
-import { seo } from "@/lib/seo";
+import { OG, seo } from "@/lib/seo";
+import { ShareBar } from "@/components/share-bar";
 
 type Tab = "loan" | "build" | "area" | "loans";
 
@@ -14,12 +15,12 @@ function parse(s: Record<string, unknown>): { tab: Tab; rate?: number } {
   return { tab: tab as Tab, rate: Number.isFinite(n) && n > 0 ? n : undefined };
 }
 
-export const Route = createFileRoute("/tools")({
+export const Route = createFileRoute("/tools/")({
   head: () =>
     seo(
       "Pakistan Property Tools",
-      "Convert Marla to square yards, estimate a home loan and price grey structure plus finishing.",
-      { path: "/tools" },
+      "Free Pakistan property calculators: rent or buy, property transfer cost (FBR 236K/236C), home loan instalment, construction cost and Marla converter.",
+      { path: "/tools", image: OG.tool("tools") },
     ),
   validateSearch: parse,
   component: ToolsPage,
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/tools")({
 
 function ToolsPage() {
   const { tab } = Route.useSearch();
-  const navigate = useNavigate({ from: "/tools" });
+  const navigate = useNavigate({ from: "/tools/" });
   const tabs: { id: Tab; label: string }[] = [
     { id: "loan", label: "Home loan" },
     { id: "loans", label: "Loans" },
@@ -39,6 +40,18 @@ function ToolsPage() {
     <div className="mx-auto max-w-xl px-4 py-8">
       <h1 className="text-3xl font-extrabold text-black">Property tools</h1>
       <p className="mt-2 text-sm text-muted">Mark-up, build cost and Marla conversions — the three questions every token meeting starts with.</p>
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        <Link to="/tools/rent-vs-buy" className="rounded-2xl bg-surface p-4 shadow-card hover:shadow-card-hover">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-primary">New · نیا</p>
+          <p className="mt-1 font-bold text-black">Rent or buy?</p>
+          <p className="mt-1 text-sm text-muted">Instalment vs rent, year by year, with your own numbers.</p>
+        </Link>
+        <Link to="/tools/transfer-cost" className="rounded-2xl bg-surface p-4 shadow-card hover:shadow-card-hover">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-primary">New · نیا</p>
+          <p className="mt-1 font-bold text-black">Transfer cost estimator</p>
+          <p className="mt-1 text-sm text-muted">FBR advance tax for filers and non-filers, plus your registrar's fees.</p>
+        </Link>
+      </div>
       <div className="mt-6 flex gap-1 overflow-x-auto no-scrollbar rounded-lg bg-ice p-1">
         {tabs.map((t) => (
           <button
@@ -60,6 +73,13 @@ function ToolsPage() {
         {tab === "build" && <BuildCalc />}
         {tab === "area" && <AreaCalc />}
       </div>
+      <ShareBar
+        className="mt-8"
+        path="/tools"
+        campaign="tool"
+        en="Free Pakistan property calculators: rent or buy, transfer cost, home loan and Marla converter"
+        ur="پاکستان پراپرٹی کے مفت کیلکولیٹر: کرایہ یا خریداری، ٹرانسفر لاگت، ہوم لون اور مرلہ کنورٹر"
+      />
     </div>
   );
 }
@@ -130,13 +150,15 @@ function LoanCalc() {
   );
 }
 
+// PKR per sq ft by finish tier.
+const rates = { economy: 4500, standard: 7500, premium: 12000 };
+
 function BuildCalc() {
   const [marla, setMarla] = useState("5");
   const [cover, setCover] = useState("70");
   const [floors, setFloors] = useState("2");
   const [basement, setBasement] = useState(false);
   const [tier, setTier] = useState<"economy" | "standard" | "premium">("standard");
-  const rates = { economy: 4500, standard: 7500, premium: 12000 };
 
   const result = useMemo(() => {
     const footprint = (Number(marla) || 0) * MARLA_SQFT * ((Number(cover) || 0) / 100);

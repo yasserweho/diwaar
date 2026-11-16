@@ -33,7 +33,6 @@ import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapListingsDotxmlRouteImport } from './routes/sitemap-listings[.]xml'
-import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WantedRouteImport } from './routes/wanted'
 import { Route as AgenciesIndexRouteImport } from './routes/agencies.index'
@@ -52,6 +51,9 @@ import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as PropertyIdRouteImport } from './routes/property.$id'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as ToolsIndexRouteImport } from './routes/tools.index'
+import { Route as ToolsRentVsBuyRouteImport } from './routes/tools.rent-vs-buy'
+import { Route as ToolsTransferCostRouteImport } from './routes/tools.transfer-cost'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as LocationsCityIndexRouteImport } from './routes/locations.$city.index'
 import { Route as LocationsCityAreaRouteImport } from './routes/locations.$city.$area'
@@ -176,11 +178,6 @@ const SitemapListingsDotxmlRoute = SitemapListingsDotxmlRouteImport.update({
   path: '/sitemap-listings.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ToolsRoute = ToolsRouteImport.update({
-  id: '/tools',
-  path: '/tools',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TrendsRoute = TrendsRouteImport.update({
   id: '/trends',
   path: '/trends',
@@ -271,6 +268,21 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsIndexRoute = ToolsIndexRouteImport.update({
+  id: '/tools/',
+  path: '/tools/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsRentVsBuyRoute = ToolsRentVsBuyRouteImport.update({
+  id: '/tools/rent-vs-buy',
+  path: '/tools/rent-vs-buy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsTransferCostRoute = ToolsTransferCostRouteImport.update({
+  id: '/tools/transfer-cost',
+  path: '/tools/transfer-cost',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -312,7 +324,6 @@ export interface FileRoutesByFullPath {
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
   '/sitemap-listings.xml': typeof SitemapListingsDotxmlRoute
-  '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
   '/agencies/$id': typeof AgenciesIdRoute
@@ -323,6 +334,8 @@ export interface FileRoutesByFullPath {
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/tools/rent-vs-buy': typeof ToolsRentVsBuyRoute
+  '/tools/transfer-cost': typeof ToolsTransferCostRoute
   '/agencies/': typeof AgenciesIndexRoute
   '/agents/': typeof AgentsIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -331,6 +344,7 @@ export interface FileRoutesByFullPath {
   '/locations/': typeof LocationsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/tools/': typeof ToolsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/locations/$city/$area': typeof LocationsCityAreaRoute
   '/locations/$city/': typeof LocationsCityIndexRoute
@@ -360,7 +374,6 @@ export interface FileRoutesByTo {
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
   '/sitemap-listings.xml': typeof SitemapListingsDotxmlRoute
-  '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
   '/agencies/$id': typeof AgenciesIdRoute
@@ -371,6 +384,8 @@ export interface FileRoutesByTo {
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/tools/rent-vs-buy': typeof ToolsRentVsBuyRoute
+  '/tools/transfer-cost': typeof ToolsTransferCostRoute
   '/agencies': typeof AgenciesIndexRoute
   '/agents': typeof AgentsIndexRoute
   '/blog': typeof BlogIndexRoute
@@ -379,6 +394,7 @@ export interface FileRoutesByTo {
   '/locations': typeof LocationsIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/tools': typeof ToolsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/locations/$city/$area': typeof LocationsCityAreaRoute
   '/locations/$city': typeof LocationsCityIndexRoute
@@ -409,7 +425,6 @@ export interface FileRoutesById {
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
   '/sitemap-listings.xml': typeof SitemapListingsDotxmlRoute
-  '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
   '/agencies/$id': typeof AgenciesIdRoute
@@ -420,6 +435,8 @@ export interface FileRoutesById {
   '/projects/$id': typeof ProjectsIdRoute
   '/property/$id': typeof PropertyIdRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/tools/rent-vs-buy': typeof ToolsRentVsBuyRoute
+  '/tools/transfer-cost': typeof ToolsTransferCostRoute
   '/agencies/': typeof AgenciesIndexRoute
   '/agents/': typeof AgentsIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -428,6 +445,7 @@ export interface FileRoutesById {
   '/locations/': typeof LocationsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/tools/': typeof ToolsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/locations/$city/$area': typeof LocationsCityAreaRoute
   '/locations/$city/': typeof LocationsCityIndexRoute
@@ -459,7 +477,6 @@ export interface FileRouteTypes {
     | '/saved'
     | '/search'
     | '/sitemap-listings.xml'
-    | '/tools'
     | '/trends'
     | '/wanted'
     | '/agencies/$id'
@@ -470,6 +487,8 @@ export interface FileRouteTypes {
     | '/projects/$id'
     | '/property/$id'
     | '/services/$slug'
+    | '/tools/rent-vs-buy'
+    | '/tools/transfer-cost'
     | '/agencies/'
     | '/agents/'
     | '/blog/'
@@ -478,6 +497,7 @@ export interface FileRouteTypes {
     | '/locations/'
     | '/projects/'
     | '/services/'
+    | '/tools/'
     | '/api/auth/$'
     | '/locations/$city/$area'
     | '/locations/$city/'
@@ -507,7 +527,6 @@ export interface FileRouteTypes {
     | '/saved'
     | '/search'
     | '/sitemap-listings.xml'
-    | '/tools'
     | '/trends'
     | '/wanted'
     | '/agencies/$id'
@@ -518,6 +537,8 @@ export interface FileRouteTypes {
     | '/projects/$id'
     | '/property/$id'
     | '/services/$slug'
+    | '/tools/rent-vs-buy'
+    | '/tools/transfer-cost'
     | '/agencies'
     | '/agents'
     | '/blog'
@@ -526,6 +547,7 @@ export interface FileRouteTypes {
     | '/locations'
     | '/projects'
     | '/services'
+    | '/tools'
     | '/api/auth/$'
     | '/locations/$city/$area'
     | '/locations/$city'
@@ -555,7 +577,6 @@ export interface FileRouteTypes {
     | '/saved'
     | '/search'
     | '/sitemap-listings.xml'
-    | '/tools'
     | '/trends'
     | '/wanted'
     | '/agencies/$id'
@@ -566,6 +587,8 @@ export interface FileRouteTypes {
     | '/projects/$id'
     | '/property/$id'
     | '/services/$slug'
+    | '/tools/rent-vs-buy'
+    | '/tools/transfer-cost'
     | '/agencies/'
     | '/agents/'
     | '/blog/'
@@ -574,6 +597,7 @@ export interface FileRouteTypes {
     | '/locations/'
     | '/projects/'
     | '/services/'
+    | '/tools/'
     | '/api/auth/$'
     | '/locations/$city/$area'
     | '/locations/$city/'
@@ -604,7 +628,6 @@ export interface RootRouteChildren {
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
   SitemapListingsDotxmlRoute: typeof SitemapListingsDotxmlRoute
-  ToolsRoute: typeof ToolsRoute
   TrendsRoute: typeof TrendsRoute
   WantedRoute: typeof WantedRoute
   AgenciesIdRoute: typeof AgenciesIdRoute
@@ -615,6 +638,8 @@ export interface RootRouteChildren {
   ProjectsIdRoute: typeof ProjectsIdRoute
   PropertyIdRoute: typeof PropertyIdRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
+  ToolsRentVsBuyRoute: typeof ToolsRentVsBuyRoute
+  ToolsTransferCostRoute: typeof ToolsTransferCostRoute
   AgenciesIndexRoute: typeof AgenciesIndexRoute
   AgentsIndexRoute: typeof AgentsIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -623,6 +648,7 @@ export interface RootRouteChildren {
   LocationsIndexRoute: typeof LocationsIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  ToolsIndexRoute: typeof ToolsIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   LocationsCityAreaRoute: typeof LocationsCityAreaRoute
   LocationsCityIndexRoute: typeof LocationsCityIndexRoute
@@ -798,13 +824,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapListingsDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tools': {
-      id: '/tools'
-      path: '/tools'
-      fullPath: '/tools'
-      preLoaderRoute: typeof ToolsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/trends': {
       id: '/trends'
       path: '/trends'
@@ -931,6 +950,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/': {
+      id: '/tools/'
+      path: '/tools'
+      fullPath: '/tools/'
+      preLoaderRoute: typeof ToolsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/rent-vs-buy': {
+      id: '/tools/rent-vs-buy'
+      path: '/tools/rent-vs-buy'
+      fullPath: '/tools/rent-vs-buy'
+      preLoaderRoute: typeof ToolsRentVsBuyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/transfer-cost': {
+      id: '/tools/transfer-cost'
+      path: '/tools/transfer-cost'
+      fullPath: '/tools/transfer-cost'
+      preLoaderRoute: typeof ToolsTransferCostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -980,7 +1020,6 @@ const rootRouteChildren: RootRouteChildren = {
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
   SitemapListingsDotxmlRoute: SitemapListingsDotxmlRoute,
-  ToolsRoute: ToolsRoute,
   TrendsRoute: TrendsRoute,
   WantedRoute: WantedRoute,
   AgenciesIdRoute: AgenciesIdRoute,
@@ -991,6 +1030,8 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsIdRoute: ProjectsIdRoute,
   PropertyIdRoute: PropertyIdRoute,
   ServicesSlugRoute: ServicesSlugRoute,
+  ToolsRentVsBuyRoute: ToolsRentVsBuyRoute,
+  ToolsTransferCostRoute: ToolsTransferCostRoute,
   AgenciesIndexRoute: AgenciesIndexRoute,
   AgentsIndexRoute: AgentsIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
@@ -999,6 +1040,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocationsIndexRoute: LocationsIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  ToolsIndexRoute: ToolsIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   LocationsCityAreaRoute: LocationsCityAreaRoute,
   LocationsCityIndexRoute: LocationsCityIndexRoute,

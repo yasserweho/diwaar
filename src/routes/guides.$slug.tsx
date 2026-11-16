@@ -5,7 +5,8 @@ import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { PAGE, RelatedLinks } from "@/components/related-links";
-import { seo } from "@/lib/seo";
+import { OG, seo } from "@/lib/seo";
+import { ShareBar } from "@/components/share-bar";
 import { breadcrumbLd, guideLd, withSchema } from "@/lib/schema";
 import { citySlug } from "@/lib/location-pages";
 
@@ -15,7 +16,7 @@ export const Route = createFileRoute("/guides/$slug")({
     if (!guide) return seo("Area guide not found", "This Diwaar area guide is not available.", { noindex: true });
     const path = `/guides/${params.slug}`;
     return withSchema(
-      seo(`${guide.name} Property Guide, ${guide.city}`, guide.overview, { path }),
+      seo(`${guide.name} Property Guide, ${guide.city}`, guide.overview, { path, image: OG.guide(guide.slug), imageAlt: `${guide.name}, ${guide.city} area guide` }),
       guideLd(guide, path),
       breadcrumbLd([
         { name: "Home", path: "/" },
@@ -77,6 +78,13 @@ function GuideDetail() {
       >
         <Button>See listings in {g.name}</Button>
       </Link>
+      <ShareBar
+        className="mt-8"
+        path={`/guides/${g.slug}`}
+        campaign="guide"
+        en={`${g.name}, ${g.city}: area guide for buyers and tenants on Diwaar.com`}
+        ur={`${g.name}، ${g.city}: خریداروں اور کرایہ داروں کے لیے علاقائی گائیڈ، دیوار ڈاٹ کام پر`}
+      />
       <RelatedLinks
         links={[
           { href: `/locations/${citySlug(g.city)}`, en: `Areas in ${g.city}`, ur: `${g.city} کے علاقے` },
