@@ -109,8 +109,10 @@ const index = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
   ...Object.keys(sections).map((name) => `  <sitemap><loc>${origin}/${name}</loc></sitemap>`),
+  // Served live by src/routes/sitemap-listings[.]xml.ts (public owner ads from the database).
+  `  <sitemap><loc>${origin}/sitemap-listings.xml</loc></sitemap>`,
   "</sitemapindex>",
   "",
 ].join("\n");
 writeFileSync(pub("sitemap.xml"), index);
-console.log("sitemap.xml: index of", Object.keys(sections).length, "sitemaps");
+console.log("sitemap.xml: index of", Object.keys(sections).length + 1, "sitemaps");

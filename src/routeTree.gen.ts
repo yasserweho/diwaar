@@ -32,6 +32,7 @@ import { Route as PropertyIndexRouteImport } from './routes/property-index'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as SitemapListingsDotxmlRouteImport } from './routes/sitemap-listings[.]xml'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WantedRouteImport } from './routes/wanted'
@@ -170,6 +171,11 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapListingsDotxmlRoute = SitemapListingsDotxmlRouteImport.update({
+  id: '/sitemap-listings.xml',
+  path: '/sitemap-listings.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolsRoute = ToolsRouteImport.update({
   id: '/tools',
   path: '/tools',
@@ -305,6 +311,7 @@ export interface FileRoutesByFullPath {
   '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/sitemap-listings.xml': typeof SitemapListingsDotxmlRoute
   '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
@@ -352,6 +359,7 @@ export interface FileRoutesByTo {
   '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/sitemap-listings.xml': typeof SitemapListingsDotxmlRoute
   '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
@@ -400,6 +408,7 @@ export interface FileRoutesById {
   '/reviews': typeof ReviewsRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/sitemap-listings.xml': typeof SitemapListingsDotxmlRoute
   '/tools': typeof ToolsRoute
   '/trends': typeof TrendsRoute
   '/wanted': typeof WantedRoute
@@ -449,6 +458,7 @@ export interface FileRouteTypes {
     | '/reviews'
     | '/saved'
     | '/search'
+    | '/sitemap-listings.xml'
     | '/tools'
     | '/trends'
     | '/wanted'
@@ -496,6 +506,7 @@ export interface FileRouteTypes {
     | '/reviews'
     | '/saved'
     | '/search'
+    | '/sitemap-listings.xml'
     | '/tools'
     | '/trends'
     | '/wanted'
@@ -543,6 +554,7 @@ export interface FileRouteTypes {
     | '/reviews'
     | '/saved'
     | '/search'
+    | '/sitemap-listings.xml'
     | '/tools'
     | '/trends'
     | '/wanted'
@@ -591,6 +603,7 @@ export interface RootRouteChildren {
   ReviewsRoute: typeof ReviewsRoute
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
+  SitemapListingsDotxmlRoute: typeof SitemapListingsDotxmlRoute
   ToolsRoute: typeof ToolsRoute
   TrendsRoute: typeof TrendsRoute
   WantedRoute: typeof WantedRoute
@@ -778,6 +791,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap-listings.xml': {
+      id: '/sitemap-listings.xml'
+      path: '/sitemap-listings.xml'
+      fullPath: '/sitemap-listings.xml'
+      preLoaderRoute: typeof SitemapListingsDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools': {
       id: '/tools'
       path: '/tools'
@@ -959,6 +979,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReviewsRoute: ReviewsRoute,
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
+  SitemapListingsDotxmlRoute: SitemapListingsDotxmlRoute,
   ToolsRoute: ToolsRoute,
   TrendsRoute: TrendsRoute,
   WantedRoute: WantedRoute,

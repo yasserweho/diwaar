@@ -24,39 +24,52 @@ import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL } from "@/lib/types";
 import { seo } from "@/lib/seo";
 import { breadcrumbLd, listingLd, withSchema } from "@/lib/schema";
+import { getPublicListing } from "@/lib/listings.functions";
+import { areaSlug, citySlug } from "@/lib/location-pages";
 
 export const Route = createFileRoute("/property/$id")({
-  head: ({ params }) => {
-    if (params.id.startsWith("user-")) {
-      return seo(
-        "Your listing preview",
-        "This listing is saved on this device only.",
-        {
-          noindex: true,
-          path: `/property/${params.id}`,
-        },
-      );
+  loader: async ({ params }) => {
+    if (!params.id.startsWith("user-")) return { listing: null };
+    try {
+      return { listing: await getPublicListing({ data: { id: params.id } }) };
+    } catch {
+      return { listing: null };
     }
-    const property = getProperty(params.id);
+  },
+  head: ({ params, loaderData }) => {
+    const path = `/property/${params.id}`;
+    const property = loaderData?.listing ?? (params.id.startsWith("user-") ? undefined : getProperty(params.id));
     if (!property) {
-      return seo("Listing not found", "This Diwaar listing is no longer available.", {
-        noindex: true,
-        path: `/property/${params.id}`,
-      });
+      return seo(
+        params.id.startsWith("user-") ? "Your listing preview" : "Listing not found",
+        params.id.startsWith("user-")
+          ? "This listing is not public yet or is no longer available."
+          : "This Diwaar listing is no longer available.",
+        { noindex: true, path },
+      );
     }
     const place = [property.location, property.city].filter(Boolean).join(", ");
     const deal = property.purpose === "rent" ? "for rent" : "for sale";
-    const path = `/property/${params.id}`;
+    const facts = [
+      property.beds ? `${property.beds} beds` : "",
+      property.baths ? `${property.baths} baths` : "",
+      `${Math.round(property.areaSqft).toLocaleString("en")} sq ft`,
+      `PKR ${property.price.toLocaleString("en")}${property.purpose === "rent" ? " per month" : ""}`,
+    ]
+      .filter(Boolean)
+      .join(", ");
+    const cityPath = `/locations/${citySlug(property.city)}`;
     return withSchema(
       seo(
         `${property.title} ${deal} in ${place}`,
-        `${property.title} ${deal} in ${place}. Price, size, beds and photos on Diwaar.`,
+        `${property.title} ${deal} in ${place}: ${facts}. Contact the owner directly on Diwaar.`.slice(0, 300),
         { path, image: property.images[0] },
       ),
       listingLd(property, path),
       breadcrumbLd([
         { name: "Home", path: "/" },
-        { name: property.city, path: `/search?purpose=${property.purpose}&city=${encodeURIComponent(property.city)}` },
+        { name: property.city, path: cityPath },
+        { name: property.location, path: `${cityPath}/${areaSlug(property.city, property.location)}` },
         { name: property.title, path },
       ]),
     );
@@ -64,13 +77,21 @@ export const Route = createFileRoute("/property/$id")({
   component: PropertyPage,
 });
 
+function usePropertyExtra() {
+  const local = useAppStore((s) => s.userListings);
+  const published = Route.useLoaderData()?.listing;
+  return published ? [...local, published] : local;
+}
+
 function PropertyPage() {
   const { id } = Route.useParams();
-  const extra = useAppStore((s) => s.userListings);
+  const extra = usePropertyExtra();
   const property = getProperty(id, extra);
   const navigate = useNavigate();
-  const isLocal = id.startsWith("user-");
+  const isPublic = !!Route.useLoaderData()?.listing;
+  const isLocal = id.startsWith("user-") && !isPublic;
   const [ready, setReady] = useState(!isLocal);
+  const { lang } = useLang();
 
   useEffect(() => {
     if (!isLocal) return;
@@ -87,7 +108,7 @@ function PropertyPage() {
   if (isLocal && !ready) {
     return (
       <div className="mx-auto max-w-xl px-4 py-20 text-center">
-        <p className="font-bold text-lg">Opening your listing\u2026</p>
+        <p className="font-bold text-lg">{tx(lang, "Opening the listing\u2026", "اشتہار کھل رہا ہے\u2026")}</p>
       </div>
     );
   }
@@ -95,18 +116,20 @@ function PropertyPage() {
   if (!property) {
     return (
       <div className="mx-auto max-w-xl px-4 py-20 text-center">
-        <p className="font-bold text-lg">{isLocal ? "Listing not found on this device" : "Listing not found"}</p>
+        <p className="font-bold text-lg">{tx(lang, "Listing not found", "اشتہار نہیں ملا")}</p>
         <p className="mt-2 text-sm text-muted">
-          {isLocal
-            ? "This ad is saved only in the browser you posted it from. Check My ads on the same device."
-            : "This listing is no longer available."}
+          {tx(
+            lang,
+            "This listing has been removed or is no longer available. If you posted it, check My ads.",
+            "یہ اشتہار ہٹا دیا گیا ہے یا اب دستیاب نہیں۔ اگر یہ آپ کا اشتہار ہے تو میرے اشتہارات دیکھیں۔",
+          )}
         </p>
         <div className="mt-4 flex justify-center gap-2">
-          {isLocal && (
-            <Button onClick={() => void navigate({ to: "/my-ads" })}>Go to My ads</Button>
+          {id.startsWith("user-") && (
+            <Button onClick={() => void navigate({ to: "/my-ads" })}>{tx(lang, "Go to My ads", "میرے اشتہارات")}</Button>
           )}
           <Button variant="outline" onClick={() => void navigate({ to: "/search" })}>
-            Back to search
+            {tx(lang, "Back to search", "تلاش پر واپس")}
           </Button>
         </div>
       </div>
@@ -118,7 +141,7 @@ function PropertyPage() {
 
 function PropertyBody() {
   const { id } = Route.useParams();
-  const extra = useAppStore((s) => s.userListings);
+  const extra = usePropertyExtra();
   const property = getProperty(id, extra)!;
   const unit = useAppStore((s) => s.areaUnit);
   const currency = useAppStore((s) => s.currency);
@@ -362,7 +385,7 @@ function PropertyBody() {
               {tx(
                 lang,
                 "diwaar.com takes no commission on this ad. Confirm the title and the society file before you pay a token.",
-                "diwaar.com \u0627\u0633 \u0627\u0634\u062a\u06c1\u0627\u0631 \u067e\u0631 \u06a9\u0645\u06cc\u0634\u0646 \u0646\u06c1\u06cc\u06ba \u0644\u06cc\u062a\u06cc\u06d4 \u0679\u0648\u06a9\u0646 \u0633\u06d2 \u067e\u06c1\u0644\u06d2 \u0646\u0627\u0645 \u0627\u0648\u0631 \u0633\u0648\u0633\u0627\u0626\u0679\u06cc \u06a9\u06cc \u0641\u0627\u0626\u0644 \u06a9\u06cc \u062a\u0635\u062f\u06cc\u0642 \u06a9\u0631\u06cc\u06ba\u06d4",
+                "diwaar.com اس اشتہار پر کمیشن نہیں لیتی۔ ٹوکن سے پہلے نام اور سوسائٹی کی فائل کی تصدیق کریں۔",
               )}
             </p>
           </div>

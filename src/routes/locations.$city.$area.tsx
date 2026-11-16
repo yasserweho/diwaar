@@ -4,8 +4,20 @@ import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { areaFromSlug, areasOf, cityFromSlug } from "@/lib/location-pages";
 import { seo } from "@/lib/seo";
 import { breadcrumbLd, withSchema } from "@/lib/schema";
+import { ListingSection } from "@/components/listing-section";
+import { listPublicListings } from "@/lib/listings.functions";
 
 export const Route = createFileRoute("/locations/$city/$area")({
+  loader: async ({ params }) => {
+    const city = cityFromSlug(params.city);
+    const area = city ? areaFromSlug(city, params.area) : undefined;
+    if (!city || !area) return { listings: [] };
+    try {
+      return { listings: await listPublicListings({ data: { city, location: area, limit: 60 } }) };
+    } catch {
+      return { listings: [] };
+    }
+  },
   head: ({ params }) => {
     const city = cityFromSlug(params.city);
     const area = city ? areaFromSlug(city, params.area) : undefined;
@@ -32,6 +44,7 @@ export const Route = createFileRoute("/locations/$city/$area")({
 function AreaLocationPage() {
   const { city: citySlug, area: areaSlug } = Route.useParams();
   const { lang } = useLang();
+  const { listings } = Route.useLoaderData();
   const city = cityFromSlug(citySlug);
   const area = city ? areaFromSlug(city, areaSlug) : undefined;
   if (!city || !area) {
@@ -77,6 +90,7 @@ function AreaLocationPage() {
           {tx(lang, "For rent", "کرایہ")}
         </Link>
       </div>
+      <ListingSection listings={listings} place={area} search={{ city, location: area }} />
       {nearby.length > 0 && (
         <div className="mt-10">
           <h2 className="text-lg font-semibold text-black">{tx(lang, "Other areas", "دیگر علاقے")}</h2>

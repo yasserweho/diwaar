@@ -12,6 +12,7 @@ import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { seo } from "@/lib/seo";
 import { geocodePlace, getApproxCoords, reverseGeocode } from "@/lib/geo";
 import { PinPicker } from "@/components/pin-picker";
+import { tx, useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/add")({
   head: () =>
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/add")({
 
 function AddPage() {
   const { user, isPending } = useCurrentUserState();
+  const { lang } = useLang();
   const add = useAppStore((s) => s.addListing);
   const assignContact = useAppStore((s) => s.assignContact);
   const navigate = useNavigate();
@@ -110,7 +112,7 @@ function AddPage() {
     }
     const p = Number(price.replace(/,/g, ""));
     const a = Number(area);
-    if (!title.trim() || !location.trim() || !p || !a) {
+    if (title.trim().length < 5 || !location.trim() || !p || !a) {
       toast.error("Add a title, location, price and area.");
       return;
     }
@@ -180,6 +182,13 @@ function AddPage() {
       <h1 className="text-3xl font-extrabold text-black">Add a property</h1>
       <p className="mt-2 text-sm text-muted">
         Signed in as {user.displayName || user.primaryEmail || "your account"}. Your listing is saved to your account.
+      </p>
+      <p className="mt-2 rounded-lg border border-border bg-ice px-3 py-2 text-sm text-fg">
+        {tx(
+          lang,
+          "Your ad will be public on Diwaar. It shows only what you enter here, including the contact name and phone below, never your account email.",
+          "آپ کا اشتہار دیوار پر سب کو نظر آئے گا۔ اس میں صرف وہی معلومات دکھائی جائیں گی جو آپ یہاں لکھیں گے، بشمول نیچے دیا گیا نام اور فون نمبر۔ آپ کی اکاؤنٹ ای میل کبھی نہیں دکھائی جائے گی۔",
+        )}
       </p>
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
         <div className="grid grid-cols-2 gap-2">
