@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { seo } from "@/lib/seo";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { MapSearch } from "@/components/map-search";
+import { listPublicListings } from "@/lib/listings.functions";
 
 function parseSearch(s: Record<string, unknown>): SearchParams {
   const purpose: Purpose = s.purpose === "rent" ? "rent" : "buy";
@@ -53,6 +54,16 @@ export const Route = createFileRoute("/search")({
       { path: "/search" },
     ),
   validateSearch: parseSearch,
+  loaderDeps: ({ search }) => ({ purpose: search.purpose, city: search.city }),
+  // Public ads posted by owners, fetched on the server so they are in the HTML.
+  // Narrow filters (location, type, price, beds…) run client-side below.
+  loader: async ({ deps }) => {
+    try {
+      return { published: await listPublicListings({ data: { purpose: deps.purpose, city: deps.city } }) };
+    } catch {
+      return { published: [] };
+    }
+  },
   component: SearchPage,
 });
 
@@ -60,11 +71,12 @@ function SearchPage() {
   const params = Route.useSearch();
   const navigate = useNavigate({ from: "/search" });
   const extra = useAppStore((s) => s.userListings);
+  const { published } = Route.useLoaderData();
   const page = params.page ?? 1;
-  const results = useMemo(
-    () => filterProperties([...extra, ...PROPERTIES], params),
-    [extra, params],
-  );
+  const results = useMemo(() => {
+    const own = new Set(extra.map((p) => p.id));
+    return filterProperties([...extra, ...published.filter((p) => !own.has(p.id)), ...PROPERTIES], params);
+  }, [extra, published, params]);
   const pageSize = 20;
   const visible = results.slice((page - 1) * pageSize, page * pageSize);
   const pages = Math.max(1, Math.ceil(results.length / pageSize));

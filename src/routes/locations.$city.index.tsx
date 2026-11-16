@@ -5,8 +5,19 @@ import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { areasOf, cityFromSlug, provinceOf } from "@/lib/location-pages";
 import { seo } from "@/lib/seo";
 import { breadcrumbLd, withSchema } from "@/lib/schema";
+import { ListingSection } from "@/components/listing-section";
+import { listPublicListings } from "@/lib/listings.functions";
 
 export const Route = createFileRoute("/locations/$city/")({
+  loader: async ({ params }) => {
+    const city = cityFromSlug(params.city);
+    if (!city) return { listings: [] };
+    try {
+      return { listings: await listPublicListings({ data: { city, limit: 60 } }) };
+    } catch {
+      return { listings: [] };
+    }
+  },
   head: ({ params }) => {
     const city = cityFromSlug(params.city);
     if (!city) return seo("City not found", "This city is not on diwaar.com.", { noindex: true });
@@ -32,6 +43,7 @@ function CityLocationPage() {
   const { lang } = useLang();
   const city = cityFromSlug(slug);
   const [query, setQuery] = useState("");
+  const { listings } = Route.useLoaderData();
   const areas = areasOf(city ?? "");
   const shown = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -79,6 +91,7 @@ function CityLocationPage() {
           {tx(lang, "For rent", "کرایہ")}
         </Link>
       </div>
+      <ListingSection listings={listings} place={cityLabel(city, lang)} search={{ city }} />
       <label className="mt-8 block max-w-md">
         <span className="mb-1.5 block text-xs font-medium text-muted">{tx(lang, "Find an area", "علاقہ تلاش کریں")}</span>
         <input
