@@ -178,7 +178,7 @@ function PropertyBody() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.9fr)]">
         <div className="min-w-0">
           <div className="overflow-hidden rounded-2xl bg-ice">
-            <img src={img} alt={property.title} className="aspect-16/10 w-full object-cover" />
+            <img src={img} alt={property.title} width={1200} height={675} className="aspect-16/10 w-full object-cover" />
           </div>
           {property.images.length > 1 && (
             <div className="mt-2 flex gap-2 overflow-x-auto no-scrollbar">
@@ -188,10 +188,10 @@ function PropertyBody() {
                   type="button"
                   onClick={() => setShot(i)}
                   className={`h-16 w-24 shrink-0 overflow-hidden rounded-md ${
-                    i === shot ? "ring-2 ring-primary" : "opacity-80"
+                    i === shot ? "ring-2 ring-primary" : "ring-1 ring-border"
                   }`}
                 >
-                  <img src={src} alt={`${property.title}, photo ${i + 1}`} loading="lazy" decoding="async" className="size-full object-cover" />
+                  <img src={src} alt={`${property.title}, photo ${i + 1}`} width={1200} height={675} loading="lazy" decoding="async" className="size-full object-cover" />
                 </button>
               ))}
             </div>
