@@ -4,7 +4,7 @@ import { formatPkr } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/guides")({
+export const Route = createFileRoute("/guides/")({
   head: () =>
     seo(
       "Pakistan Area Guides for Buyers",

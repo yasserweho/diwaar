@@ -3,7 +3,7 @@ import { PROJECTS } from "@/lib/data";
 import { formatPkr } from "@/lib/format";
 import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/projects")({
+export const Route = createFileRoute("/projects/")({
   head: () =>
     seo(
       "New Housing Projects in Pakistan",

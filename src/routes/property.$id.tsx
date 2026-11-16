@@ -23,6 +23,7 @@ import { formatArea, formatPhone, formatPrice, relativeDate, waLink } from "@/li
 import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL } from "@/lib/types";
 import { seo } from "@/lib/seo";
+import { breadcrumbLd, listingLd, withSchema } from "@/lib/schema";
 
 export const Route = createFileRoute("/property/$id")({
   head: ({ params }) => {
@@ -45,10 +46,19 @@ export const Route = createFileRoute("/property/$id")({
     }
     const place = [property.location, property.city].filter(Boolean).join(", ");
     const deal = property.purpose === "rent" ? "for rent" : "for sale";
-    return seo(
-      `${property.title} ${deal} in ${place}`,
-      `${property.title} ${deal} in ${place}. Price, size, beds and photos on Diwaar.`,
-      { path: `/property/${params.id}` },
+    const path = `/property/${params.id}`;
+    return withSchema(
+      seo(
+        `${property.title} ${deal} in ${place}`,
+        `${property.title} ${deal} in ${place}. Price, size, beds and photos on Diwaar.`,
+        { path, image: property.images[0] },
+      ),
+      listingLd(property, path),
+      breadcrumbLd([
+        { name: "Home", path: "/" },
+        { name: property.city, path: `/search?purpose=${property.purpose}&city=${encodeURIComponent(property.city)}` },
+        { name: property.title, path },
+      ]),
     );
   },
   component: PropertyPage,

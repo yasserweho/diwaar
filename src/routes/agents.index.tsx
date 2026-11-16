@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AGENTS, PROPERTIES } from "@/lib/data";
 import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/agents")({
+export const Route = createFileRoute("/agents/")({
   head: () =>
     seo(
       "Property Agents in Pakistan",

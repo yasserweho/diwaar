@@ -4,7 +4,7 @@ import { CITIES } from "@/lib/locations";
 import { areasOf, citySlug, provinceOf } from "@/lib/location-pages";
 import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/locations")({
+export const Route = createFileRoute("/locations/")({
   head: () =>
     seo(
       "Property Locations in Pakistan",

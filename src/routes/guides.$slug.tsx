@@ -6,13 +6,23 @@ import { useAppStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { PAGE, RelatedLinks } from "@/components/related-links";
 import { seo } from "@/lib/seo";
+import { breadcrumbLd, guideLd, withSchema } from "@/lib/schema";
 import { citySlug } from "@/lib/location-pages";
 
 export const Route = createFileRoute("/guides/$slug")({
   head: ({ params }) => {
     const guide = GUIDES.find((g) => g.slug === params.slug);
     if (!guide) return seo("Area guide not found", "This Diwaar area guide is not available.", { noindex: true });
-    return seo(`${guide.name} Property Guide, ${guide.city}`, guide.overview, { path: `/guides/${params.slug}` });
+    const path = `/guides/${params.slug}`;
+    return withSchema(
+      seo(`${guide.name} Property Guide, ${guide.city}`, guide.overview, { path }),
+      guideLd(guide, path),
+      breadcrumbLd([
+        { name: "Home", path: "/" },
+        { name: "Area guides", path: "/guides" },
+        { name: `${guide.name}, ${guide.city}`, path },
+      ]),
+    );
   },
   component: GuideDetail });
 

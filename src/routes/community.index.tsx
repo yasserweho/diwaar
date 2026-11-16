@@ -8,7 +8,7 @@ import { SearchSelect } from "@/components/search-select";
 import { CITIES } from "@/lib/types";
 import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/community")({
+export const Route = createFileRoute("/community/")({
   head: () =>
     seo(
       "Ask the Pakistan Property Market",

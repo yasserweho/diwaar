@@ -3,7 +3,7 @@ import { AGENTS } from "@/lib/data";
 import { agencySlug } from "@/lib/portal";
 import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/agencies")({
+export const Route = createFileRoute("/agencies/")({
   head: () =>
     seo(
       "Real Estate Agencies in Pakistan",
