@@ -101,12 +101,17 @@ function HomePage() {
                     <p className="font-semibold text-black">{b.name}</p>
                     <p className="mt-0.5 text-xs text-muted">{b.product}</p>
                   </div>
-                  <p className="text-lg font-extrabold tabular-nums text-primary-dark">{b.rate}%</p>
+                  <p className="text-lg font-extrabold tabular-nums text-primary-dark">
+                    {b.published ? "" : "~"}
+                    {b.rate}%
+                  </p>
                 </div>
                 <p className="mt-2 text-xs leading-relaxed text-muted line-clamp-2">{b.note}</p>
-                <p className="mt-2 text-xs font-medium text-muted">
-                  {b.down}% down · up to {b.years} years
-                </p>
+                {b.down != null && b.years != null && (
+                  <p className="mt-2 text-xs font-medium text-muted">
+                    {b.down}% down · up to {b.years} years
+                  </p>
+                )}
               </Link>
             ))}
           </div>
