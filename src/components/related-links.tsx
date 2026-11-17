@@ -18,6 +18,8 @@ export const PAGE = {
   index: { href: "/property-index", en: "Price index", ur: "قیمت انڈیکس" },
   loans: { href: "/tools?tab=loan", en: "Home loan calculator", ur: "ہوم لون کیلکولیٹر" },
   build: { href: "/tools?tab=build", en: "Construction cost", ur: "تعمیراتی لاگت" },
+  rentVsBuy: { href: "/tools/rent-vs-buy", en: "Rent or buy calculator", ur: "کرایہ یا خریداری کیلکولیٹر" },
+  transferCost: { href: "/tools/transfer-cost", en: "Transfer cost estimator", ur: "ٹرانسفر لاگت کیلکولیٹر" },
   reviews: { href: "/reviews", en: "Reviews", ur: "تبصرے" },
   blog: { href: "/blog", en: "Journal", ur: "مضامین" },
   projects: { href: "/projects", en: "New projects", ur: "نئے منصوبے" },

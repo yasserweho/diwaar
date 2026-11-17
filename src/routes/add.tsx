@@ -156,7 +156,7 @@ function AddPage() {
     // Give the persisted store time to flush to localStorage before navigating,
     // otherwise a rehydrate on the next page can overwrite the new listing.
     await new Promise((r) => setTimeout(r, 250));
-    void navigate({ to: "/my-ads" });
+    void navigate({ to: "/my-ads", search: { posted: id } });
   }
 
   // Require sign-in before the form is shown.

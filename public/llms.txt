@@ -12,6 +12,9 @@ The site covers 33 cities and the areas inside them. People post their own listi
 - [Locations](https://www.diwaar.com/locations): cities and areas
 - [Services](https://www.diwaar.com/services)
 - [Area guides](https://www.diwaar.com/guides)
+- [Rent or buy calculator](https://www.diwaar.com/tools/rent-vs-buy): user-entered numbers, English and Urdu
+- [Property transfer cost estimator](https://www.diwaar.com/tools/transfer-cost): FBR 236K/236C advance tax, Tax Year 2027, plus user-entered provincial fees
+- [Blog](https://www.diwaar.com/blog): renting guides, rent agreements, CDA/RDA society checks and Marla sizes, in English and Urdu
 - [Questions](https://www.diwaar.com/faq)
 - [About](https://www.diwaar.com/about)
 - [Contact](https://www.diwaar.com/contact)
