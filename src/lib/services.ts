@@ -73,7 +73,7 @@ export const SERVICES: Service[] = [
       "اعداد اپنے اکاؤنٹ کی لون فائل میں رکھ سکتے ہیں۔",
     ],
     cta: { href: "/tools?tab=loan", label: "Open the calculator", labelUr: "کیلکولیٹر کھولیں" },
-    also: { href: "/loans", label: "Loan files", labelUr: "لون فائلیں" },
+    also: { href: "/loans", label: "Loan tracker", labelUr: "لون ٹریکر" },
   },
   {
     slug: "price-check",

@@ -57,7 +57,7 @@ const MENU_GROUPS = [
       { href: "/wanted", label: "Wanted", ur: "مطلوب" },
       { href: "/my-ads", label: "My ads", ur: "میرے اشتہارات" },
       { href: "/orders", label: "Payments", ur: "ادائیگیاں" },
-      { href: "/loans", label: "Loan files", ur: "لون فائلیں" },
+      { href: "/loans", label: "Loan tracker", ur: "لون ٹریکر" },
       { href: "/community", label: "Community", ur: "کمیونٹی" },
       { href: "/reviews", label: "Reviews", ur: "تبصرے" },
       { href: "/faq", label: "Questions", ur: "سوالات" },

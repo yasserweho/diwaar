@@ -65,26 +65,53 @@ export const CITY_DIRECTORY: CityCard[] = [
   { city: "Swabi", province: "Khyber Pakhtunkhwa", focus: "1 area", societies: "Marghuz" },
 ];
 
+/**
+ * Reference rates, copied by hand from the State Bank of Pakistan.
+ * Update KIBOR_1Y and RATES_AS_OF together. Source: https://www.sbp.org.pk/ecodata/kibor_index.asp
+ */
+export const POLICY_RATE = 12.0;
+export const KIBOR_1Y = 12.81;
+export const RATES_AS_OF = "16 Nov 2026";
+export const RATES_SOURCE_URL = "https://www.sbp.org.pk/ecodata/kibor_index.asp";
+/** Spread Diwaar assumes for a conventional bank loan. It matches the KIBOR + 3% the Apna Ghar scheme uses after year 10; each bank sets its own. */
+export const ASSUMED_SPREAD = 3;
+const estimate = Math.round((KIBOR_1Y + ASSUMED_SPREAD) * 10) / 10;
+
 export interface BankOffer {
   name: string;
   product: string;
   rate: number;
-  years: number;
-  down: number;
+  /** True when `rate` is a published scheme rate, false when it is Diwaar's KIBOR + spread estimate. */
+  published: boolean;
+  years?: number;
+  down?: number;
   note: string;
+  sourceUrl?: string;
 }
 
+const bankNote = `Diwaar estimate: 1-year KIBOR ${KIBOR_1Y}% (SBP, ${RATES_AS_OF}) + ${ASSUMED_SPREAD}%. Not this bank's quote. Ask the bank for its spread, down payment and tenure.`;
+
 export const BANKS: BankOffer[] = [
-  { name: "Apna Ghar (Govt)", product: "Affordable Housing", rate: 5.0, years: 20, down: 10, note: "Fixed 5% for first 10 years on loans up to Rs 10 million. First-time buyers. 10% equity." },
-  { name: "HBL", product: "Home Loan", rate: 15.8, years: 20, down: 30, note: "KIBOR + ~3%. Salaried and self-employed. Property must be approved." },
-  { name: "UBL", product: "Address", rate: 15.9, years: 25, down: 20, note: "Longer tenure. Variable, linked to 1-year KIBOR." },
-  { name: "MCB", product: "Home Finance", rate: 15.4, years: 20, down: 25, note: "Often 6-month KIBOR + 2-3%. Plot-plus-construction on selected societies." },
-  { name: "Meezan Bank", product: "Easy Home", rate: 15.8, years: 20, down: 30, note: "Islamic diminishing musharakah. KIBOR + ~3% for salaried." },
-  { name: "Bank Alfalah", product: "Home Finance", rate: 15.8, years: 20, down: 20, note: "KIBOR + 3% salaried. Lower down payment on ready houses." },
-  { name: "Bank AL Habib", product: "Housing Finance", rate: 15.8, years: 25, down: 20, note: "KIBOR + 3% salaried, +3.5% self-employed. Up to Rs 100M." },
-  { name: "Askari Bank", product: "Home Loan", rate: 15.8, years: 15, down: 30, note: "Competitive variable rates. Shorter max tenure available." },
-  { name: "Allied Bank", product: "Home Finance", rate: 16.0, years: 25, down: 25, note: "Variable pricing. Construction and purchase options." },
-  { name: "HBFC", product: "Ghar Sahulat", rate: 15.8, years: 20, down: 15, note: "Specialised housing finance. Competitive for ready and under-construction." },
+  {
+    name: "Apna Ghar (Govt)",
+    product: "Wazir-e-Azam Apna Ghar Program",
+    rate: 5.0,
+    published: true,
+    years: 20,
+    down: 10,
+    note: "Fixed 5% for the first 10 years, then 1-year KIBOR + 3%. Up to Rs 10 million, first-time buyers, house up to 10 Marla or flat up to 1,500 sq ft. Apply through a participating bank.",
+    sourceUrl: "https://www.apnaghar.gov.pk/",
+  },
+  ...["HBL", "UBL", "MCB", "Meezan Bank", "Bank Alfalah", "Bank AL Habib", "Askari Bank", "Allied Bank", "HBFC"].map(
+    (name): BankOffer => ({
+      name,
+      product: name === "Meezan Bank" ? "Islamic home finance" : "Home loan",
+      rate: estimate,
+      published: false,
+      note: bankNote,
+      sourceUrl: RATES_SOURCE_URL,
+    }),
+  ),
 ];
 
 export interface ForumPost {
