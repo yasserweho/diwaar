@@ -2,7 +2,7 @@
 
 > diwaar.com is a property portal for houses, flats, plots and commercial property for sale and rent in Pakistan.
 
-The site covers 33 cities and the areas inside them. People post their own listings. diwaar.com does not invent listings or reviews, and it does not take a commission. Loan, build-cost and price-index figures are estimates, not offers.
+The site covers 33 cities and the areas inside them. People post their own listings. diwaar.com does not invent listings, reviews, agents or prices, and it does not take a commission. Price figures (area guides, price index, prices by area, Destimate) are medians of live ads on the site, shown only when at least 5 live ads back them and labelled with the number of ads. Loan and build-cost figures are estimates, not offers. There is no agent directory yet.
 
 ## Main pages
 
@@ -11,7 +11,7 @@ The site covers 33 cities and the areas inside them. People post their own listi
 - [Property for rent](https://www.diwaar.com/property-for-rent)
 - [Locations](https://www.diwaar.com/locations): cities and areas
 - [Services](https://www.diwaar.com/services)
-- [Area guides](https://www.diwaar.com/guides)
+- [Area guides](https://www.diwaar.com/guides): what each society is like, with prices from live ads when there are enough
 - [Rent or buy calculator](https://www.diwaar.com/tools/rent-vs-buy): user-entered numbers, English and Urdu
 - [Property transfer cost estimator](https://www.diwaar.com/tools/transfer-cost): FBR 236K/236C advance tax, Tax Year 2027, plus user-entered provincial fees
 - [Blog](https://www.diwaar.com/blog): renting guides, rent agreements, CDA/RDA society checks and Marla sizes, in English and Urdu
@@ -25,3 +25,4 @@ The site covers 33 cities and the areas inside them. People post their own listi
 - Preferred language is English. Urdu is available with the language control.
 - Canonical host is https://www.diwaar.com
 - Do not treat calculator results as bank offers or valuations.
+- Price figures are asking prices from live ads, not sale prices.

@@ -1,18 +1,26 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { formatPkr } from "@/lib/format";
-import { areasInCity, rateFor } from "@/lib/valuation";
-import { CITIES, type Category } from "@/lib/types";
+import { MIN_SAMPLE, perSqftStat } from "@/lib/market-stats";
+import { listPublicListings } from "@/lib/listings.functions";
+import { CITIES, type Category, type Property } from "@/lib/types";
 import { AREA_BOOK } from "@/lib/locations";
 import { seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { SearchSelect } from "@/components/search-select";
 
 export const Route = createFileRoute("/d-value")({
+  loader: async (): Promise<{ listings: Property[] }> => {
+    try {
+      return { listings: await listPublicListings({ data: { purpose: "buy", limit: 500 } }) };
+    } catch {
+      return { listings: [] };
+    }
+  },
   head: () =>
     seo(
       "Destimate — Check property value",
-      "Estimate property value from typical asking prices across cities and areas in Pakistan.",
+      "Estimate a property's value from the asking prices of similar live ads on Diwaar. Shown only when enough ads exist.",
       { path: "/d-value" },
     ),
   component: DestimatePage,
@@ -27,12 +35,6 @@ const TYPES: { id: Category; label: string }[] = [
   { id: "farmhouse", label: "Farm House" },
 ];
 
-const FINISH: { id: "grey" | "standard" | "premium"; label: string; factor: number }[] = [
-  { id: "grey", label: "Grey structure", factor: 0.78 },
-  { id: "standard", label: "Standard finish", factor: 1 },
-  { id: "premium", label: "Premium finish", factor: 1.28 },
-];
-
 const UNITS: { value: "marla" | "kanal" | "sqft"; label: string }[] = [
   { value: "marla", label: "Marla" },
   { value: "kanal", label: "Kanal" },
@@ -45,10 +47,10 @@ function DestimatePage() {
   const [type, setType] = useState<Category>("house");
   const [size, setSize] = useState("5");
   const [unit, setUnit] = useState<"marla" | "kanal" | "sqft">("marla");
-  const [finish, setFinish] = useState<"grey" | "standard" | "premium">("standard");
   const [ready, setReady] = useState(false);
+  const { listings } = Route.useLoaderData();
 
-  const areaOptions = (AREA_BOOK[city] ?? areasInCity(city)).slice();
+  const areaOptions = (AREA_BOOK[city] ?? []).slice();
 
   const result = useMemo(() => {
     if (!ready) return null;
@@ -56,21 +58,24 @@ function DestimatePage() {
     const sqft = unit === "kanal" ? n * 5445 : unit === "marla" ? n * 272.25 : n;
     if (sqft <= 0) return null;
 
-    const rate = rateFor(city, area || "City average", type);
-    let base = rate.perSqft;
-
-    const marla = sqft / 272.25;
-    const sizeFactor = marla <= 5 ? 1.1 : marla <= 10 ? 1 : 0.9;
-    base *= sizeFactor;
-
-    const finishFactor = FINISH.find((f) => f.id === finish)?.factor ?? 1;
-    base *= finishFactor;
-
-    const mid = Math.round(sqft * base);
-    const low = Math.round(mid * 0.85);
-    const high = Math.round(mid * 1.15);
-    return { sqft, low, mid, high, sizeFactor, finishFactor, matched: rate.matched, perSqft: rate.perSqft };
-  }, [ready, size, unit, city, type, area, finish]);
+    // Only live sale ads of the same type count. Area first, then the whole city.
+    const sameType = listings.filter((p) => p.city === city && p.category === type);
+    const inArea = area ? sameType.filter((p) => p.location === area || p.areaName === area) : [];
+    const areaStat = area ? perSqftStat(inArea) : null;
+    const stat = areaStat ?? perSqftStat(sameType);
+    if (!stat) return { sqft, none: true as const };
+    const matched = areaStat ? area : `${city} (all areas)`;
+    return {
+      sqft,
+      none: false as const,
+      mid: Math.round(sqft * stat.median),
+      low: Math.round(sqft * stat.low),
+      high: Math.round(sqft * stat.high),
+      perSqft: stat.median,
+      n: stat.n,
+      matched,
+    };
+  }, [ready, size, unit, city, type, area, listings]);
 
   const field =
     "h-12 w-full rounded-lg border border-border bg-surface px-3 text-sm outline-none focus:border-primary";
@@ -80,7 +85,7 @@ function DestimatePage() {
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Destimate</p>
       <h1 className="mt-1 text-3xl font-extrabold text-black">Check a property's value</h1>
       <p className="mt-2 text-sm text-muted">
-        Based on typical asking prices by city and area. This is a guide, not a formal valuation.
+        Based on the asking price per square foot of similar live sale ads on Diwaar, shown only when at least {MIN_SAMPLE} ads match. This is a guide, not a formal valuation.
       </p>
 
       <form
@@ -147,32 +152,39 @@ function DestimatePage() {
             </div>
           </label>
         </div>
-        <label className="block text-sm font-semibold">
-          Finish
-          <div className="mt-1">
-            <SearchSelect
-              value={finish}
-              searchPlaceholder="Finish"
-              options={FINISH.map((f) => ({ value: f.id, label: f.label }))}
-              onChange={(next) => setFinish(next as typeof finish)}
-            />
-          </div>
-        </label>
         <button type="submit" className="h-12 w-full rounded-lg bg-primary text-sm font-semibold text-primary-fg">
           Get Destimate
         </button>
       </form>
 
-      {result && (
+      {result && result.none && (
+        <div className="mt-6 rounded-2xl border border-border bg-white p-5">
+          <p className="font-semibold text-black">Not enough live ads to estimate this yet</p>
+          <p className="mt-2 text-sm text-muted">
+            We need at least {MIN_SAMPLE} live sale ads for this property type in {area || city} (or across {city}) before we show a
+            figure. We will not guess. You can compare asking prices in a search, or post your own property free.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3 text-sm font-semibold">
+            <Link to="/search" search={{ purpose: "buy", city, type, ...(area ? { location: area } : {}) }} className="text-primary hover:underline">
+              Search similar ads
+            </Link>
+            <Link to="/add" className="text-primary hover:underline">
+              Post your property free
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {result && !result.none && (
         <div className="mt-6 space-y-3">
           <div className="rounded-2xl bg-surface p-5 shadow-card">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Estimated value</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Estimated asking value</p>
             <p className="mt-1 text-3xl font-extrabold tabular-nums text-primary-dark">{formatPkr(result.mid)}</p>
             <p className="mt-2 text-sm text-muted">
-              Range {formatPkr(result.low)} – {formatPkr(result.high)}
+              Middle half of ads: {formatPkr(result.low)} – {formatPkr(result.high)}
             </p>
             <p className="mt-1 text-xs text-muted">
-              {Math.round(result.sqft).toLocaleString()} sq ft · PKR {result.perSqft.toLocaleString()} / sq ft · {result.matched}
+              {Math.round(result.sqft).toLocaleString()} sq ft · PKR {Math.round(result.perSqft).toLocaleString()} / sq ft median · {result.matched}
             </p>
           </div>
           <div className="grid grid-cols-3 gap-2">
@@ -180,14 +192,9 @@ function DestimatePage() {
             <Band label="Mid" value={formatPkr(result.mid)} active />
             <Band label="High" value={formatPkr(result.high)} />
           </div>
-          <ul className="space-y-1 text-xs text-muted">
-            <li>Matched: {result.matched}</li>
-            <li>Size factor: {result.sizeFactor.toFixed(2)}×</li>
-            <li>Finish factor: {result.finishFactor.toFixed(2)}×</li>
-          </ul>
           <p className="text-xs text-muted">
-            Based on typical asking prices in {city}
-            {area ? ` · ${area}` : ""}. Actual deals can close below the asking band.
+            Based on {result.n} live ads on Diwaar in {result.matched}. Asking prices, not sale prices: actual deals can close below
+            the asking band.
           </p>
         </div>
       )}

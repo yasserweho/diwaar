@@ -1,79 +1,64 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { formatPkr } from "@/lib/format";
-import { INVEST } from "@/lib/portal";
-import { useAppStore } from "@/lib/store";
 import { seo } from "@/lib/seo";
+import { tx, useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/invest")({
   head: () =>
     seo(
       "Property Investment in Pakistan",
-      "Plots, files and housing blocks for investors across Pakistan societies.",
-      { path: "/invest" },
+      "Diwaar does not sell investment shares or promise returns. How to check a property investment before you pay.",
+      { path: "/invest", noindex: true },
     ),
   component: InvestPage,
 });
 
 function InvestPage() {
-  const currency = useAppStore((s) => s.currency);
-  const reserved = useAppStore((s) => s.reserved);
-  const toggle = useAppStore((s) => s.toggleReserved);
-
+  const { lang } = useLang();
+  const points = [
+    tx(
+      lang,
+      "Be careful with anyone promising a fixed yearly return on plot files or pooled shares. Property prices can fall as well as rise.",
+      "پلاٹ فائلوں یا مشترکہ حصص پر مقررہ سالانہ منافع کا وعدہ کرنے والوں سے محتاط رہیں۔ جائیداد کی قیمت گر بھی سکتی ہے۔",
+    ),
+    tx(
+      lang,
+      "Check that the society is approved by the development authority (CDA, RDA, LDA and others) before you pay a token.",
+      "ٹوکن دینے سے پہلے دیکھیں کہ سوسائٹی ترقیاتی ادارے (سی ڈی اے، آر ڈی اے، ایل ڈی اے وغیرہ) سے منظور شدہ ہے۔",
+    ),
+    tx(
+      lang,
+      "Pay to the society or the registered owner, with a receipt, never in cash to a middleman.",
+      "ادائیگی سوسائٹی یا رجسٹرڈ مالک کو رسید کے ساتھ کریں، کسی درمیانی شخص کو نقد نہیں۔",
+    ),
+  ];
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
-      <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Invest</p>
-      <h1 className="mt-1 text-3xl font-extrabold text-black">Property blocks</h1>
-      <p className="mt-2 max-w-2xl text-sm text-muted">
-        Pooled plots, shops and floors. Reserving a block saves it on this device. It does not move money.
+    <div className="mx-auto max-w-3xl px-4 py-8">
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{tx(lang, "Invest", "سرمایہ کاری")}</p>
+      <h1 className="mt-1 text-3xl font-extrabold text-black">
+        {tx(lang, "Diwaar does not sell investment deals", "دیوار سرمایہ کاری کے سودے نہیں بیچتی")}
+      </h1>
+      <p className="mt-3 leading-relaxed text-muted">
+        {tx(
+          lang,
+          "There are no pooled investments, shares or guaranteed yields on Diwaar. If you want to invest in property, buy a specific plot, house or shop from a live ad and check it yourself.",
+          "دیوار پر کوئی مشترکہ سرمایہ کاری، حصص یا یقینی منافع نہیں۔ اگر آپ جائیداد میں سرمایہ لگانا چاہتے ہیں تو کسی لائیو اشتہار سے مخصوص پلاٹ، مکان یا دکان خریدیں اور خود تصدیق کریں۔",
+        )}
       </p>
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        {INVEST.map((deal) => {
-          const on = reserved.includes(deal.id);
-          return (
-            <article key={deal.id} className="rounded-2xl bg-surface p-5 shadow-card">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-primary">
-                    {deal.kind} · {deal.city}
-                  </p>
-                  <h2 className="mt-1 text-lg font-extrabold">{deal.name}</h2>
-                </div>
-                <p className="text-lg font-extrabold tabular-nums text-primary-dark">{deal.yieldPct}%</p>
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{deal.blurb}</p>
-              <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                <div>
-                  <dt className="text-muted">Minimum</dt>
-                  <dd className="font-semibold">{formatPkr(deal.minTicket, currency)}</dd>
-                </div>
-                <div>
-                  <dt className="text-muted">Term</dt>
-                  <dd className="font-semibold">{deal.term}</dd>
-                </div>
-              </dl>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Button
-                  variant={on ? "outline" : "primary"}
-                  onClick={() => {
-                    toggle(deal.id);
-                    toast.success(on ? "Reservation removed" : "Block reserved on this device");
-                  }}
-                >
-                  {on ? "Reserved" : deal.status === "Reserved" ? "Join waitlist" : "Reserve a share"}
-                </Button>
-                <Link
-                  to="/pay"
-                  search={{ kind: "invest", title: deal.name, amount: deal.minTicket }}
-                  className="inline-flex h-11 items-center rounded-lg px-4 text-sm font-semibold text-primary"
-                >
-                  Pay the minimum
-                </Link>
-              </div>
-            </article>
-          );
-        })}
+      <ul className="mt-6 list-disc space-y-2 ps-5 text-sm leading-relaxed">
+        {points.map((p) => (
+          <li key={p}>{p}</li>
+        ))}
+      </ul>
+      <div className="mt-6 flex flex-wrap gap-3 text-sm font-semibold">
+        <Link to="/search" search={{ purpose: "buy", type: "plot" }} className="text-primary hover:underline">
+          {tx(lang, "Browse plot ads", "پلاٹ کے اشتہارات")}
+        </Link>
+        <Link to="/tools/transfer-cost" className="text-primary hover:underline">
+          {tx(lang, "Transfer cost estimator", "منتقلی لاگت کا اندازہ")}
+        </Link>
+        <Link to="/blog/$slug" params={{ slug: "check-cda-rda-approved-housing-society" }} className="text-primary hover:underline">
+          {tx(lang, "Check if a society is approved", "سوسائٹی کی منظوری چیک کریں")}
+        </Link>
       </div>
     </div>
   );
