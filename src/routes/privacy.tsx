@@ -46,7 +46,7 @@ const SECTIONS = [
   {
     h: "What we do not do",
     hUr: "جو ہم نہیں کرتے",
-    p: "diwaar.com does not sell your name, email or phone number. The site does not run an advertising network on your account. Loan figures, build-cost figures and the price index are estimates. They are not a bank offer or a valuation.",
+    p: "diwaar.com does not sell your name, email or phone number. The site does not run an advertising network on your account. Loan and build-cost figures are estimates. Price figures are medians of live ads on the site. None of them is a bank offer or a valuation.",
     pUr: "diwaar.com آپ کا نام، ای میل یا فون نمبر نہیں بیچتی۔ سائٹ آپ کے اکاؤنٹ پر اشتہاری نیٹ ورک نہیں چلاتی۔ لون، تعمیراتی لاگت اور قیمت انڈیکس اندازے ہیں۔ یہ بینک کی پیشکش یا ویلیوایشن نہیں۔",
   },
   {

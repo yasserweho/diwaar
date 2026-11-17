@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { SEED_THREADS, type ForumPost } from "@/lib/portal";
+import type { ForumPost } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
 import { SearchSelect } from "@/components/search-select";
 import { CITIES } from "@/lib/types";
@@ -12,8 +12,9 @@ export const Route = createFileRoute("/community/")({
   head: () =>
     seo(
       "Ask the Pakistan Property Market",
-      "Buyer and agent questions on transfers, files, societies and rents across Pakistan.",
-      { path: "/community" },
+      "Ask a question about transfers, files, societies and rents in Pakistan.",
+      // Posts are saved on the poster's own device only, so there is nothing public to index yet.
+      { path: "/community", noindex: true },
     ),
   component: CommunityPage,
 });
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/community/")({
 function CommunityPage() {
   const extra = useAppStore((s) => s.threads);
   const add = useAppStore((s) => s.addThread);
-  const posts = [...extra, ...SEED_THREADS];
+  const posts = extra;
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [city, setCity] = useState<string>(CITIES[0]);
@@ -69,6 +70,12 @@ function CommunityPage() {
         <textarea className={`${field} h-24 py-2`} placeholder="What do you want to know?" value={body} onChange={(e) => setBody(e.target.value)} />
         <Button type="submit">Post</Button>
       </form>
+
+      {posts.length === 0 && (
+        <p className="mt-6 rounded-xl border border-border bg-white p-4 text-sm text-muted">
+          No questions yet. Questions you post appear here, on this device.
+        </p>
+      )}
 
       <ul className="mt-6 space-y-3">
         {posts.map((p) => (

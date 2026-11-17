@@ -7,6 +7,7 @@ import { ShareBar } from "@/components/share-bar";
 import { PostFreeCta } from "@/components/post-free-cta";
 import { breadcrumbLd, withSchema } from "@/lib/schema";
 import { ListingSection } from "@/components/listing-section";
+import { LivePriceStats } from "@/components/live-price-stats";
 import { listPublicListings } from "@/lib/listings.functions";
 
 export const Route = createFileRoute("/locations/$city/$area")({
@@ -92,6 +93,7 @@ function AreaLocationPage() {
           {tx(lang, "For rent", "کرایہ")}
         </Link>
       </div>
+      <LivePriceStats hideWhenEmpty className="mt-8" listings={listings} place={`${area}, ${city}`} />
       <ListingSection listings={listings} place={area} search={{ city, location: area }} />
       <PostFreeCta className="mt-8" place={area} />
       <ShareBar
@@ -124,7 +126,6 @@ function AreaLocationPage() {
         links={[
           { href: `/locations/${citySlug}`, en: `More areas in ${city}`, ur: `${cityLabel(city, lang)} کے مزید علاقے` },
           PAGE.guides,
-          PAGE.agents,
           PAGE.maps,
           PAGE.add,
           PAGE.transfer,

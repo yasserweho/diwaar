@@ -1,98 +1,7 @@
 import { HOUSE_ISB, HOUSE_LUX, HOUSE_SM, PENT, PLOT } from "./photos";
 import { AREA_BOOK, listingById, neighborsOf } from "./catalog";
 import { ARTICLES } from "./articles";
-import type { Agent, AreaGuide, BlogPost, Project, Property, SearchParams } from "./types";
-
-export const AGENTS: Agent[] = [
-  {
-    id: "prime-lhr",
-    name: "Hassan Malik",
-    agency: "Prime Properties",
-    city: "Lahore",
-    phone: "03008451211",
-    listings: 0,
-    experience: 14,
-    specialty: "DHA, Bahria Town & Gulberg",
-    initials: "HM",
-  },
-  {
-    id: "skyline-khi",
-    name: "Ayesha Qureshi",
-    agency: "Skyline Realtors",
-    city: "Karachi",
-    phone: "03215550908",
-    listings: 0,
-    experience: 9,
-    specialty: "DHA, Clifton & Sea View",
-    initials: "AQ",
-  },
-  {
-    id: "capital-isb",
-    name: "Omar Khattak",
-    agency: "Capital Homes",
-    city: "Islamabad",
-    phone: "03335678102",
-    listings: 0,
-    experience: 11,
-    specialty: "F-sectors, DHA & B-17",
-    initials: "OK",
-  },
-  {
-    id: "north-rwp",
-    name: "Sana Raza",
-    agency: "Northgate Associates",
-    city: "Rawalpindi",
-    phone: "03124789011",
-    listings: 0,
-    experience: 7,
-    specialty: "Bahria Town & DHA",
-    initials: "SR",
-  },
-  {
-    id: "canal-lhr",
-    name: "Bilal Sheikh",
-    agency: "Canal View Estates",
-    city: "Lahore",
-    phone: "03027773445",
-    listings: 0,
-    experience: 16,
-    specialty: "Johar Town, Model Town, Al Kabir",
-    initials: "BS",
-  },
-  {
-    id: "harbour-khi",
-    name: "Farhan Ali",
-    agency: "Harbour Block",
-    city: "Karachi",
-    phone: "03452119876",
-    listings: 0,
-    experience: 8,
-    specialty: "Scheme 33, Gulshan, Jauhar",
-    initials: "FA",
-  },
-  {
-    id: "margalla-isb",
-    name: "Nadia Rehman",
-    agency: "Margalla Listings",
-    city: "Islamabad",
-    phone: "03009881234",
-    listings: 0,
-    experience: 6,
-    specialty: "E-11, F-10, apartments",
-    initials: "NR",
-  },
-  {
-    id: "multan-gate",
-    name: "Usman Javed",
-    agency: "Chenab Realty",
-    city: "Multan",
-    phone: "03016334455",
-    listings: 0,
-    experience: 10,
-    specialty: "DHA Multan & Model Town",
-    initials: "UJ",
-  },
-];
+import type { AreaGuide, BlogPost, Project, Property, SearchParams } from "./types";
 
 export const PROPERTIES: Property[] = [];
 
@@ -105,17 +14,7 @@ export const GUIDES: AreaGuide[] = [
     city: "Lahore",
     overview:
       "Lahore's most established gated address. Phases 5–8 lead house demand; Rahbar is the entry ticket. Commercial broadway in Phase 5 is the lifestyle core.",
-    avgHouse: 45_000_000,
-    avgPlot: 22_000_000,
-    avgRent: 220_000,
     highlights: ["Gated security", "International schools", "Phase 5 broadway", "Strong resale"],
-    trend: [
-      { year: "2022", house: 32, plot: 16 },
-      { year: "2023", house: 36, plot: 18 },
-      { year: "2024", house: 40, plot: 20 },
-      { year: "2025", house: 43, plot: 21 },
-      { year: "2026", house: 45, plot: 22 },
-    ],
     image: HOUSE_LUX[0],
   },
   {
@@ -124,17 +23,7 @@ export const GUIDES: AreaGuide[] = [
     city: "Lahore",
     overview:
       "Self-contained city on the canal and Raiwind side. Sectors C–F are occupied; Orchard is the plot play. Amenities are the draw: safari, cinema, hospitals.",
-    avgHouse: 19_000_000,
-    avgPlot: 6_500_000,
-    avgRent: 80_000,
     highlights: ["Theme park & safari", "24/7 security", "Hospitals & schools", "Ready sectors"],
-    trend: [
-      { year: "2022", house: 14, plot: 4.2 },
-      { year: "2023", house: 15.5, plot: 4.8 },
-      { year: "2024", house: 17, plot: 5.5 },
-      { year: "2025", house: 18, plot: 6.1 },
-      { year: "2026", house: 19, plot: 6.5 },
-    ],
     image: HOUSE_SM[0],
   },
   {
@@ -143,17 +32,7 @@ export const GUIDES: AreaGuide[] = [
     city: "Karachi",
     overview:
       "Karachi's premium south. Phase 6 and 8 command 500-yard houses; Creek and Phase 5 lead apartments. Ittehad and Bukhari are the retail streets.",
-    avgHouse: 85_000_000,
-    avgPlot: 55_000_000,
-    avgRent: 250_000,
     highlights: ["Sea breeze", "Khayaban commercial", "Schools & clubs", "Title security"],
-    trend: [
-      { year: "2022", house: 62, plot: 40 },
-      { year: "2023", house: 70, plot: 44 },
-      { year: "2024", house: 76, plot: 48 },
-      { year: "2025", house: 81, plot: 52 },
-      { year: "2026", house: 85, plot: 55 },
-    ],
     image: HOUSE_LUX[0],
   },
   {
@@ -162,36 +41,17 @@ export const GUIDES: AreaGuide[] = [
     city: "Karachi",
     overview:
       "Apartment-first neighbourhood against the sea. Block 2 and 5 are the investment core; Sea View penthouses are the trophy stock.",
-    avgHouse: 48_000_000,
-    avgPlot: 90_000_000,
-    avgRent: 160_000,
     highlights: ["Sea View", "Boat Basin", "High-rises", "End-user demand"],
-    trend: [
-      { year: "2022", house: 36, plot: 70 },
-      { year: "2023", house: 40, plot: 76 },
-      { year: "2024", house: 43, plot: 82 },
-      { year: "2025", house: 46, plot: 86 },
-      { year: "2026", house: 48, plot: 90 },
-    ],
     image: PENT[0],
   },
   {
     slug: "f-sectors-islamabad",
     name: "F-Sectors",
     city: "Islamabad",
+    areaPrefix: "F-",
     overview:
       "The capital's original sectors. F-6 and F-7 are diplomatic; F-10 and F-11 mix houses and flats. CDA leasehold, scarce plots, durable rents.",
-    avgHouse: 140_000_000,
-    avgPlot: 180_000_000,
-    avgRent: 320_000,
     highlights: ["Margalla views", "Markaz retail", "Embassies", "CDA planning"],
-    trend: [
-      { year: "2022", house: 110, plot: 140 },
-      { year: "2023", house: 120, plot: 150 },
-      { year: "2024", house: 128, plot: 162 },
-      { year: "2025", house: 135, plot: 172 },
-      { year: "2026", house: 140, plot: 180 },
-    ],
     image: HOUSE_ISB[0],
   },
   {
@@ -200,17 +60,7 @@ export const GUIDES: AreaGuide[] = [
     city: "Rawalpindi",
     overview:
       "The twin cities' largest private society. Phase 7–8 are the live sectors; Expressway access is the lifestyle unlock.",
-    avgHouse: 22_000_000,
-    avgPlot: 8_000_000,
-    avgRent: 90_000,
     highlights: ["Expressway", "Bahria hospital", "Golf & clubs", "Deep occupancy"],
-    trend: [
-      { year: "2022", house: 16, plot: 5.5 },
-      { year: "2023", house: 18, plot: 6.2 },
-      { year: "2024", house: 19.5, plot: 7 },
-      { year: "2025", house: 21, plot: 7.6 },
-      { year: "2026", house: 22, plot: 8 },
-    ],
     image: HOUSE_SM[0],
   },
 ];
@@ -231,12 +81,12 @@ const SHORT_POSTS: BlogPost[] = [
   },
   {
     slug: "dha-lahore-2026",
-    title: "Where DHA Lahore prices actually moved in 2026",
-    excerpt: "Phase 5 held. Rahbar absorbed first-time demand. Files in new sectors cooled.",
+    title: "Buying in DHA Lahore: what to check before you pay a token",
+    excerpt: "Phase, possession and paperwork matter more than a headline price. How to compare asking prices honestly.",
     body: [
-      "Constructed 1 Kanal in Phase 5 and 6 still clears between 4.5 and 6.5 Crore depending on block and finishing. 10 Marla inventory in Phase 6 is the sweet spot for upgraders leaving Bahria.",
-      "DHA Rahbar remains the volume story: 5 Marla houses around 1.3–1.6 Crore with genuine end-user traffic. Plot files in newer phases are slower — cash buyers prefer possession.",
-      "If you are investing, occupied streets with a park or commercial nearby still beat paper profits on undeveloped files.",
+      "Prices in DHA Lahore vary a lot by phase, block, plot size, road width and finishing, so one average figure tells you little. Compare like with like: the same phase, the same size and the same stage (file, possession plot or constructed house).",
+      "Use asking prices from live ads as a starting point, not a sale price. The DHA Lahore area guide on Diwaar shows a median only once at least 5 live ads back it, and says how many ads it is based on.",
+      "If you are investing, occupied streets with a park or commercial nearby usually carry less risk than undeveloped files. Confirm the file and the transfer charges with DHA before you pay a token.",
     ],
     date: "2026-08-04",
     tag: "Market",
@@ -273,8 +123,16 @@ const SHORT_POSTS: BlogPost[] = [
 /** Long-form articles from src/content/blog first (newest), then the short notes. */
 export const POSTS: BlogPost[] = [...ARTICLES, ...SHORT_POSTS];
 
-export function getAgent(id: string) {
-  return AGENTS.find((a) => a.id === id);
+/** True when a live ad sits inside the area an area guide covers. */
+export function inGuide(g: AreaGuide, p: Property) {
+  if (p.city !== g.city) return false;
+  const loc = p.location;
+  return (
+    loc === g.name ||
+    p.areaName === g.name ||
+    loc.startsWith(`${g.name} `) ||
+    (!!g.areaPrefix && loc.startsWith(g.areaPrefix))
+  );
 }
 
 export function getProperty(id: string, extra: Property[] = []) {

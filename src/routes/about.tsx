@@ -21,13 +21,13 @@ function AboutPage() {
           "شہر اور علاقے کے حساب سے مکان، فلیٹ، پلاٹ اور کمرشل جائیداد تلاش کریں۔",
           "فروخت یا کرایے کا اشتہار اپنے اکاؤنٹ سے لگائیں اور ہٹائیں۔",
           "قیمت انڈیکس، علاقائی گائیڈ، ہوم لون کا اندازہ اور رقبہ کنورٹر استعمال کریں۔",
-          "ایجنٹ، ایجنسی اور سوسائٹی کے نقشے کھولیں۔",
+          "لائیو اشتہارات سے نکالی گئی درمیانی قیمتیں دیکھیں، جو کم از کم 5 اشتہارات پر مبنی ہوں۔",
         ]
       : [
           "Search houses, flats, plots and commercial property by city and area.",
           "Post or remove a sale or rent ad from your account.",
           "Use the price index, area guides, home-loan estimate and area converter.",
-          "Open agents, agencies and society maps.",
+          "See median asking prices worked out from live ads, shown only when at least 5 ads back them.",
         ];
   return (
     <article className="mx-auto max-w-2xl px-4 py-8">
@@ -54,8 +54,8 @@ function AboutPage() {
       <p className="mt-3 text-sm leading-relaxed text-muted">
         {tx(
           lang,
-          "The loan calculator, construction estimate and price index are guides, not a bank offer, a contractor quote or a valuation certificate. Sale-and-transfer notes are not legal advice. diwaar.com does not take a commission on a listing. You deal with the owner or agent named on the ad.",
-          "لون کیلکولیٹر، تعمیراتی تخمینہ اور قیمت انڈیکس رہنمائی ہیں، بینک کی پیشکش، ٹھیکیدار کا کوٹیشن یا ویلیوایشن سرٹیفکیٹ نہیں۔ فروخت اور ٹرانسفر کے نوٹس قانونی مشورہ نہیں۔ diwaar.com اشتہار پر کمیشن نہیں لیتی۔ بات اشتہار پر لکھے مالک یا ایجنٹ سے ہوتی ہے۔",
+          "The loan calculator, construction estimate and price figures are guides, not a bank offer, a contractor quote or a valuation certificate. Sale-and-transfer notes are not legal advice. diwaar.com does not take a commission on a listing. You deal with the owner or agent named on the ad.",
+          "لون کیلکولیٹر، تعمیراتی تخمینہ اور قیمتوں کے اعداد رہنمائی ہیں، بینک کی پیشکش، ٹھیکیدار کا کوٹیشن یا ویلیوایشن سرٹیفکیٹ نہیں۔ فروخت اور ٹرانسفر کے نوٹس قانونی مشورہ نہیں۔ diwaar.com اشتہار پر کمیشن نہیں لیتی۔ بات اشتہار پر لکھے مالک یا ایجنٹ سے ہوتی ہے۔",
         )}
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
@@ -66,7 +66,7 @@ function AboutPage() {
           {tx(lang, "List a property", "جائیداد لگائیں")}
         </Link>
       </div>
-      <RelatedLinks links={[PAGE.locations, PAGE.services, PAGE.guides, PAGE.index, PAGE.agents, PAGE.faq, PAGE.contact, PAGE.privacy]} />
+      <RelatedLinks links={[PAGE.locations, PAGE.services, PAGE.guides, PAGE.index, PAGE.faq, PAGE.contact, PAGE.privacy]} />
     </article>
   );
 }

@@ -43,18 +43,6 @@ export interface Property {
   lng?: number;
 }
 
-export interface Agent {
-  id: string;
-  name: string;
-  agency: string;
-  city: string;
-  phone: string;
-  listings: number;
-  experience: number;
-  specialty: string;
-  initials: string;
-}
-
 export interface Project {
   id: string;
   name: string;
@@ -75,11 +63,9 @@ export interface AreaGuide {
   name: string;
   city: string;
   overview: string;
-  avgHouse: number;
-  avgPlot: number;
-  avgRent: number;
+  /** Live ads whose area starts with this prefix also count for the guide (e.g. "F-" for F-6, F-10). */
+  areaPrefix?: string;
   highlights: string[];
-  trend: { year: string; house: number; plot: number }[];
   image: string;
 }
 

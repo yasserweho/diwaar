@@ -4,7 +4,10 @@
 // Sections are split so Google Search Console reports indexing per section
 // (pages, content, cities, areas). Redirecting URLs (/property-for-sale,
 // /property-for-rent) and form pages (/add) are left out on purpose: a sitemap
-// should list only canonical, indexable 200 pages.
+// should list only canonical, indexable 200 pages. /agents, /agencies, /maps,
+// /invest and /community are noindex while they have no real content, so they
+// are left out too. /property-index and /trends switch to noindex on their own
+// while no city or area has 5+ live ads; add them back here once they do.
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { AREA_BOOK, CITIES } from "../src/lib/locations.ts";
 
@@ -40,10 +43,6 @@ const pages = [
   "/services",
   "/guides",
   "/projects",
-  "/agents",
-  "/agencies",
-  "/maps",
-  "/property-index",
   "/tools",
   "/tools/rent-vs-buy",
   "/tools/transfer-cost",

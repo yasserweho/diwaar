@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Bath, BedDouble, Heart, MapPin, Maximize2 } from "lucide-react";
 import { ListingBadge } from "@/components/ui/badge";
-import { getAgent } from "@/lib/data";
 import { formatArea, formatPrice } from "@/lib/format";
 import { useAppStore } from "@/lib/store";
 import type { Property } from "@/lib/types";
@@ -19,7 +18,6 @@ export function PropertyCard({
   const currency = useAppStore((s) => s.currency);
   const saved = useAppStore((s) => s.savedIds.includes(property.id));
   const toggle = useAppStore((s) => s.toggleSaved);
-  const agent = getAgent(property.agencyId);
 
   return (
     <article
@@ -116,10 +114,6 @@ export function PropertyCard({
 
         {property.contactName ? (
           <p className="border-t border-border pt-2 text-xs text-muted">{property.contactName}</p>
-        ) : agent && !property.id.startsWith("user-") ? (
-          <p className="border-t border-border pt-2 text-xs text-muted">
-            {agent.agency} · {agent.name}
-          </p>
         ) : null}
       </div>
     </article>
