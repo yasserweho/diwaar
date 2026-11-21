@@ -97,15 +97,27 @@ function BankList() {
               <p className="font-bold">{b.name}</p>
               <p className="text-sm text-muted">{b.product}</p>
             </div>
-            <p className="font-extrabold tabular-nums text-primary-dark">{b.rate}%</p>
+            <p className="font-extrabold tabular-nums text-primary-dark">
+              {b.published ? "" : "~"}
+              {b.rate}%
+            </p>
           </div>
           <p className="mt-2 text-sm">{b.note}</p>
-          <p className="mt-1 text-xs text-muted">
-            {b.down}% down · up to {b.years} years
-          </p>
-          <Link to="/loans" search={{ bank: b.name }} className="mt-3 inline-flex text-sm font-semibold text-primary">
-            Apply with {b.name}
-          </Link>
+          {b.down != null && b.years != null && (
+            <p className="mt-1 text-xs text-muted">
+              {b.down}% down · up to {b.years} years
+            </p>
+          )}
+          <div className="mt-3 flex flex-wrap gap-4 text-sm font-semibold text-primary">
+            <Link to="/tools" search={{ tab: "loan", rate: b.rate }}>
+              Work out the instalment
+            </Link>
+            {b.sourceUrl && (
+              <a href={b.sourceUrl} target="_blank" rel="noopener noreferrer">
+                Source
+              </a>
+            )}
+          </div>
         </li>
       ))}
     </ul>
@@ -117,7 +129,7 @@ function LoanCalc() {
   const [price, setPrice] = useState("18500000");
   const [down, setDown] = useState("30");
   const [years, setYears] = useState("15");
-  const [rate, setRate] = useState(String(preset ?? 16));
+  const [rate, setRate] = useState(String(preset ?? BANKS[1].rate));
 
   useEffect(() => {
     if (preset) setRate(String(preset));
