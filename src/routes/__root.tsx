@@ -3,7 +3,7 @@ import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { Shell } from "@/components/shell";
 import { SiteSchema } from "@/components/site-schema";
-import { Analytics } from "@vercel/analytics/react";
+import { SiteAnalytics } from "@/components/analytics";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 
@@ -76,7 +76,7 @@ export const Route = createRootRoute({
             <Outlet />
           </Shell>
           <Toaster position="top-center" richColors />
-          <Analytics />
+          <SiteAnalytics />
           <SiteSchema />
         </AuthProvider>
         <Scripts />
