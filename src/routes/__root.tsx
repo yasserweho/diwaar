@@ -7,10 +7,10 @@ import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "diwaar.com";
+const APP_NAME = "diwaar.com — Pakistan Property Portal";
 const SITE = "https://www.diwaar.com";
 const DESC =
-  "Find houses, flats, plots and commercial property for sale and rent across Pakistan on diwaar.com. Quality listings in Lahore, Karachi, Islamabad and 30+ cities.";
+  "Find houses, flats, plots and commercial property for sale and rent across Pakistan on diwaar.com. Quality listings in Lahore, Karachi, Islamabad and 30+ cities. Buy your home with confidence.";
 
 export const Route = createRootRoute({
   head: () => ({
