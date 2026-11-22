@@ -158,6 +158,7 @@ export function filterProperties(list: Property[], params: SearchParams): Proper
     if (params.maxPrice && p.price > params.maxPrice) return false;
     if (params.minArea && p.areaSqft < params.minArea) return false;
     if (params.maxArea && p.areaSqft > params.maxArea) return false;
+    if (params.badge && !p.badges.includes(params.badge)) return false;
     if (params.q) {
       const hay = `${p.title} ${p.location} ${p.areaName} ${p.city} ${p.category}`.toLowerCase();
       if (!hay.includes(params.q.toLowerCase())) return false;
