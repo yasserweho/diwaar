@@ -10,16 +10,19 @@ import { Chip } from "@/components/ui/badge";
 import { PROPERTIES, filterProperties, locationsInCity } from "@/lib/data";
 import { alertLabel } from "@/lib/portal";
 import { useAppStore } from "@/lib/store";
-import { CATEGORY_LABEL, CITIES, type Category, type Purpose, type SearchParams } from "@/lib/types";
+import { CATEGORY_LABEL, CITIES, BADGE_LABEL, type Badge, type Category, type Purpose, type SearchParams } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { seo } from "@/lib/seo";
 import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { MapSearch } from "@/components/map-search";
 import { listPublicListings } from "@/lib/listings.functions";
 
+const BADGES: Badge[] = ["hot", "superhot", "featured", "verified", "titanium", "premium", "platinum"];
+
 function parseSearch(s: Record<string, unknown>): SearchParams {
   const purpose: Purpose = s.purpose === "rent" ? "rent" : "buy";
   const type = typeof s.type === "string" && s.type in CATEGORY_LABEL ? (s.type as Category) : undefined;
+  const badge = typeof s.badge === "string" && s.badge in BADGE_LABEL ? (s.badge as Badge) : undefined;
   const num = (v: unknown) => {
     const n = Number(v);
     return Number.isFinite(n) && n > 0 ? n : undefined;
@@ -34,6 +37,7 @@ function parseSearch(s: Record<string, unknown>): SearchParams {
     city: typeof s.city === "string" ? s.city : undefined,
     location: typeof s.location === "string" ? s.location : undefined,
     type,
+    badge,
     beds: num(s.beds),
     minPrice: num(s.minPrice),
     maxPrice: num(s.maxPrice),
@@ -97,6 +101,7 @@ function SearchPage() {
         <h1 className="text-lg font-extrabold text-black sm:text-xl">
           {results.length} {params.purpose === "rent" ? "rentals" : "properties"}
           {params.city ? ` in ${params.city}` : ""}
+          {params.badge ? ` · ${BADGE_LABEL[params.badge]}` : ""}
           {results.length > pageSize ? ` · page ${page} of ${pages}` : ""}
         </h1>
         <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
@@ -260,6 +265,20 @@ function FiltersPanel() {
           <Chip active={params.purpose === "rent"} onClick={() => patch({ purpose: "rent" })}>
             {tx(lang, "Rent", "کرایہ")}
           </Chip>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend className="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">Tag</legend>
+        <div className="flex flex-wrap gap-2">
+          <Chip active={!params.badge} onClick={() => patch({ badge: undefined })}>
+            Any
+          </Chip>
+          {BADGES.map((b) => (
+            <Chip key={b} active={params.badge === b} onClick={() => patch({ badge: b })}>
+              {BADGE_LABEL[b]}
+            </Chip>
+          ))}
         </div>
       </fieldset>
 
