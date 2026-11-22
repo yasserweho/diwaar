@@ -8,7 +8,7 @@ export type Category =
   | "portion"
   | "farmhouse";
 
-export type Badge = "hot" | "superhot" | "verified" | "featured" | "platinum";
+export type Badge = "hot" | "superhot" | "verified" | "featured" | "platinum" | "titanium" | "premium";
 
 export interface Property {
   id: string;
@@ -100,6 +100,8 @@ export interface SearchParams {
   page?: number;
   /** "map" opens the map view on /search. */
   view?: "list" | "map";
+  /** Filter by listing badge (Hot, Super Hot, Titanium, etc.) */
+  badge?: Badge | "";
 }
 
 export const CATEGORY_LABEL: Record<Category, string> = {
@@ -109,6 +111,16 @@ export const CATEGORY_LABEL: Record<Category, string> = {
   commercial: "Commercial",
   portion: "Portion",
   farmhouse: "Farm House",
+};
+
+export const BADGE_LABEL: Record<Badge, string> = {
+  superhot: "Super Hot",
+  hot: "Hot",
+  verified: "Verified",
+  featured: "Featured",
+  platinum: "Platinum",
+  titanium: "Titanium",
+  premium: "Premium",
 };
 
 export { CITIES } from "./locations";
