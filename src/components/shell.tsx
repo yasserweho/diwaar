@@ -22,6 +22,7 @@ import { cityLabel, tx, useLang } from "@/lib/i18n";
 import { citySlug } from "@/lib/location-pages";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { BADGE_LABEL, type Badge } from "@/lib/types";
 
 const MENU_GROUPS = [
   {
@@ -77,6 +78,8 @@ const NAV = [
   { to: "/services", label: "Services", ur: "خدمات" },
   { to: "/blog", label: "Blog", ur: "بلاگ" },
 ];
+
+const HEADER_TAGS: Badge[] = ["hot", "superhot", "featured", "verified", "titanium", "premium", "platinum"];
 
 /** Same-origin return path for the existing /login page. Open redirects are rejected. */
 function loginHref(href: string): string {
@@ -159,6 +162,31 @@ export function Shell({ children }: { children: React.ReactNode }) {
             >
               <Menu className="size-5" />
             </button>
+          </div>
+        </div>
+
+        {/* Zameen-style tags bar in the header */}
+        <div className="border-t border-border bg-white">
+          <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto no-scrollbar px-3 py-2 sm:px-4">
+            {HEADER_TAGS.map((badge) => (
+              <Link
+                key={badge}
+                to="/search"
+                search={{ badge, purpose: "buy" }}
+                className={cn(
+                  "inline-flex h-8 shrink-0 items-center rounded-full border px-3 text-xs font-bold uppercase tracking-wide transition-colors",
+                  badge === "superhot" && "border-superhot/30 bg-superhot-bg text-superhot hover:bg-superhot/10",
+                  badge === "hot" && "border-hot/30 bg-hot-bg text-hot hover:bg-hot/10",
+                  badge === "verified" && "border-verified/30 bg-verified-bg text-verified hover:bg-verified/10",
+                  badge === "featured" && "border-primary/30 bg-ice text-primary-dark hover:bg-ice-2",
+                  badge === "titanium" && "border-zinc-700 bg-zinc-800 text-zinc-100 hover:bg-zinc-700",
+                  badge === "premium" && "border-amber-300 bg-amber-100 text-amber-900 hover:bg-amber-200",
+                  badge === "platinum" && "border-primary-dark bg-primary-dark text-primary-fg hover:bg-primary-dark/90",
+                )}
+              >
+                {BADGE_LABEL[badge]}
+              </Link>
+            ))}
           </div>
         </div>
       </header>
@@ -463,129 +491,31 @@ function TabletShortcuts() {
 }
 
 function BottomNav({ onMenu }: { onMenu: () => void }) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const purpose = useRouterState({
-    select: (s) => {
-      const search = s.location.search as { purpose?: string } | string;
-      return typeof search === "object" ? search.purpose : undefined;
-    },
-  });
   const { lang } = useLang();
-  const items = [
-    { to: "/", label: tx(lang, "Home", "ہوم"), icon: Home, active: pathname === "/" },
-    {
-      to: "/search",
-      label: tx(lang, "Buy", "خریدیں"),
-      icon: Search,
-      search: { purpose: "buy" as const },
-      active: (pathname.startsWith("/search") || pathname.startsWith("/property")) && purpose !== "rent",
-    },
-    {
-      to: "/search",
-      label: tx(lang, "Rent", "کرایہ"),
-      icon: Building2,
-      search: { purpose: "rent" as const },
-      active: pathname.startsWith("/search") && purpose === "rent",
-    },
-    { to: "/saved", label: tx(lang, "Saved", "محفوظ"), icon: Heart, active: pathname === "/saved" },
-  ];
-
   return (
-    <nav
-      className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface md:hidden"
-      aria-label="Primary"
-    >
-      <ul className="grid h-16 grid-cols-5">
-        {items.map((item) => {
-          const Icon = item.icon;
-          return (
-            <li key={item.label}>
-              <Link
-                to={item.to}
-                search={"search" in item ? item.search : undefined}
-                className={cn(
-                  "flex h-full flex-col items-center justify-center gap-0.5 text-[11px] font-semibold",
-                  item.active ? "text-primary" : "text-muted",
-                )}
-              >
-                <Icon className="size-5" />
-                {item.label}
-              </Link>
-            </li>
-          );
-        })}
-        <li>
-          <button
-            type="button"
-            onClick={onMenu}
-            className="flex h-full w-full flex-col items-center justify-center gap-0.5 text-[11px] font-semibold text-muted"
-          >
-            <Menu className="size-5" />
-            {tx(lang, "Menu", "مینو")}
-          </button>
-        </li>
-      </ul>
+    <nav className="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-white/95 backdrop-blur md:hidden safe-bottom">
+      <div className="mx-auto flex max-w-lg items-stretch justify-around px-2 py-1">
+        <Link to="/" className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-muted">
+          <Home className="size-5" />
+          {tx(lang, "Home", "ہوم")}
+        </Link>
+        <Link to="/search" search={{ purpose: "buy" }} className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-muted">
+          <Search className="size-5" />
+          {tx(lang, "Search", "تلاش")}
+        </Link>
+        <Link to="/add" className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-primary">
+          <Plus className="size-5" />
+          {tx(lang, "List", "لگائیں")}
+        </Link>
+        <Link to="/saved" className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-muted">
+          <Heart className="size-5" />
+          {tx(lang, "Saved", "محفوظ")}
+        </Link>
+        <button type="button" onClick={onMenu} className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-muted">
+          <Menu className="size-5" />
+          {tx(lang, "Menu", "مینو")}
+        </button>
+      </div>
     </nav>
-  );
-}
-
-export function SectionHead({
-  title,
-  href,
-  action,
-}: {
-  title: string;
-  href?: string;
-  action?: string;
-}) {
-  const { lang } = useLang();
-  const actionLabel = action ?? tx(lang, "View all", "سب دیکھیں");
-  return (
-    <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-border pb-3">
-      <h2 className="text-lg font-semibold tracking-normal text-black sm:text-xl">
-        {title}
-      </h2>
-      {href && (
-        <a href={href} className="text-sm font-semibold text-primary hover:underline">
-          {actionLabel}
-        </a>
-      )}
-    </div>
-  );
-}
-
-export function ToolTiles() {
-  const { lang } = useLang();
-  const tiles = [
-    { to: "/tools?tab=loan", icon: Calculator, label: tx(lang, "Home loan", "ہوم لون"), sub: tx(lang, "Bank packages", "بینک پیکجز") },
-    { to: "/tools?tab=build", icon: Calculator, label: tx(lang, "Build cost", "تعمیراتی لاگت"), sub: tx(lang, "Grey + finishing", "گرے + فنشنگ") },
-    { to: "/tools?tab=area", icon: Calculator, label: tx(lang, "Area converter", "رقبہ کنورٹر"), sub: tx(lang, "Marla · Kanal · Yd", "مرلہ · کنال · گز") },
-    { to: "/maps", icon: MapIcon, label: tx(lang, "Plot finder", "پلاٹ فائنڈر"), sub: tx(lang, "Plot ads by society", "سوسائٹی کے پلاٹ اشتہارات") },
-    { to: "/property-index", icon: BookOpen, label: tx(lang, "Price index", "قیمت انڈیکس"), sub: tx(lang, "From live ads", "لائیو اشتہارات سے") },
-    { to: "/trends", icon: BookOpen, label: tx(lang, "Prices by area", "علاقے کی قیمتیں"), sub: tx(lang, "From live ads", "لائیو اشتہارات سے") },
-    { to: "/guides", icon: BookOpen, label: tx(lang, "Area guides", "علاقائی گائیڈ"), sub: tx(lang, "What each area is like", "ہر علاقے کا تعارف") },
-    { to: "/community", icon: Users, label: tx(lang, "Community", "کمیونٹی"), sub: tx(lang, "Ask the market", "مارکیٹ سے پوچھیں") },
-    { to: "/wanted", icon: Search, label: tx(lang, "Wanted", "مطلوب"), sub: tx(lang, "Buyer requests", "خریدار کی درخواست") },
-    { to: "/cities", icon: MapIcon, label: tx(lang, "All cities", "تمام شہر"), sub: tx(lang, "Pakistan", "پاکستان") },
-  ];
-  return (
-    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3 lg:grid-cols-4">
-      {tiles.map((t) => {
-        const Icon = t.icon;
-        return (
-          <a
-            key={t.to}
-            href={t.to}
-            className="bg-white p-4 transition-colors hover:bg-ice"
-          >
-            <span className="mb-3 grid size-8 place-items-center rounded-md bg-ice text-primary">
-              <Icon className="size-4" />
-            </span>
-            <p className="text-sm font-semibold text-black">{t.label}</p>
-            <p className="mt-0.5 text-xs text-muted">{t.sub}</p>
-          </a>
-        );
-      })}
-    </div>
   );
 }
