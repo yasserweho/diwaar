@@ -24,8 +24,8 @@ export function seo(
     lang?: "en" | "ur";
   },
 ) {
-  // Force every page title to exactly "diwaar.com"
-  const full = BRAND;
+  // Unique page title + brand for better SEO and browser tabs
+  const full = title.includes(BRAND) ? title : `${title} | ${BRAND}`;
   const raw = opts?.image;
   // Only absolute http(s) or site-relative images are shareable; data: URLs fall back.
   const image = raw && raw.startsWith("/") ? `${SITE}${raw}` : raw && raw.startsWith("http") ? raw : DEFAULT_IMAGE;
