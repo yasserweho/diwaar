@@ -6,8 +6,8 @@ import { seo } from "@/lib/seo";
 export const Route = createFileRoute("/about")({
   head: () =>
     seo(
-      "About diwaar.com",
-      "diwaar.com is a property portal for houses, flats, plots and commercial property across Pakistan.",
+      "About diwaar.com — Pakistan Property Portal",
+      "diwaar.com is Pakistan's property portal for buying and renting houses, flats, plots and commercial space. List free, no commission.",
       { path: "/about" },
     ),
   component: AboutPage,
