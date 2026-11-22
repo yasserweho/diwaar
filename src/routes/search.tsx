@@ -49,14 +49,12 @@ function parseSearch(s: Record<string, unknown>): SearchParams {
 export const Route = createFileRoute("/search")({
   head: () =>
     seo(
-      "Property for Sale and Rent in Pakistan",
-      "Browse houses, flats, plots and commercial property for sale and rent across Pakistan.",
+      "Search Property for Sale & Rent",
+      "Browse houses, flats, plots and commercial property for sale and rent across Pakistan. Filter by city, price, beds and area on diwaar.com.",
       { path: "/search" },
     ),
   validateSearch: parseSearch,
   loaderDeps: ({ search }) => ({ purpose: search.purpose, city: search.city }),
-  // Public ads posted by owners, fetched on the server so they are in the HTML.
-  // Narrow filters (location, type, price, beds…) run client-side below.
   loader: async ({ deps }) => {
     try {
       return { published: await listPublicListings({ data: { purpose: deps.purpose, city: deps.city } }) };
