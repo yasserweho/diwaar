@@ -59,7 +59,7 @@ export function DiwaarWordmark({
             compact && "text-[10px]",
           )}
         >
-          buy your home
+          let's go home
         </span>
       </span>
     </span>
