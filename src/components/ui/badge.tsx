@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { Badge as BadgeKind } from "@/lib/types";
+import { BADGE_LABEL } from "@/lib/types";
 
 const STYLES: Record<BadgeKind, string> = {
   superhot: "bg-superhot-bg text-superhot",
@@ -7,14 +8,8 @@ const STYLES: Record<BadgeKind, string> = {
   verified: "bg-verified-bg text-verified",
   featured: "bg-ice text-primary-dark",
   platinum: "bg-primary-dark text-primary-fg",
-};
-
-const LABEL: Record<BadgeKind, string> = {
-  superhot: "Super Hot",
-  hot: "Hot",
-  verified: "Verified",
-  featured: "Featured",
-  platinum: "Platinum",
+  titanium: "bg-zinc-800 text-zinc-100",
+  premium: "bg-amber-100 text-amber-900",
 };
 
 export function ListingBadge({ kind }: { kind: BadgeKind }) {
@@ -25,7 +20,7 @@ export function ListingBadge({ kind }: { kind: BadgeKind }) {
         STYLES[kind],
       )}
     >
-      {LABEL[kind]}
+      {BADGE_LABEL[kind]}
     </span>
   );
 }
