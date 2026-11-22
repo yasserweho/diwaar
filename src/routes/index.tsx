@@ -21,8 +21,8 @@ import { cityLabel, tx, useLang } from "@/lib/i18n";
 export const Route = createFileRoute("/")({
   head: () =>
     seo(
-      "Find Property for Sale and Rent in Pakistan",
-      "Find houses, flats, plots and commercial property for sale and rent in Lahore, Karachi, Islamabad and 30 more cities on diwaar.com.",
+      "Property for Sale & Rent in Pakistan",
+      "Find houses, flats, plots and commercial property for sale and rent in Lahore, Karachi, Islamabad and 30+ cities. List free on diwaar.com.",
       { path: "/" },
     ),
   component: HomePage,
@@ -40,10 +40,6 @@ function HomePage() {
   return (
     <>
       <section className="relative isolate overflow-hidden bg-primary-dark text-white">
-        {/* The photo is 1200x675. On phones it sits as a 16:9 band at the top
-            (shown at its own size, so it stays sharp) and fades into the dark
-            panel behind the search form, instead of being stretched to fill a
-            tall stacked hero. From sm up it covers the whole hero as before. */}
         <img
           src="/images/house-isb.jpg"
           alt="Modern house in Islamabad"
