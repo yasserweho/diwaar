@@ -1,4 +1,4 @@
-const BRAND = "Diwaar.com";
+const BRAND = "diwaar.com";
 const SITE = "https://www.diwaar.com";
 const DEFAULT_IMAGE = `${SITE}/og.jpg`;
 
@@ -24,12 +24,13 @@ export function seo(
     lang?: "en" | "ur";
   },
 ) {
-  const full = title.includes(BRAND) ? title : `${title} | ${BRAND}`;
+  // Force every page title to exactly "diwaar.com"
+  const full = BRAND;
   const raw = opts?.image;
   // Only absolute http(s) or site-relative images are shareable; data: URLs fall back.
   const image = raw && raw.startsWith("/") ? `${SITE}${raw}` : raw && raw.startsWith("http") ? raw : DEFAULT_IMAGE;
   const isCard = image.startsWith(`${SITE}/og/`);
-  const alt = opts?.imageAlt ?? full;
+  const alt = opts?.imageAlt ?? title;
   const url = opts?.path ? `${SITE}${opts.path}` : SITE;
   const meta: Array<Record<string, string>> = [
     { title: full },
