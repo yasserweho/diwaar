@@ -4,7 +4,7 @@ import type { AreaGuide, BlogPost, Property } from "./types";
  * schema.org JSON-LD helpers. Use with `withSchema(seo(...), ...objects)` in a
  * route's `head` so the JSON-LD is rendered server-side in <head>.
  */
-const SITE = "https://www.diwaar.com";
+const SITE = "https://diwaar.com";
 const ORG_ID = `${SITE}/#organization`;
 
 type Ld = Record<string, unknown>;
