@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { activeListings } from "@/lib/listings.server";
 
-const ORIGIN = "https://www.diwaar.com";
+const ORIGIN = "https://diwaar.com";
 
 // Live sitemap of public owner ads (/property/user-…). Listed in /sitemap.xml.
 export const Route = createFileRoute("/sitemap-listings.xml")({
