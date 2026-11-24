@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 
 const APP_NAME = "diwaar.com — Pakistan Property Portal";
-const SITE = "https://www.diwaar.com";
+const SITE = "https://diwaar.com";
 const DESC =
   "Find houses, flats, plots and commercial property for sale and rent across Pakistan on diwaar.com. Quality listings in Lahore, Karachi, Islamabad and 30+ cities. Buy your home with confidence.";
 
@@ -24,18 +24,9 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "en_PK" },
       { property: "og:locale:alternate", content: "ur_PK" },
-      { property: "og:title", content: APP_NAME },
-      { property: "og:description", content: DESC },
-      { property: "og:url", content: SITE },
-      { property: "og:image", content: `${SITE}/og.jpg` },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: APP_NAME },
-      { name: "twitter:description", content: DESC },
-      { name: "twitter:image", content: `${SITE}/og.jpg` },
       { itemprop: "name", content: APP_NAME },
       { itemprop: "description", content: DESC },
-      { itemprop: "image", content: `${SITE}/og.jpg` },
-      { itemprop: "url", content: SITE },
       { name: "robots", content: "max-image-preview:large" },
       {
         name: "facebook-domain-verification",
