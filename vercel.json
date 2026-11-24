@@ -9,5 +9,18 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.diwaar.com"
+        }
+      ],
+      "destination": "https://diwaar.com/:path*",
+      "permanent": true
+    }
   ]
 }
