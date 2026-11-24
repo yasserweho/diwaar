@@ -1,5 +1,5 @@
 const BRAND = "diwaar.com";
-const SITE = "https://www.diwaar.com";
+const SITE = "https://diwaar.com";
 const DEFAULT_IMAGE = `${SITE}/og.jpg`;
 
 /** Branded 1200x630 share cards rendered by scripts/og-images.py into public/og/. */
