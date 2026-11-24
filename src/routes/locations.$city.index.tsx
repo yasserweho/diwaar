@@ -21,15 +21,16 @@ export const Route = createFileRoute("/locations/$city/")({
       return { listings: [] };
     }
   },
-  head: ({ params }) => {
+  head: ({ params, loaderData }) => {
     const city = cityFromSlug(params.city);
     if (!city) return seo("City not found", "This city is not on diwaar.com.", { noindex: true });
     const n = areasOf(city).length;
+    const hasListings = (loaderData?.listings?.length ?? 0) > 0;
     return withSchema(
       seo(
         `Property for Sale and Rent in ${city}`,
         `Houses, flats, portions, plots and commercial property for sale and rent in ${city}. Browse ${n.toLocaleString()} areas on diwaar.com, no commission.`,
-        { path: `/locations/${params.city}`, image: OG.city(params.city), imageAlt: `Property for sale and rent in ${city} on Diwaar.com` },
+        { path: `/locations/${params.city}`, image: OG.city(params.city), imageAlt: `Property for sale and rent in ${city} on Diwaar.com`, noindex: !hasListings },
       ),
       breadcrumbLd([
         { name: "Home", path: "/" },
