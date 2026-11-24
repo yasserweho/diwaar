@@ -1,4 +1,4 @@
-export const SITE_ORIGIN = "https://www.diwaar.com";
+export const SITE_ORIGIN = "https://diwaar.com";
 
 /** Absolute, canonical URL for a site path (drops query strings unless asked). */
 export function absoluteUrl(path: string) {
