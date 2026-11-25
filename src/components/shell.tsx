@@ -87,6 +87,7 @@ function loginHref(href: string): string {
   return `/login?redirect=${encodeURIComponent(href)}`;
 }
 
+
 /** Section heading used on the home page and elsewhere. */
 export function SectionHead({
   title,
@@ -286,5 +287,258 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <Footer />
       <BottomNav onMenu={() => setOpen(true)} />
     </div>
+  );
+}
+
+function MoreMenu() {
+  const [open, setOpen] = useState(false);
+  const { lang } = useLang();
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-fg hover:bg-ice"
+      >
+        {tx(lang, "More", "مزید")}
+      </button>
+      {open && (
+        <>
+          <button type="button" className="fixed inset-0 z-40" aria-label="Close menu" onClick={() => setOpen(false)} />
+          <div className="absolute left-0 top-full z-50 mt-1 max-h-[70vh] w-56 overflow-y-auto rounded-xl bg-surface p-2 shadow-card">
+            {MENU_GROUPS.flatMap((group) => group.links).map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="flex h-10 items-center rounded-lg px-3 text-sm font-semibold hover:bg-ice"
+                onClick={() => setOpen(false)}
+              >
+                {tx(lang, item.label, item.ur)}
+              </a>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function PrefsMenu() {
+  const unit = useAppStore((s) => s.areaUnit);
+  const currency = useAppStore((s) => s.currency);
+  const setUnit = useAppStore((s) => s.setAreaUnit);
+  const setCurrency = useAppStore((s) => s.setCurrency);
+  const [open, setOpen] = useState(false);
+  const units: AreaUnit[] = ["marla", "kanal", "sqyd", "sqft"];
+
+  return (
+    <div className="relative hidden md:block">
+      <Button variant="ghost" size="sm" onClick={() => setOpen((v) => !v)}>
+        {AREA_LABEL[unit]} · {currency}
+      </Button>
+      {open && (
+        <>
+          <button
+            type="button"
+            className="fixed inset-0 z-40"
+            aria-label="Close preferences"
+            onClick={() => setOpen(false)}
+          />
+          <div className="absolute right-0 top-full z-50 mt-1 w-56 rounded-xl bg-surface p-3 shadow-card">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted mb-2">
+              Area unit
+            </p>
+            <div className="grid grid-cols-2 gap-1 mb-3">
+              {units.map((u) => (
+                <button
+                  key={u}
+                  type="button"
+                  onClick={() => setUnit(u)}
+                  className={cn(
+                    "h-9 rounded-md text-xs font-semibold",
+                    unit === u ? "bg-primary text-primary-fg" : "bg-ice text-fg",
+                  )}
+                >
+                  {AREA_LABEL[u]}
+                </button>
+              ))}
+            </div>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted mb-2">
+              Currency
+            </p>
+            <div className="grid grid-cols-2 gap-1">
+              {(["PKR", "USD", "AED", "GBP"] as const).map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setCurrency(c)}
+                  className={cn(
+                    "h-9 rounded-md text-xs font-semibold",
+                    currency === c ? "bg-primary text-primary-fg" : "bg-ice text-fg",
+                  )}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function Footer() {
+  const { lang } = useLang();
+  return (
+    <footer className="hidden lg:block border-t border-border bg-primary-dark text-primary-fg">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <DiwaarWordmark inverted compact />
+          <p className="mt-4 text-sm text-ice-2 leading-relaxed">
+            {tx(
+              lang,
+              "Pakistan's property portal. No commission on a listing. Loan and price tools are estimates, not offers.",
+              "پاکستان کی پراپرٹی ویب سائٹ۔ اشتہار پر کمیشن نہیں۔ لون اور قیمت کے اوزار اندازے ہیں، پیشکش نہیں۔",
+            )}
+          </p>
+        </div>
+        <FooterCol
+          title={tx(lang, "Explore", "دریافت کریں")}
+          links={[
+            [tx(lang, "Locations", "مقامات"), "/locations"],
+            [tx(lang, "Services", "خدمات"), "/services"],
+            [tx(lang, "Properties for sale", "فروخت کے لیے جائیداد"), "/search?purpose=buy"],
+            [tx(lang, "Properties to rent", "کرایے کی جائیداد"), "/search?purpose=rent"],
+            [tx(lang, "New projects", "نئے منصوبے"), "/projects"],
+            [tx(lang, "Area guides", "علاقائی گائیڈ"), "/guides"],
+            [tx(lang, "Society maps", "سوسائٹی کے نقشے"), "/maps"],
+            [tx(lang, "Property index", "قیمت انڈیکس"), "/property-index"],
+            [tx(lang, "Prices by area", "علاقے کی قیمتیں"), "/trends"],
+          ]}
+        />
+        <FooterCol
+          title={tx(lang, "Tools", "اوزار")}
+          links={[
+            [tx(lang, "Home loan calculator", "ہوم لون کیلکولیٹر"), "/tools?tab=loan"],
+            [tx(lang, "Construction cost", "تعمیراتی لاگت"), "/tools?tab=build"],
+            [tx(lang, "Area converter", "رقبہ کنورٹر"), "/tools?tab=area"],
+            [tx(lang, "List Property", "جائیداد شامل کریں"), "/add"],
+            [tx(lang, "Agents: list your agency", "ایجنٹس: اپنی ایجنسی درج کریں"), "/agents"],
+            [tx(lang, "Community", "کمیونٹی"), "/community"],
+            [tx(lang, "Wanted ads", "مطلوب اشتہارات"), "/wanted"],
+            [tx(lang, "My ads", "میرے اشتہارات"), "/my-ads"],
+          ]}
+        />
+        <FooterCol
+          title={tx(lang, "Cities", "شہر")}
+          links={[
+            [cityLabel("Lahore", lang), `/locations/${citySlug("Lahore")}`],
+            [cityLabel("Karachi", lang), `/locations/${citySlug("Karachi")}`],
+            [cityLabel("Islamabad", lang), `/locations/${citySlug("Islamabad")}`],
+            [cityLabel("Rawalpindi", lang), `/locations/${citySlug("Rawalpindi")}`],
+            [cityLabel("Multan", lang), `/locations/${citySlug("Multan")}`],
+          ]}
+        />
+      </div>
+      <div className="border-t border-primary-fg/10 py-4 text-center text-xs text-ice-2">
+        <a href="/reviews" className="hover:text-primary-fg">
+          {tx(lang, "Reviews", "تبصرے")}
+        </a>
+        <span className="mx-2">·</span>
+        <a href="/faq" className="hover:text-primary-fg">
+          {tx(lang, "Questions", "سوالات")}
+        </a>
+        <span className="mx-2">·</span>
+        <a href="/about" className="hover:text-primary-fg">
+          {tx(lang, "About", "ہمارے بارے میں")}
+        </a>
+        <span className="mx-2">·</span>
+        <a href="/contact" className="hover:text-primary-fg">
+          {tx(lang, "Contact", "رابطہ")}
+        </a>
+        <span className="mx-2">·</span>
+        <a href="/privacy" className="hover:text-primary-fg">
+          {tx(lang, "Privacy", "رازداری")}
+        </a>
+        <span className="mx-2">·</span>
+        © {new Date().getFullYear()} diwaar.com
+      </div>
+    </footer>
+  );
+}
+
+function FooterCol({ title, links }: { title: string; links: [string, string][] }) {
+  return (
+    <div>
+      <p className="text-sm font-bold mb-3">{title}</p>
+      <ul className="space-y-2 text-sm text-ice-2">
+        {links.map(([label, href]) => (
+          <li key={href}>
+            <a href={href} className="hover:text-primary-fg">
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function TabletShortcuts() {
+  const { lang } = useLang();
+  const links: { href: string; label: string }[] = [
+    { href: "/search?purpose=buy", label: tx(lang, "Buy", "خریدیں") },
+    { href: "/search?purpose=rent", label: tx(lang, "Rent", "کرایہ") },
+    { href: "/projects", label: tx(lang, "Projects", "منصوبے") },
+    { href: "/maps", label: tx(lang, "Maps", "نقشے") },
+    { href: "/guides", label: tx(lang, "Guides", "گائیڈ") },
+    { href: "/saved", label: tx(lang, "Saved", "محفوظ") },
+    { href: "/add", label: tx(lang, "List Property", "جائیداد شامل کریں") },
+  ];
+  return (
+    <div className="hidden border-b border-border bg-surface md:block lg:hidden">
+      <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto no-scrollbar px-4 py-2">
+        {links.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="inline-flex h-11 shrink-0 items-center rounded-full bg-ice px-4 text-sm font-semibold text-primary-dark"
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BottomNav({ onMenu }: { onMenu: () => void }) {
+  const { lang } = useLang();
+  return (
+    <nav className="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-white/95 backdrop-blur md:hidden safe-bottom">
+      <div className="mx-auto flex max-w-lg items-stretch justify-around px-2 py-1">
+        <Link to="/" className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-muted">
+          <Home className="size-5" />
+          {tx(lang, "Home", "ہوم")}
+        </Link>
+        <Link to="/search" search={{ purpose: "buy" }} className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-muted">
+          <Search className="size-5" />
+          {tx(lang, "Search", "تلاش")}
+        </Link>
+        <Link to="/add" className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-primary">
+          <Plus className="size-5" />
+          {tx(lang, "List", "لگائیں")}
+        </Link>
+        <Link to="/saved" className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-muted">
+          <Heart className="size-5" />
+          {tx(lang, "Saved", "محفوظ")}
+        </Link>
+        <button type="button" onClick={onMenu} className="flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-semibold text-muted">
+          <Menu className="size-5" />
+          {tx(lang, "Menu", "مینو")}
+        </button>
+      </div>
+    </nav>
   );
 }
