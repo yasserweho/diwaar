@@ -1,7 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { activeListings } from "@/lib/listings.server";
 
-const ORIGIN = "https://diwaar.com";
+const ORIGIN = "https://www.diwaar.com";
+
+function esc(s: string) {
+  return s.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
+}
 
 // Live sitemap of public owner ads (/property/user-…). Listed in /sitemap.xml.
 export const Route = createFileRoute("/sitemap-listings.xml")({
@@ -11,12 +15,20 @@ export const Route = createFileRoute("/sitemap-listings.xml")({
         let urls: string[] = [];
         try {
           const listings = await activeListings();
-          urls = listings.slice(0, 45000).map(
-            (p) => `  <url><loc>${ORIGIN}/property/${p.id}</loc><lastmod>${p.createdAt}</lastmod></url>`,
-          );
-        } catch {
+          urls = listings.slice(0, 45000).map((p) => {
+            const loc = `${ORIGIN}/property/${encodeURIComponent(p.id)}`;
+            const lastmod =
+              p.createdAt && /^\d{4}-\d{2}-\d{2}/.test(p.createdAt) ? p.createdAt.slice(0, 10) : undefined;
+            const locTag = `<loc>${esc(loc)}</loc>`;
+            return lastmod
+              ? `  <url>${locTag}<lastmod>${lastmod}</lastmod></url>`
+              : `  <url>${locTag}</url>`;
+          });
+        } catch (err) {
+          console.error("[sitemap-listings] activeListings failed:", err);
           urls = [];
         }
+
         const body = [
           '<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -24,6 +36,7 @@ export const Route = createFileRoute("/sitemap-listings.xml")({
           "</urlset>",
           "",
         ].join("\n");
+
         return new Response(body, {
           headers: {
             "content-type": "application/xml; charset=utf-8",
